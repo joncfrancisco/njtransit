@@ -1,0 +1,566 @@
+<title>NJ TRANSIT Trainset</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+
+<style>
+  :root {
+    --ground:   #ebeef2;
+    --surface:  #ffffff;
+    --ink:      #161a21;
+    --muted:    #5b6472;
+    --faint:    #858e9c;
+    --line:     #d4d9e1;
+    --accent:   #1b44c8;
+    --accent-w: #e4e9fa;
+    --orange:   #d9690f;
+    --shadow:   0 1px 2px rgba(20, 26, 40, .06), 0 8px 24px rgba(20, 26, 40, .05);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground:   #0f1319;
+      --surface:  #161b23;
+      --ink:      #e8edf4;
+      --muted:    #98a3b2;
+      --faint:    #6f7a89;
+      --line:     #252d39;
+      --accent:   #7ba2ff;
+      --accent-w: #1a2540;
+      --orange:   #f0902f;
+      --shadow:   0 1px 2px rgba(0, 0, 0, .4), 0 10px 28px rgba(0, 0, 0, .28);
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground:   #0f1319;
+    --surface:  #161b23;
+    --ink:      #e8edf4;
+    --muted:    #98a3b2;
+    --faint:    #6f7a89;
+    --line:     #252d39;
+    --accent:   #7ba2ff;
+    --accent-w: #1a2540;
+    --orange:   #f0902f;
+    --shadow:   0 1px 2px rgba(0, 0, 0, .4), 0 10px 28px rgba(0, 0, 0, .28);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.62;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap { max-width: 880px; margin: 0 auto; padding: 56px 24px 88px; }
+
+  h1, h2, h3 { font-family: "Barlow Semi Condensed", "IBM Plex Sans", sans-serif; text-wrap: balance; margin: 0; }
+  h1 { font-size: clamp(38px, 7vw, 58px); font-weight: 700; letter-spacing: -.01em; line-height: 1.02; }
+  h2 { font-size: 27px; font-weight: 600; letter-spacing: .01em; }
+  h3 { font-size: 19px; font-weight: 600; }
+
+  .eyebrow {
+    font-family: "Barlow Semi Condensed", sans-serif;
+    font-size: 14px; font-weight: 600;
+    letter-spacing: .2em; text-transform: uppercase;
+    color: var(--orange); margin: 0 0 10px;
+  }
+  .lede { font-size: 18px; color: var(--muted); margin: 14px 0 0; max-width: 62ch; }
+
+  .stripe {
+    height: 7px; border: 0; margin: 30px 0 0;
+    background:
+      linear-gradient(#1b44c8, #1b44c8) top / 100% 4px no-repeat,
+      linear-gradient(#d9690f, #d9690f) bottom / 100% 2px no-repeat;
+  }
+
+  .hero {
+    margin: 26px 0 0; padding: 22px 18px 16px;
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: 3px; box-shadow: var(--shadow); overflow-x: auto;
+  }
+  .hero img { display: block; margin: 0 auto; image-rendering: pixelated; }
+  .hero figcaption {
+    margin-top: 14px; text-align: center;
+    font-family: "IBM Plex Mono", monospace; font-size: 12px; color: var(--faint);
+  }
+
+  .meta {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    list-style: none; padding: 0; margin: 22px 0 0;
+    font-family: "IBM Plex Mono", monospace; font-size: 12.5px;
+  }
+  .meta li {
+    border: 1px solid var(--line); border-radius: 2px;
+    padding: 4px 9px; color: var(--muted); background: var(--surface);
+  }
+
+  section { margin-top: 54px; }
+  section > h2 { display: flex; align-items: baseline; gap: 12px; }
+  section > h2::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+  section > p { max-width: 65ch; }
+
+  ol.steps { margin: 18px 0 0; padding-left: 20px; }
+  ol.steps li { margin-bottom: 8px; }
+  code {
+    font-family: "IBM Plex Mono", monospace; font-size: 13.5px;
+    background: var(--accent-w); color: var(--ink);
+    padding: 1px 5px; border-radius: 2px;
+  }
+
+  .paths { margin-top: 20px; overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; font-size: 14.5px; }
+  .paths th, .paths td { text-align: left; padding: 9px 14px 9px 0; border-bottom: 1px solid var(--line); white-space: nowrap; }
+  .paths th { font-family: "Barlow Semi Condensed", sans-serif; font-size: 13px; letter-spacing: .12em; text-transform: uppercase; color: var(--faint); font-weight: 600; }
+  .paths td:last-child { font-family: "IBM Plex Mono", monospace; font-size: 13px; color: var(--muted); }
+
+  .group {
+    font-family: "Barlow Semi Condensed", sans-serif; font-size: 14px;
+    letter-spacing: .16em; text-transform: uppercase; color: var(--faint);
+    font-weight: 600; margin: 26px 0 8px;
+  }
+  .roster { display: flex; flex-direction: column; gap: 2px; }
+  .unit {
+    display: grid; grid-template-columns: 132px 1fr; gap: 4px 20px;
+    align-items: center; padding: 16px 18px;
+    background: var(--surface); border: 1px solid var(--line); border-radius: 3px;
+  }
+  .unit img { image-rendering: pixelated; display: block; }
+  .unit .name { font-family: "Barlow Semi Condensed", sans-serif; font-size: 22px; font-weight: 600; line-height: 1.15; margin: 0; }
+  .unit .role { font-size: 14px; color: var(--muted); margin: 2px 0 0; }
+  .unit .figures {
+    margin: 8px 0 0; padding: 0; list-style: none;
+    display: flex; flex-wrap: wrap; gap: 4px 16px;
+    font-family: "IBM Plex Mono", monospace; font-size: 12.5px;
+    font-variant-numeric: tabular-nums; color: var(--muted);
+  }
+  .unit.has-photo { grid-template-columns: 132px 118px 1fr; }
+  .unit .photo { margin: 0; }
+  .unit .photo img {
+    display: block; width: 118px; height: auto; border-radius: 2px;
+    border: 1px solid var(--line);
+  }
+  .unit .photo figcaption {
+    font-family: "IBM Plex Mono", monospace; font-size: 10px; line-height: 1.35;
+    color: var(--faint); margin-top: 4px; max-width: 118px;
+  }
+  .unit .ref {
+    font-family: "IBM Plex Mono", monospace; font-size: 11.5px;
+    letter-spacing: .04em; white-space: nowrap; margin-left: 8px;
+    text-decoration: none; border-bottom: 1px solid var(--accent-w);
+  }
+  .unit .ref:hover { border-bottom-color: var(--accent); }
+  .unit .figures .cat { color: var(--accent); }
+  .unit .figures .seats { color: var(--orange); }
+
+  .notes { display: grid; gap: 20px; margin-top: 22px; }
+  .note { border-left: 3px solid var(--accent); padding-left: 16px; }
+  .note h3 { margin-bottom: 2px; }
+  .note p { margin: 0; color: var(--muted); max-width: 62ch; }
+
+  pre {
+    margin: 20px 0 0; padding: 16px 18px; overflow-x: auto;
+    background: var(--surface); border: 1px solid var(--line); border-radius: 3px;
+    font-family: "IBM Plex Mono", monospace; font-size: 13px; line-height: 1.7;
+    color: var(--ink);
+  }
+  pre .c { color: var(--faint); }
+
+  footer { margin-top: 64px; padding-top: 22px; border-top: 1px solid var(--line); color: var(--faint); font-size: 13.5px; }
+  footer p { margin: 0 0 8px; max-width: 66ch; }
+  a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+  @media (max-width: 560px) {
+    .unit { grid-template-columns: 1fr; }
+    .unit img { margin-bottom: 6px; }
+  }
+</style>
+
+<div class="wrap">
+
+  <header>
+    <p class="eyebrow">OpenTTD · NewGRF</p>
+    <h1>NJ TRANSIT Trainset</h1>
+    <p class="lede">Twenty-six vehicles covering a century of New Jersey railroading:
+      a PRR K4s Pacific and Erie Lackawanna diesels, the GG1 through to its last run in
+      1983, NJ TRANSIT's modern fleet, and three generations of PATH rapid transit —
+      each in its own railroad's livery, with real figures and a switch for people who
+      would rather have balanced ones.</p>
+    <hr class="stripe">
+    <figure class="hero">
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHAAAAA/CAYAAAA47kzyAAADyklEQVR42u3cr1bjQBQG8C/nRKyoGBERURFRgVgRgahAIFZUVPQx9iH2kRAVCCQCUYGIRCBGICoQV1RU5JysYKd7O02maZuETHOvgeXPYeF3ZubebwIBrFosFgUAEBHMyyzLAkj1soIyPLuISCD7DHh/f38Ap5QSSB8A0zQtbKxN/gMAMAq3AukDYNWKE0iPAF1bp0B6BHgMMt+soZQSyL4A/vk9K5bvb9i8l6MJZM8Bf/5KisXkBgDwuFrv3hGOYuSb9dmQBhGAQHYxB6ZpWsynMXK1xWr1f5A/FdL825yXAtkRYJIku250muSI4jFe3rYnQ9qNDk90BLEDQI5TBlnnjLS3Uv5Say2AbQAqpQ7mwUsgbTi2VR+8X1ZlA4AWRnEJJD/3yvCka20ZkEMS0V6jUwfSfluSJLW2XoFsGLCqOCQArHQIItqhcMCyEUOSnW8GtLtWpRRu1CfeKDrYPg2QRHQ9BeQ1niqEawWtdeVWKZA9ASxrdngTc2zMkIiuB4AuSDPvSdbqASCfI3nXCgCStXoCWKdzlazVY0DJWq8E8Jxkx1VDz1o7+2Yla/Uc0NW1StbqGSCHlKzVY0BXx2ogAclavQO0u1bJWj0G5CVZq0eAZc0Ob2KOjRlDiei8+I9K1uo5IJ8jJWv1FLBO5zrErPVqAIeatV4d4DnJjqv6nrVeDWBXWasAfkPX2lTW6gLkv6b+/PwcCGBDkE1krS7Asr8v0CXkIB9FOCVrrQJ0wXUJOdhnSepmrTZcmqZFOIoxCre1vo7WutVzM8TAy4BpAONpCAXlXIFEBBAhVwoGsizac52jsgJbanZ4E1N15tkhe50xpM0VKA/Iwp21uubNuoif4VeA8PG6DgSw5TnSzlrrAFZhGrgoj8HPWwBYLpeBAH5TB1vnbKu6p+RbdBPdqQCeOYLUbVCUUnvP7JjP48CXrMZQSE4rE2a7IO1GqGplRlGE+TyB1rrIsiy4vZsVAPD68hTICuyo8eFjg3md33xUdbmTyQRpmuLh4QFEhHAUH3yNOpACeGHTYzcnHKIKka/OMrhTIAWwYUh7mLc62L37yVOrDFIAG0Z0zYZ8mzUfcymkALYIad/s23i8Iz0XUgA7WI32WUlEmKUjRPEYj6v1WZD55uvzBLBjTH4O8ud36kIaONlCe3RGKqUwn36BVUHacALYk621DPJz/YGnbCODfJ8xiSgouwUx2+zsdgv9vjkKKYA9WpVEFPDbjiRJ9n6Rh5e57hLAnlbVtdW/m/6dm4TZnpyX7DnVQLZQT7dX+alcUShg6i8VJjXG4G4lOwAAAABJRU5ErkJggg==" width="336" height="189" alt="A PRR K4s Pacific with three Stillwell commuter coaches">
+      <figcaption>PRR K4s Pacific and Stillwell coaches, 1950</figcaption>
+    </figure>
+    <ul class="meta">
+      <li>26 vehicles</li>
+      <li>1914 – 2012</li>
+      <li>Realistic or balanced stats</li>
+      <li>Built with NML 0.9</li>
+      <li>Verified in OpenTTD 13.4</li>
+    </ul>
+  </header>
+
+  <section>
+    <h2>Install</h2>
+    <ol class="steps">
+      <li>Put <code>njtransit.grf</code> in your OpenTTD <code>newgrf</code> folder.</li>
+      <li>Open <strong>Game Options → NewGRF Settings</strong>, add it to the active list, and apply.</li>
+      <li>Start a new game. The set only adds vehicles, so it can also be added to a
+          save in progress — engines appear from their introduction dates onwards.</li>
+    </ol>
+    <div class="paths">
+      <table>
+        <thead><tr><th>Platform</th><th>Folder</th></tr></thead>
+        <tbody>
+          <tr><td>Windows</td><td>%USERPROFILE%\Documents\OpenTTD\newgrf\</td></tr>
+          <tr><td>macOS</td><td>~/Documents/OpenTTD/newgrf/</td></tr>
+          <tr><td>Linux</td><td>~/.local/share/openttd/newgrf/</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>The roster</h2>
+    <p>Figures below are the prototype's own. Tractive effort comes from published
+      starting effort over locomotive weight, so the electrics get heavy trains moving
+      noticeably better than the diesels do — and the K4s, with all that weight in a
+      tender it cannot use for adhesion, starts worst of all. Each entry links out to
+      a photograph of the real vehicle; this page reproduces nobody's photography.</p>
+    <p class="group">Classic era — the predecessor railroads</p>
+    <div class="roster">
+      <article class="unit">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAaCAYAAADfcP5FAAABz0lEQVR42r2XIW/DMBCFnyeDgoCrVBDY8QFXKhgo6KSBlnWsP6M/rmBshWMLGK/BQECkHigYiOSBzpmX2EnTJj3JJHbsz+/u2YkADG4V8/lTsdhu9yZ8Y8QtgFyQcpTBegWqAwmByT6VYWYQ0VljlZoYZu4fyEJZMGYu+omoGGOjVyBXHXfRMrAbvQApNamtnUymkNnA29cZ0Gr1Yv52XU2NCyIxCM5z14eb3FQRETKZgpmDqnRme6tKuU4skNbaWzt1NddKoelsaaazpbGqrNdrjEajfxP63HROaL0XSfIhzlLIQpQjkt/YbJ6x3WpkWeZ1jrW9jGIAQH5MK7Cndw6iMWUhkBBcSBUL4wJVoQ7hk7oNiLtLGcVeBajm3LEg3qK+BMQFsCdvCLj67CC8LrsWpEm5c0AKIKWUKee5jSKP4xxpniL5jEBE0Fo3AIZhAEAWk3sKsE6RhYqQ5l94TSIAUa3VmyC8V0cxWYNNF+q0+LuWYI4uTk0jUCXvpQXUwxGxjH9B+Ko6aQ3kByEkARDmgyAamkshvLYfj+9N6H5xFdB6L4iGpgs1Gi/XEJQFucWfSeXqIBqa8newm5qbA7lgXRVqyzC1jYhM05gu2w8l+18k+HZ/7AAAAABJRU5ErkJggg==" width="108" height="78" alt="PRR K4s Pacific sprite">
+        
+        <div>
+          <p class="name">PRR K4s Pacific</p>
+          <p class="role">Pennsylvania Railroad 4-6-2, 1914-57 <a class="ref" href="https://en.wikipedia.org/wiki/Pennsylvania_Railroad_class_K4" target="_blank" rel="noopener">photo &#8599;</a></p>
+          <ul class="figures"><li>3,286 hp</li><li>237 t</li><li>87 mph</li><li class="cat">any track</li></ul>
+        </div>
+      </article>
+      <article class="unit">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACEAAAAZCAYAAAC/zUevAAACKUlEQVR42sWWrY7cMBSFT6oBBgGpFDBggMGAAQMKDBYUpHweY6u+QGFBQSpV2nmAVt0HKFhYuFIDCgYEBAQMsFQDg4BIa2BgECkFmWzj/Oxmmox6JUv5cfKde318EwcocckIgjcdQBT9dJrnzqVE9MGHxMwuYgy8HYv/CdcFwcon0ysxBb5dmmmemAzPJZJUYrEJzl+OKfDXSwPkHEkkQTRAABTneGIuuCQUIBRrLcZv0bnKTjTAfYqVESAacJcEK/YKxt0Oi5gD/oNXhV7nf7NuwgcrMVfmACBJf+bP9gnGGDjnUEpNMhwArLWo4EEFN41nlVK4vf1md8xw/7WEya1JcRyPzlwSapV+KPP6vUopCPG7R0QdDTFCCHDOO/A8k5DHKnPjVnOfKnsTXo0Hx/JEGH4qo8MRwdXm9Da/I0YpBaJT5JnEQYwzXB+8uvbgdDzheR4+f9whDL9DF24lhvjVMDl8HCF5grtEo56/Mt2ym9ayxXEMIYTlr7YAAHDC/RfLC9HhiFymYIyBUQOZJEhSidR4AIAtUc+6fb+/sUCe97Lsg9siBryQ/boD0adbLs6G/9unvOWFWgAA+C6B8QssNjsY15sFPvp/opl5dEiR39+DUgrG2GT4KBGb3ZVluEJnj0vV/k+cEi8+vH/nqIxbfqh3QHPdm120bjJzhfXtuL5+W1JKH7Ot4fXx0D6fVURTTN1gmvBLCDhFOTgopaXneeVTc+YYfwBw4qHB6Y0orQAAAABJRU5ErkJggg==" width="99" height="75" alt="EMD E8 sprite">
+        
+        <div>
+          <p class="name">EMD E8</p>
+          <p class="role">Erie Lackawanna passenger diesel, 1950 <a class="ref" href="https://en.wikipedia.org/wiki/EMD_E8" target="_blank" rel="noopener">photo &#8599;</a></p>
+          <ul class="figures"><li>2,250 hp</li><li>143 t</li><li>100 mph</li><li class="cat">any track</li></ul>
+        </div>
+      </article>
+      <article class="unit">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB0AAAAVCAYAAAC6wOViAAABtUlEQVR42r3Ur2rDQBwH8G/gRETEDSIiIipnBhlUVEx0ULFCH6FiD7QH2AP0EQqbW0VFRWERExOBRUREBHbiRMTBTYRL7/I/JewHodD+yqf3+32vFiAxZS2XjxIADocPq63HmgpVWLWa8KtQ/TRtWBc+Ch0KNBUXNs7HNwsAyH9gaR4a7/Wi84e1nAobjGZOggyAy304JG/tY4whIylc4SEjae1zV3hIhuxUjZULG5lTfKWKqxORzAYACDevYbOFAwCITxxh+Gk1om071HGaEmQkLTFVCtWxKEpAMtp8ZYYGhgsbgqdgjI3CAFxOOjadan9NY7ylBMeYgX+b/XH8YxlBYoyBOF5nUAyMtGPvJ7O/Nb2r1QpRFCGOi19PKW2Ofwe2OxfJ1bHL669V+xtcPK/ldr7By/4VNCXguQvqFkL1rvWNsQsz0NnTXblTz/OxnW+wO++RfIWDMBWQYko3sg0r0SAIJAAwT5gn4j7SPCyxhSOwT3LEUXFN1AoUNqZKtByRhgczWmLJyQyFnsbRqLqnQXBfw31KatikaHk6Da9Gvi8gV6M6PjSNV5TsfCilsq9n7PMHjuM9v5ChD7gAAAAASUVORK5CYII=" width="87" height="63" alt="ALCO RS-3 sprite">
+        
+        <div>
+          <p class="name">ALCO RS-3</p>
+          <p class="role">Jersey Central road switcher, 1950 <a class="ref" href="https://en.wikipedia.org/wiki/ALCO_RS-3" target="_blank" rel="noopener">photo &#8599;</a></p>
+          <ul class="figures"><li>1,600 hp</li><li>112 t</li><li>70 mph</li><li class="cat">any track</li></ul>
+        </div>
+      </article>
+      <article class="unit">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACIAAAAYCAYAAACfpi8JAAACRUlEQVR42r3WL2/bQBjH8a+lAwcOeFKAQSp5UkEmGQYEFHTSwMr2EvYCAgf2Egb6AgYHBwfGG1BQUKkBkRZQaQaRZmmWduDAgZM8kJ7rS5z/SQ85suXno99zfi4RVLzUurx8WwGMRjfR4r3oJSAesLiaIPHSxQGMkzhTHD+RdUXbAEIlAGR2zLf7P9HBkF0AStjgemCfE/ly9yvaC7ItwK/UTFFWYKQjEfEz0BissxS43fbIroDmUkqhFoo3lzglQGuN1ppMCQyGW9EBIem6vH6mm0jOs95myDA7qyac7wWI45h30mAd3MvuvLDNA4CTlk/XN5v3yC5pNAF9OwNYaoEHaCd5nNzz/fZvtLY1qwCpmZKr3toEsGYJ0FGSbNBDFyWTuyljl6C1Wj1HNg0iJSxZ+Tj/LR2jUq5NoKMk3bQDwCwvnwC6vp/nv8NE+hdXlf/WV8Uu1PwlSin//a1NoAkojWViY0AH72xNpH9xVQE0QR7gR/J7aZdmwCbATKZBUX+t9b9oCfJ58KYCuJMJxkmA4DzwgMJpxi4JvoBDACvnyMAWFE6Tqx56IYHcmflDEvp2RrEGMJ4+BMXi+FXVBggS8WkEG9OYei+UugxakCBwSrQDxg/RPsMvGmbdKk3PKcuCNkydwoYW7AtYas3lh4+QaEZff9QpbAWYHgYIWjPMzip/MDVTaGvBqJRLM+BoEH+m1AWeIL1ugowFPx9FsPtPCmkecrkzzGTaOng2fYZHg9RnSvq6apuuxwZs9Z/VY04J8Os/+9GcTGpGI8cAAAAASUVORK5CYII=" width="102" height="72" alt="PRR GG1 sprite">
+        
+        <div>
+          <p class="name">PRR GG1</p>
+          <p class="role">Pennsylvania Railroad electric, 1935 <a class="ref" href="https://en.wikipedia.org/wiki/PRR_GG1" target="_blank" rel="noopener">photo &#8599;</a></p>
+          <ul class="figures"><li>4,620 hp</li><li>215 t</li><li>100 mph</li><li class="cat">catenary only</li></ul>
+        </div>
+      </article>
+      <article class="unit">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAWCAYAAADXYyzPAAACB0lEQVR42rXVPWrkMBQH8L8WFypUqHDhQgsKpNDAlFu4nECOkwPMcfYGmwMs7JQpAnExhYvAqhDEhSEqXKgwaItZy45teb6SB8NYGsa/9+QnGYDHV3y2ufJLv5PDxefFNl/5MlOT+cfHX2Q4vhrebO78bveHxMAYfjG82dxN/pgwAZY0YWythbUWnHNYa8N8UbyQs+E5sIumpWCJC2gshNOnV7wEdkjCMrRNtQh28e2capuWTsbDymLoEDz5GQ+bxlob8KXKhqCh8pCkS6HwDABIGY3DsS5tWoba7EPTLFVoqETjUjBaAwByXuF2rfC6L6fwNl/5J5rN3tTU7qRnWOJHwADgPnXIVIZXU8OZGj+f3/qu3uYrDwBlpgbNctgex8Dxss6BpjTYOw6t/xIASMYogFCttQb6yLbolnQOrMoKu98F9o4D+LiC5GEtPAAwxsLksJli+3FcoXAaSmQBLE31HxweJu9kAnfRJfBEswk6t5zCaQglcCvSKNhfL8DDBDp8DHZbY1yhoTJA/fc7mbt/FO5Ct82kU3PZfqjQUImieCHnHEYE8HhYf/fHYEMlcl4hTVM4214MTk6uGK7bBkpkoDyB0TXqxoVn2G2Nq2ApbzznHMJpyKTvcK44jK6htYVmWZ/QFejsWT1OQLfNbJfGmuZieJjA3KvvWvDkt5OUN/6zUQD4B66BefzWFK5XAAAAAElFTkSuQmCC" width="90" height="66" alt="PRR MP54 MU sprite">
+        
+        <div>
+          <p class="name">PRR MP54 MU</p>
+          <p class="role">Pennsylvania Railroad electric MU, 1915 <a class="ref" href="https://en.wikipedia.org/wiki/PRR_MP54" target="_blank" rel="noopener">photo &#8599;</a></p>
+          <ul class="figures"><li>450 hp</li><li>55 t</li><li>65 mph</li><li class="seats">72 seats</li><li class="cat">catenary only</li></ul>
+        </div>
+      </article>
+      <article class="unit">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAXCAYAAABqBU3hAAAB2ElEQVR42rWVq2/DMBDGP0sHAgw8KaCgIJUGAgoyaaAwlfb/rmBgbAUDA5NWUFBQaQEFBpZqYFBgKQOVM6dx8+jjpChP5fd9d+czA0rcK/J8Xv1cCIHF4pWdfsPuISDP56UQ4ux7X8hNBOT5vFwuP1gbWGvduF6tfthVAvwUuyA+BidTg/nwm5QgBHZhbAROh4brUCiSwwS0gbXWID4CAFgjW/+jtYaNjyJpiHNjIwCoHLpnDtgFBgBziAH8Z4aGdXUErXUlpA/QB/NIVffPIwttpu0laOvqnTr0duzAiiQeeYpUKGx0jK3ZhAV0Laeu5goJ4CkwPVh8GgOzBYrilzVKMH2ZlLFNrgb7rscji1RYbGSM96IIL0Mf7JyHBscQsBACqVCQVmK15gEzewYALMuy0gefpr5PrYeAj+c9a6yCkMsu51V9I+WB13hfcQD8zBje1zYkGgJVJBHbUXV/Cn7bEUjxqsGOGXkoQ+CqB1wJuibXaWn8VH9LAqmoBu4bnYNIkQQhqtV5ltia490F4EGT0KV7llgAwFdB0Po6cGM3zLKns6Wog489UtwA3tiOk2TSmICzxOJtp0AqCq7jmwoICTk3kO4qwIm4J9iLsvMQQpR9vrvk+AOXgVlYaVczAwAAAABJRU5ErkJggg==" width="96" height="69" alt="DL&W MU sprite">
+        
+        <div>
+          <p class="name">DL&W MU</p>
+          <p class="role">Lackawanna electric MU, 1930 <a class="ref" href="https://en.wikipedia.org/wiki/Erie_Lackawanna_MU_Cars" target="_blank" rel="noopener">photo &#8599;</a></p>
+          <ul class="figures"><li>1,020 hp</li><li>67 t</li><li>63 mph</li><li class="seats">84 seats</li><li class="cat">catenary only</li></ul>
+        </div>
+      </article>
+      <article class="unit">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAVCAYAAABVAo5cAAABd0lEQVR42q3Vr26DUBTH8S/JFQjEXYKoQLCkD9AlFRN7gC3Zu66yj1A3xGSTIRAIkh2BQNyECXLLfwqFoyDc8OGc+wMcKNmqjm8fpacKALTWAJxOX05zjbMFaCGLdKuJrgKnIBHpHUfRt/MQeA9qYt1aBK6B7JpZ4Bqoe20SnIKSrMDk6d2OZo10LTSEaq15DU0bPBxeSuXtCHz3YUhEUO4eU1wBMH7BZ+ADcIkVykL2KbR2b0+lvACRbPbolLsHBM/NwK06Ao9zlBPHvw6AamK27LFIgsllFmSKK6a43kaXmpRLHPT2UU1t8Fj6mvtSVd1RahLOkQd4gPTuo+Yi9lo1dt06tx3V0Pi91JKkdeH3g9fpqL1e5M9ZBGYqRWX9xHYhG4hqzE/lELSoQxvv484gecg5intQ3d041nrxbVq7HfpmRxgkxEk7cUPYnFLjyQOtXQxC9FMnbm31Pm1h+Hx7L4fCMmdsi8AuvBU0+3+o9VO5FQbwD2+FFMxLXGXdAAAAAElFTkSuQmCC" width="84" height="63" alt="Stillwell Coach sprite">
+        
+        <div>
+          <p class="name">Stillwell Coach</p>
+          <p class="role">Erie Railroad commuter coach, 1924 <a class="ref" href="https://rgvrrm.org/about/railroad/erie2103/" target="_blank" rel="noopener">photo &#8599;</a></p>
+          <ul class="figures"><li>46 t</li><li>70 mph</li><li class="seats">86 seats</li><li class="cat">any track</li></ul>
+        </div>
+      </article>
+    </div>
+    <p class="group">Transition era — NJDOT and early NJ TRANSIT</p>
+    <div class="roster">
+      <article class="unit">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACEAAAAXCAYAAACFxybfAAAB9ElEQVR42rWWr+vbQBiHn4yIiIh3cKKiImJiYiKDkxVXiNhgf8LM/se5fWH5AwarmPiKwCIqKgI7cSIikIlyadOkTfrrhVAIdzxP3/u8SQJoeWYZs24B8vxncG5N8CwJDz+tMZmHS3i4a6LuXhzWF2XePOrfGrNujVm31lqstb11rokG9473ho+AH8MAwnhB43a9PWG8APYd0eEOMV/J8xskzp1zr+0iuKYP3x9H3cFFpC84V0CvPs8Oj5fZd4dReFmW1wVTzLcWIHGOMHKjQfNlncI5i6iQpYrQWg/gL3mJc/uMFK8/glkSxqxb6xRlHHNOxsObuiBJErIsuwgHiKNquhNjGTiVATo4gIiQZRlJkkzCATab3+OdmArgsYzabWnqAhFBa02appNway1l+TcYzcQceC8rIiilAGbDD8dzkAhvhU8Fbgx++P0XDEbUOjWZ+mvgXmAK3pPQqaaqKv68bohjGQhdC/eB2+99256D9ySKoiD7osltBbstOGhiRbJsboZ3AZ4Q6ILpH0YARhR69Y6X77/4oBPeJzJ71G59EQZ69alt6ribfV+Jc6xMSoQdwP1I3gvvJNI0PbwFa0W1WPZETuFjI3a3hH9OpOnHgYzabQfwp0r4OpY5/RCZGrWHSRzLzJ3zB1R78RKRdmrNvdd/A9eP8eH28/gAAAAASUVORK5CYII=" width="99" height="69" alt="GE U34CH sprite">
+        
+        <div>
+          <p class="name">GE U34CH</p>
+          <p class="role">Erie Lackawanna / NJDOT, 1970 <a class="ref" href="https://en.wikipedia.org/wiki/GE_U34CH" target="_blank" rel="noopener">photo &#8599;</a></p>
+          <ul class="figures"><li>3,430 hp</li><li>165 t</li><li>70 mph</li><li class="cat">any track</li></ul>
+        </div>
+      </article>
+      <article class="unit">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAaCAYAAADfcP5FAAADJklEQVR42r3VLY/jVhSH8SeSgUHArWRgEOBKBgEBBgYBBlkpIKAgYGDBgoKChVmpoGDBLOp8gIKBhZEaMGCApRoEGBgEGBhcqRcEGFjqBQYBllyQjcd5m5edzBzJCrHjn8459+8O1LxXzWafm5fd3PzROXVP5z1AbchhHcLeFPQY5BzsTUAvgQBorSmKgt+/3FwWNBp9qF3XRQjxIojv+/i+zzovLwMajT7s/YkQAsuyzsLakH4/IM/Ty+zQIaRdZWXi9Xt7qMOOSClZ3McATCdDAIy3gFRlfhZydXWFlJL5fE5RFChZ0rOr7+vQbPa51lojpaSsTLrG5ghidG26xgbb8ega5dGOxMt7oqWiZ1cN2g8mCLN6PujUqZFSsi62oDbEdV2Ao9GEYYhSir43IltF+L7fgITtPg/01PHdjUJrfRKyzkvCaAlAEm8X9+PPowailEIIgdb68Rz63hxxXZf+YLucWRqzuFttdy5wKKsuA3d78vTGQJgVq9UKKSVKKZT6t3O01K+BDIMJmzLnbvFXM5quWeA4Dp7n7T+XS8IkQSl1+lv22o5sypzFfYxlWXujwbSa3diNKGlBtNbffv9rvmdG+yVPJexhR/Ki2BuNY5v4w0EzGqieDWk6FMdxDZBma7I0Pgk71xElc/zhgGwVMR6PcRxn7zml1Db8Fn93HlL8h/ocBqDzaXZdA4yGAb2e2cDOQQCWiSSJU4RlMJ0EJ0dzCHludT7Nruu7+S0Aw9GUq5+mGF2DNE3RuWwg8/mcsjKZTqeoLKGsugS++2RHXlpG4LsUxZRsFRFHC+JogTsI+PXjL+RmxZ+3txTrDACr1wfA8zz0xtjbkddCGpDjOHz5zUOpCXdhwjKcI9MleT7cjmydIYTAcZwm/ACEWV0U0oxscb+sbbE9bLmusIVBGIbYvT55UaCyBM/zmhPiOE4TaFH0z8UgRx/X6+uv9cAfYQsDIQSZKkiTqFnYXTeUUmitm2R9M5Dj/FhbvT7TScB4PCbXFctwgZSy2ZOH/NBnj+3FQLtqw3Zh1oY8ZNM7gdqwdjC+JeKg6kcvIUT91D2XvP4H62BfT78wnqcAAAAASUVORK5CYII=" width="108" height="78" alt="Arrow I sprite">
+        
+        <div>
+          <p class="name">Arrow I</p>
+          <p class="role">St. Louis Car single unit, 1968 <a class="ref" href="https://en.wikipedia.org/wiki/Arrow_(railcar)" target="_blank" rel="noopener">photo &#8599;</a></p>
+          <ul class="figures"><li>700 hp</li><li>55 t</li><li>100 mph</li><li class="seats">110 seats</li><li class="cat">catenary only</li></ul>
+        </div>
+      </article>
+      <article class="unit">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAaCAYAAADfcP5FAAADIUlEQVR42r3Wr4/jRhjG8W8kAwODqWRgEOBKBgYBCwICAnLSgoCCgIUFBQsKDuakgoIDe6j7JwQcXBCpAQEBlhoQYGAQYBAwUgcEGIzUAQYBkVyQjc/5ubd33nslK8BW/NH7zjzjBhT8qBoOP5Qve3z8q3HumcaPAFUhx3UMe1PQNcgl2JuAXgMBMMagtebPj4/1gnq9d0UQBAghXgVpt9u0223WWV4PqNd7d/AnQghc170Iq0LCsEuWpfWsoWNItfKtzU3YPEAdd0RKyWQWA3DXAVtZ3wZ6CbLNM4QQ7Md3DrJcLtFak65ymt6WO3tDZHuvAw2HHwpjDFJK8q2NY21OIJbj4VgbPP8Gx8pP1ki8mDFfKJrellBoNmuNckJM7uI3/a8Dnds1UkrWegeqQoIgADjpSBRFKKXwfR+lFDdWVkKEI2i1fUJfXAe9tH33ozDGnIWss5xovgAgiXcL91exZm57JWQ3Vn09h741R4IgIGx1AFilMZPpEoDbMDsYzb4jG6OQUqKUQql/T0HfC9nk2clo9jFQhdgYkiQp7wOHoDogk1mM67oXR3MOYox5/v2vPM+s6kteStgqpNPtk2l9MJrAWtJ1dqOZ5C0Egm5vD4muQspgjOO4AEhXa1ZpfBZ2qSNKZrRCB6UU3a0mdYOTjkgpmUz+bnxJ8Z+KSxiAxvvhQwHQ63RpNu0SdgkCsEgkSZzi2JqBvTk7mmPI11bj/fChmI5HAHR6A+5+GWA5FmmaYjJZQsbjMfnW5r7vskyWZ3fN90BK0NPTUzGZxayW83K2QavL77/dk2Upn5+m6PWq3C33ns14Y9cOKRe17/t8/OMGpfpMo4RFNEamC7KssxvZM6ZlG3LhM9I7yH6xSpnUAik7NJktCk/sNltmtnjCIooivGbIKo3ZzJ5OFus+0Obzf2qDnHx+PDx8KlrtHp6wEEKwUprp+DPJ0pQRr3WMUgpjTBlkdVeZQ6PRCHe2YNDvcnt7+3yCO1j2GiG2JElSyQ/zZt/hJ2eZ7/9cuM2QQb9bpuo5yKUcqR1UhVWD8S0RR1VcvYQQxUvP1Hn9D/YTdydTHklDAAAAAElFTkSuQmCC" width="108" height="78" alt="Arrow II sprite">
+        
+        <div>
+          <p class="name">Arrow II</p>
+          <p class="role">General Electric married pair, 1974 <a class="ref" href="https://en.wikipedia.org/wiki/Arrow_(railcar)" target="_blank" rel="noopener">photo &#8599;</a></p>
+          <ul class="figures"><li>1,000 hp per pair</li><li>57 t per car</li><li>100 mph</li><li class="seats">232 seats</li><li class="cat">catenary only</li></ul>
+        </div>
+      </article>
+      <article class="unit">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAaCAYAAADfcP5FAAACJElEQVR42r3WrY7bQBDA8X+kAwYGWynAIMCVDAIOGCws6AMcKAjsY1ylPECKeo8QEHCgrAcCAiw18IBBwAGDlbogwMBSDQIMTnJBb/ds5ztxMtLKIBvtT7MzY3eg5Fpxf//NHvbw8KOzaU/nGqAqpBlN2EVBuyDbYBcBHQMByPOcLMsYDoftgk6FSCkJggClVDugcyFxHJPNH9Fu/zxQG5AoigAIMk0WhKeB2oKsii4ArpMR3qR0P389DtQmxHUyAIQQSCnxff/wtm/zagym7y5x+18QQti1F3Qu5GU+Yfqc1vZUM6K1PmwOnQoJgsAeFEURvUKTIHGdDCEEn/oO3u2d/d9isWCRLMmWCVr/WQedC0lfpkyfU1usfWJWXlirEQCtNXEc1zJUA7WVkebVNDPShOR5/vb8a99nN9VDTGEdAgnDEK014/H4LSNdezX7MrIJYl+us9msBFBKobXeCNuWkWb7bsqIUoqnp1+d98x9KLdhaiATBrYNkkzHJMi1gdbMSBNyaKyBAFYrh0Qn5Kk6ukZOhazVUDVct0De+sRFRjwZsXj1bOf0vNeNNXIuZCeoetAqLaD7H2KuztRYm5CDQACu53AnPQr3tjbQlFLM579bg6x9wo5G30spZe3HKIrs1ZhsmE40g+xiIN//WAohGAwGGNjk5wylEnpdx0JM921r29ZAJqowM8yqkPfZdCVQFVYdjJdENKLcuYQQ5b49ba5/rM37oC8RihEAAAAASUVORK5CYII=" width="108" height="78" alt="Comet I Coach sprite">
+        
+        <div>
+          <p class="name">Comet I Coach</p>
+          <p class="role">Pullman-Standard trailer, 1971 <a class="ref" href="https://whippanyrailwaymuseum.net/equipment/comet/" target="_blank" rel="noopener">photo &#8599;</a></p>
+          <ul class="figures"><li>48 t</li><li>100 mph</li><li class="seats">131 seats</li><li class="cat">any track</li></ul>
+        </div>
+      </article>
+      <article class="unit">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAaCAYAAADfcP5FAAACXElEQVR42r3WLW/bQBjA8X+kggCDm2QQEOBJBgEBAQcKAgIGBwoCBvoB9gE8KXCgQ+tHCCgoGLC0goKASDMoGDAwCDA4aQcKAiztwEBBJResvjpO0ubFySOdIlmW/NPzdmlAzrEiCL7Yj11efm+seqdxDFAZUo0q7KCg1yDrYAcBbQMBMMaQZRmj0ahe0K4QKSW+76OUqge0LySOY7LoGu109gPVAZlOpwD4mSbze7uB6oT8e3Bxmhm9kznu4Hw70L6QWXTF7e+5RQAIIZBS4nne5mNfZ0aKEELg+z5CCHveBNWVkaI0AH1nhjs4x/M8tNab7aFdIb7v43ke89mtLQ2A08yWSgOQJAlJek92n6L1n2XQvhCt9crS9DtNWt2P9pnWmjiOFzK0AKoTsqo06yDGmOffv/Y+Oyl/pGisTSC9Xg+tNePx+Bnxf3Larcfn0pxtBbGX62QyyQGUUmitV8LWZaQ6vqtKo5Ti5uZn46WE7/J1GIBGEAQ5QKd7SrvlWNg6SBZdkzy2lhZatTRVyKbRCIIgD8MQgNPBGR8GfYTjkuoUM1cLU2OMQT4alOttnJGtQeOrMJ9Gd6RJZGvrd/t8Gp4xv08Jw9A+Bxi4D7Rlr3aIbep2y+Hr6DNJcmo3qprdMR/0bU9VV3zRY3VClpq6HHEcI4QgSRKUUvQ7TR6croUVkCj6VRtk6S/sxcW3XEpp75VikopmLRBF1opFdjCQ573PhRAMh0OklABc/ZigVErbbS6UzxizdmxrAxVRhhXLrAx52U1HApVh5cV4SEQl8lePECJ/6506zxO9MSYb7ZkapAAAAABJRU5ErkJggg==" width="108" height="78" alt="Comet I Cab Car sprite">
+        
+        <div>
+          <p class="name">Comet I Cab Car</p>
+          <p class="role">Pullman-Standard push-pull cab, 1971 <a class="ref" href="https://whippanyrailwaymuseum.net/equipment/comet/" target="_blank" rel="noopener">photo &#8599;</a></p>
+          <ul class="figures"><li>49 t</li><li>100 mph</li><li class="seats">115 seats</li><li class="cat">any track</li></ul>
+        </div>
+      </article>
+      <article class="unit">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAaCAYAAADfcP5FAAACqElEQVR42r3WL2/bUBSH4TeSgUHAnWQQUOBJBgYBBQEFBgUFhQX9KBsbGNjQ+hEKBgYGKi1gICDSDAIMLjAwCLC0AwoMrrQDDAwiZWCLlTZ/1jbOjmQZ2NJ99PPxubcHS/5XvXnztl3s5uZTb9s7vf8BWoc8rsewo4L2QXbBjgJ6DgRAVXHO8e79Tbegl0JGoxGj0QhV7QZ0CCSOE7R2NHV1eA8dmoi1ljSbA3B9Br54LwMdCinLEhFh/D0H4GSw4NpvmPqD54EOTqQQ0nSGlBXDuI+IcOpVSD9G64DwJHwaqItE8jxHqgYpK/q+49JvyPwBWgeYvuHiIsQYsx90KOS+qpmmM+Z5ijEGgKErKYKohURRhDFu/xx6KSSKIuLhGU1dMZ5knJ/FfP6S0vfdg0+zSkRE2n4S+dkD8LqCnCWXAGSzCelMAPD8kpOBDxjyOsJguL4KUVWm0ykisn0v6yqRIAioJEdVtyaiqlhrW4iq/r3/avczb32R1Xd+aiKVc8yLrP19TxuLXyti4r2JbIO0CWVZtgQo5vfMi2wrbFciUlacJyHWWpKFe9Csq0TKsmQ8/tYubMyr5S4MQG88mS0BBuZPWCvYLoiq8vlLCkDfd1z5Demj33cb5KnVglY1MB6VLiiKAq3KB4m4+4IwDDcGWheQjR5aVaULAC6SU0QMzlXMbImUFRAQV3PUDDZ6xFp7EGQnaB1WNx6eZhjNSfoO6cdM6uFRIP8EAXhyR5MJ8yZAiTEYkvOQRoXpdEqa/ugMsnGE/fDh43I4On/w8PvdDJvbdsQ7lyEiqGo7WbuuNqHb21uCyYyry4QVrF78OTRFEVj7dW1+6NHO4Rt7WRi+XgYnMVeXCUXpmOfpVsiuOdI5aB22PhiPiXhUy72XMWb5r3e6vH4D6qpF/5c1C4MAAAAASUVORK5CYII=" width="108" height="78" alt="Comet II Coach sprite">
+        
+        <div>
+          <p class="name">Comet II Coach</p>
+          <p class="role">Bombardier trailer, 1983 <a class="ref" href="https://en.wikipedia.org/wiki/Comet_(railcar)" target="_blank" rel="noopener">photo &#8599;</a></p>
+          <ul class="figures"><li>44 t</li><li>100 mph</li><li class="seats">120 seats</li><li class="cat">any track</li></ul>
+        </div>
+      </article>
+      <article class="unit">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAXCAYAAAAcP/9qAAACn0lEQVR42q3WIYzaUBjA8T9JRcUTXVKBQCAqEIguqUAgWFJxSxAsQUxOcGonmdrJiUt2YuIEYnKyAoE40WQsYQlLECdOnCDZExWIJqt4oqJJJ0jhWuCOAz7ZvLzf971+32tLkHLK6HTepaZpYhgGANfXX0vb1pVOBRfBYhQTOBp+DtyVwMGw03ybWlaNiqnttT6KIlQiqFsml5efSwfB/f6nFCAIE+JI8lTFGSg0RaN5RqwW6KK8f8Wt1psUwDCMDSgIE4Smcs+KoNATBoMBUkr6/T7avuDjDaMoyiWwPG6jAILbalIpC3zfx/M8ssSB3XARfBwq0VFhjGluO9I1GCwU8/mcIEwAOLMFTcNARdNNuNc7T+fz+U4wUQs0UUZo8QoMwxDTNDfALCz9AdspIxR8l1A3a/l3nDXNMsvlxkKLN8DsmMMwxLIsGo02QsQEC0WsFqv9RDhBkwuiRYwX64CFZVlUa8YS7vXO02JXZpUsj1B/MaimEiAH2rYA4OLi43KcptM/qT+5Qz7Mto5F1rX7gmEUMdbLOVBKmbu9SsPbSXo/G+O6LgDFBLLKjwFnsxlSSqT8m4dvbgbM7yc0Wh267Q71ehlvNF4l0Gi0SZIFvu9j2/aLwfUY/svDvj9m4ntEUQSA67p0u10MwyAIYrzRkOl4iFmp8eF9+8Xgum8KMICOYuTPVgm0uz3arsPll2+EwcNyDqsxTjUmeCgfDGaxmuMYgeu2aLsOI3+WW9SoKGq6AlXlhyyDngc975bx+Gduc8N4lW4Dc5/F4e3vrbeUjmJ63QFV3VlhEdw3VheI5/1KNaFtwFdXV3t16cFwdj+7rkvdaa1gz7vbq0uPgosJOI6D7/tbm+YY9Nk/ENt+na6hp7v0pPDjDj0VmMV/wagHY7Gk/9AAAAAASUVORK5CYII=" width="90" height="69" alt="ALP-44 sprite">
+        
+        <div>
+          <p class="name">ALP-44</p>
+          <p class="role">NJ TRANSIT electric, 1990 <a class="ref" href="https://en.wikipedia.org/wiki/ABB_ALP-44" target="_blank" rel="noopener">photo &#8599;</a></p>
+          <ul class="figures"><li>7,000 hp</li><li>94 t</li><li>100 mph</li><li class="cat">catenary only</li></ul>
+        </div>
+      </article>
+    </div>
+    <figure class="hero"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAH8AAABFCAYAAABjXDnYAAAFcElEQVR42u2dL3PqTBTGn8xERERERCAQKyIQFRErrrgCEVnxispXvKLyyisrKxB8BMT9AIiKigoE4oorVkRUIBArEIiIFRERzPAKurmbAKV/oCHseWY6HdKU6fA75+w5+yzUAeni1O/31+bj6XTq7LrPoZfqcqHXVQ8Cgt9iyBrmIej7goDgX1BmH9K1DxTfEtzd3TkA4NJLag90LwjgGdcJ/pkr5jfrfJXDd4s33Z+vvPLeXdCllAS/TZq7HbA8h+vtDwKVh8hzBd/3EXQ9cM63oE+mEnmuEPWS9Xw2cWjNb0mpV3kI6ftbQaChr4o5AOD29hZBEJS/Z0LX8r2Muv1zhp6v/q7OZrabQWBCD4IAnHPEcXwQOgCkaUqZf87Q6zKDYLF0sSrm74KulIKU0qE1/0zL+ypfbsD4ncpjXcpVHoJ1V0gSDqViMMbeBH2XKPO/UD9//ixBD4dDJ+Y368DPdjdwL8BcvwPfLUronPM3r+n6OYzvtMPXJHRTI7GB9Fonr/IQYcdD/1vvIHQN/hB0gt8g9L/ZHSLLMkzVdhB8BLpu5F6WifU+6AS/QehaQigk1xzDxz/VjR24SBL2IejvEcFvAHq97ANAPwjBv0eYPApccYYeC948sn307yX4DUBXSiGdLbAqfEjfr/yM5Tm+92N4UFvQ9Wj3WegEvyHoWZaBc47xeFxez4sQWadbCYA6dKP8H40ZzflfDD1JEgghSui+l22+VFYGgQZvQj+FKPO/CHoURRBCYDKZlND15g3nHJPJZGvGrz8+1L0T/DOGbmZ7z1/A7/2DIAjKLwAYjUZvntMJ/hlDf57+wuOfZeUenemMsYq3PhwOndp961NBJ/gngB5FERhjWD4/4vHPEt1CYgYO38sQBAG+9zx0rq7NMQ3pbIFsMTtqI0fwG4SeFyEAoAeBvBOXmW5u2AghKplP8FsOvV7e65leh37qNZ1GvXcANbdTD0GP4xjL50eMRpOXTA/L8n4o05uGTpn/oqenpzUAzOdzSCl3BsFr5d0c2XZl+nw+x8PDg2M2cucA3jr4dT/dhK+lg2AX9DRNsfw9xgwcwGaPPXaXCPv/VjI9TVNkWVaBfo5ybINeV5IkW9fy3MNMzqCW83et6bp7F7+fWvG6urZCf02+X4BfMUyWc4hf90hXnbKD73ZWW2t626BfNPyPQt/V4OXLAgg30HX5N5y1VkK/SPgfGdkOVoGOh2veQeFfVTJdCHEUW5XgNzSnc86hlIIQohzR6uL/3VU6dz0RNLEpQw3fkaDXDRelFBhjuLm5QRRFAIDBYIB85aEbeiV0fe85jGpWwj+mtVof2cbjcRkEo9GoviljPifBbyv0up+uu/cfP344AMAYW9d7g0sA3ro1/xgnZwaDwWaG3+On16XX9K+wVinzT5Dpn/HTbZB7SdBNw2UwHqNbSOSv+On6FG22mMFGOZcCvY1+OsGHvX46lX0DqG1+uvWZb7OfbhV88tMthE9+uoVrPvnpFsInP91C+OSnWwif/HQLG75juWy6Atjmp7cS/jEMl4VIMc3+fuAgY6z80AJb/PRWwT/myZkokxDuxk5NksRKP70V8E/x/vTYXcKNr7fen67hG/P8mqA3AP9Yfvq+kzO2++lnCf+rXLam359O8E8E3TwuFV3xV63Vl2sEvwn4xzxEse9g5C7o1MidySbPZ/x0rX3HpQj6mWb+Z/z0t5R38tNbAF/rkJ8uhDhY3slPbyl8gPx069Z8U/v89NdOzhD0C4FvrvVVP52Tn24LfID8dCs2ee7v79d1P308Hlf+ZRf56RcKnzG2Jj/d0rIvpXSklJBSlkGgYacLVdmcIV1Y5tdFfjqp3JEjXZ7+B1uHYaCCu28BAAAAAElFTkSuQmCC" width="381" height="207" alt="A U34CH with Comet I coaches"><figcaption>A U34CH and Comet I set, the 1970s Bergen County look</figcaption></figure>
+    <p class="group">Modern NJ TRANSIT</p>
+    <div class="roster">
+      <article class="unit">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAaCAYAAADfcP5FAAADJUlEQVR42r3WoYvjaBjH8W8hIqLiPYiIiOhCREVERUTFiCysGLGiYsXIESdOnujC/gEVBzti5R2MODmicBUrKgauInARERUREYF9RUTEC/uKV0QUcqI76WxnOtPutPtAaKEh+fD83vd524GGn1Xj8fv2ZVdXHzuP3dP5GaD7kO3ahp0U9BRkF+wkoEMgAFprlFJMJp+OC4qi100YhgdDwjAkDEO01scBRdHr7x4ihMD3/b0hZWWoTfXyNbQNuV9mZTPoewghdkKKomA2TwAYnQ/RtfVjoOcgK1MhhOAuvscgy+USpRRZbhCOhfEHh3doPH7faK0pigKzsula9QOI1XXpWnUb2XY0eZYw+7yk57sApMZClz4Ij5GX7Qd6bNcURUGp1qB9ILeLmHy5oD+ISJMM5XpoE6073o05dzIGnvs0aJ/tWxQFWusWYlZdAt/5DgKQJtn6936fKnNBeC0E4MP0v91z6EfmiFl18RyLMAwxtdVGAxAOA+ZSt9HcQQyGWDlIKZHySwfAOg5E8OYbZDbfRAOgXI+bbL1gIy/m3PkMwFzZSFkB5uFZ9tKOKKWYzRMcx3k2mjVEts9Zf35tzzMLoEZgow/uSFFq0jRto3EcZ71YSx9K75GO7Ia0HUqSpLFshyJPSdN07zVyM50hi4pwGOzcNQDJymU2+6ezmeK/NLswAJ3JZNJUGqLhGZ5nk+UleZbsjAYgTotno9mG7Fudi8vfm2QxA2AYjXj3doTn2aRpSi41Z6GPUorpdIpZ2VxevCVOi/Wu2aMjB4MI/25Ed4FTlazqAgA/OOO3y1/RRvHn9TWqzNtDsx6ck2f9o0PaRT3+0AMuubquEfUNTlVSZDHajKjKvMXoXoQsfci8k0Ba0DvPXk/cN5LZ7QW6B6K+oSrrFqJNBGYzR5TWzJXLYvHv0SAP/sJOrv5qgiAgNiuGwB/xt5EfbzqitOZW2Wit28l6MlCv96pxvD6j0YggCMhSiZQLXJ2glCLR7r35oXdu2xdHdvdFyi8dKUGVG5hSitulAWxAt6BT1s7Tvtd71dwfjE8NsyNX8+QlhGieu+eY1//gHV27FH/sJQAAAABJRU5ErkJggg==" width="108" height="78" alt="Arrow III EMU sprite">
+        
+        <div>
+          <p class="name">Arrow III EMU</p>
+          <p class="role">General Electric married pair, 1978 <a class="ref" href="https://en.wikipedia.org/wiki/Arrow_(railcar)" target="_blank" rel="noopener">photo &#8599;</a></p>
+          <ul class="figures"><li>1,125 hp per pair</li><li>57 t per car</li><li>100 mph</li><li class="seats">240 seats</li><li class="cat">catenary only</li></ul>
+        </div>
+      </article>
+      <article class="unit">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACIAAAAZCAYAAABU+vysAAADCUlEQVR42rXWIYzbZhTA8X+kDxgYfJMMDAwKAgIOeJJBQEAmGQQccKWAAwMDBwoGBlK0gIEDJ+1AYUFYC1qpUg0qNcDSDDIpkwwMDAwizSDAINIMDAwieeCaxPE5Ta+XPBQpn/39/N7z+9yCknPHaPRyu8nd3Z+tpjWtc0Ec53mpaRpSysb/66CTQ44BDoFOBnksAGC5WnPR1hiPf2+dBOI4z8t2u/0ogCpyur0BRZ4+vTTVJsyyjHytYmjimwAArycTVsuY0WiEeOzm/f5PJcB9BnZlkFIiv4Dq5dkA7P4AqWpMp2/xPG97HfDtkA1gE4vFAikl9b6o/q4D0jQizVPytQpAt++gCp04yY6Xpg6oRr5WUEWBZVkHS7ABVCPLMpJEMAl1AH7tLw9n5BhgnacIVafeI00ZqEYY5kxC48tFS5yLAF1azRkZjV6Wy9WaxSIGQBXFA4AqCvRnJqrIt01qWRZC6A8zUAiSONtmYAMYyoy8bfBi/Gb/9a2+BdVeuH9aZYt6DMBdrghmxgNArCjcvP7c2pusTYAmkCKffRdAqj5XMqAnNWJFYRYXJElCkvy7D5nP/ym9WUiWLg5CqnPiqYDN/bLsvx3Enc7KKPCxbZs0WxNF0R7oHIDdvXcQAeDPYyaTCd2+gzPoYl5e8+GTTxIHSCmxLYu8EHjeFNM0DwCMGsBgEhckSfxVwDYjNzdvyzRLmHkftott22Y4HFKgUmRL3Omcue+iGR1+ubo8moEoVXDdj3ubSflD2QTY9chgWgI4dooShcShT5ZlXA6v6Xd73L66ZbW8f6r2RY+lZhBHnYMl8P2/Wt9zbgnHTnE9HdfTgQHOzyZKFO4t0owOedvEizqQgm4EXAufjrorge9/bj3lBG9BiTv9u4yChPFM2x3tdsqVofDHNNxmQDcCfhMBhqo8OQMHPxXfvXtfKtKgCrrprRi760ZAfQ6cDLI5X2zb5sLqEwUJuqGw+nT3ANA0B04KqYM6nR6hd9s4B06JOPqFZpo/lruNvz4HzgqpzoBzATbxP6paGfsAJdGaAAAAAElFTkSuQmCC" width="102" height="75" alt="ALP-46 sprite">
+        
+        <div>
+          <p class="name">ALP-46</p>
+          <p class="role">Bombardier electric, 2002 · 29 built <a class="ref" href="https://en.wikipedia.org/wiki/Bombardier_ALP-46" target="_blank" rel="noopener">photo &#8599;</a></p>
+          <ul class="figures"><li>7,100 hp</li><li>91 t</li><li>100 mph</li><li class="cat">catenary only</li></ul>
+        </div>
+      </article>
+      <article class="unit">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACIAAAAZCAYAAABU+vysAAADCUlEQVR42rXWIYzbZhTA8X+kDxgYfJMMDAwKAgIOeJJBQEAmGQQccKWAAwMDBwoGBlK0gIEDJ+1AYUFYC1qpUg0qNcDSDDIpkwwMDAwizSDAINIMDAwieeCaxPE5Ta+XPBQpn/39/N7z+9yCknPHaPRyu8nd3Z+tpjWtc0Ec53mpaRpSysb/66CTQ44BDoFOBnksAGC5WnPR1hiPf2+dBOI4z8t2u/0ogCpyur0BRZ4+vTTVJsyyjHytYmjimwAArycTVsuY0WiEeOzm/f5PJcB9BnZlkFIiv4Dq5dkA7P4AqWpMp2/xPG97HfDtkA1gE4vFAikl9b6o/q4D0jQizVPytQpAt++gCp04yY6Xpg6oRr5WUEWBZVkHS7ABVCPLMpJEMAl1AH7tLw9n5BhgnacIVafeI00ZqEYY5kxC48tFS5yLAF1azRkZjV6Wy9WaxSIGQBXFA4AqCvRnJqrIt01qWRZC6A8zUAiSONtmYAMYyoy8bfBi/Gb/9a2+BdVeuH9aZYt6DMBdrghmxgNArCjcvP7c2pusTYAmkCKffRdAqj5XMqAnNWJFYRYXJElCkvy7D5nP/ym9WUiWLg5CqnPiqYDN/bLsvx3Enc7KKPCxbZs0WxNF0R7oHIDdvXcQAeDPYyaTCd2+gzPoYl5e8+GTTxIHSCmxLYu8EHjeFNM0DwCMGsBgEhckSfxVwDYjNzdvyzRLmHkftott22Y4HFKgUmRL3Omcue+iGR1+ubo8moEoVXDdj3ubSflD2QTY9chgWgI4dooShcShT5ZlXA6v6Xd73L66ZbW8f6r2RY+lZhBHnYMl8P2/Wt9zbgnHTnE9HdfTgQHOzyZKFO4t0owOedvEizqQgm4EXAufjrorge9/bj3lBG9BiTv9u4yChPFM2x3tdsqVofDHNNxmQDcCfhMBhqo8OQMHPxXfvXtfKtKgCrrprRi760ZAfQ6cDLI5X2zb5sLqEwUJuqGw+nT3ANA0B04KqYM6nR6hd9s4B06JOPqFZpo/lruNvz4HzgqpzoBzATbxP6paGfsAJdGaAAAAAElFTkSuQmCC" width="102" height="75" alt="ALP-46A sprite">
+        
+        <div>
+          <p class="name">ALP-46A</p>
+          <p class="role">Bombardier electric, 2011 · 36 built <a class="ref" href="https://en.wikipedia.org/wiki/Bombardier_ALP-46" target="_blank" rel="noopener">photo &#8599;</a></p>
+          <ul class="figures"><li>7,500 hp</li><li>92 t</li><li>100 mph</li><li class="cat">catenary only</li></ul>
+        </div>
+      </article>
+      <article class="unit">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAaCAYAAADfcP5FAAADgUlEQVR42sXWIWzjVhzH8W8kAwODBwwMDHySgUFAJhkUFHSS4YGCgoIDA5l04MCBHissW6WRTjppAZEWEHDSDCqtINICAgoeMAgwiLQHAgws3QMGBpZyII2bNG62RrnusTy/OB/9/u+9f1qw4LXGxcWnBcD19S+t59a0XgPU7f68EEJszTfBvivoOUjTWOG+C+glEACtNQC93u+tg4L2gRSVhWsbBO0jLLM6TEKrzbovpCwy4rt7OoGD8f9ABEcPkM+9Hvk8BaATnO0H2r80SwhAWWQopcjnKUIIbLdNiXhZyU5OfqwXCyHwff9FpcnynNHtEN/36XQ6aK2ZznISTNJpwIeT+X9LaB2y/mNSykZYU2lu4wFKqcc1pcFgVpBOOwA4rsQRzu6EmiCrUVTmQ91dVuVr2qyj0WgDYrtt5rZLOg1qyEdD4lomyo+aE7q4+LSQUu6EAFRFRp6bD/PLRKIwBCDPM5IkqTGe55GKgNE0gGwTUvg+7y7/2L4Y10/NPK/IVEJRmVhGSVGZVEWGYTlURYbnedi2XScShiFFaVAWWf2+JEkoKouZsJETdyuR1DSZpCVKKZT65xG06/iuw3ZBbuMBWmvOzs7qPRLP8xoirDHnQnIs7A0IUGOAZcmEEPX1/XS4toFrhw/PXYrKQgiDKAyZzTXD4bB+sRDiCcR9AnHppSVKpRstY6O5xneTReDZKKWQUjYuWt+sq0QG/ZuNtUHnZKM0uxJZfU/rr1vd3gA4Pz8niiKOo1NMCuRUobNZXbLVZi1KgzxfXmirl3qex9wLGTZClomMx3+1lmvfLHZh6oQ+vn9XRx6GId1uFwApJbZtk+c5/eEtvh9wHPoopUjSbOP4NiUyHv/demkXaF1dDRYA05nkfhyvtYcuQXDM536P2XQCwNHJKcehT5IU9BJnC1L4LuOZzbD/a2vf/mjEuUKmIWFg0+1ekWnFZPSFTINfZTUmiiLA4UPfAizQc963hw+QDrczm+Hl/pCNkk2l4nJi15OnUcZb28IyK+K7eyzDqRNBzzltS86EPkgijaDVh/50Rjxy6ofDnzTn12Uj5E4WxPGfB4Ns/ae+uflt4ThtAAZKEY8cLtojrmOxBUmSZOtCOzgIoNP5YRFFEUdHbwHIsilCfmGiczL8GqK1fvbYHhT0FCYcHzm524A8XpavCFoNz3uz+Leb9dDjG7oFSzfF4X+9AAAAAElFTkSuQmCC" width="108" height="78" alt="ALP-45DP sprite">
+        
+        <div>
+          <p class="name">ALP-45DP</p>
+          <p class="role">Bombardier dual-power, 2012 <a class="ref" href="https://en.wikipedia.org/wiki/Bombardier_ALP-45DP" target="_blank" rel="noopener">photo &#8599;</a></p>
+          <ul class="figures"><li>5,360 hp electric</li><li>3,600 hp diesel</li><li>130 t</li><li>100 mph</li><li class="cat">any track</li></ul>
+        </div>
+      </article>
+      <article class="unit">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAaCAYAAADfcP5FAAAC5klEQVR42r3VIWzbUBCA4T+SQYCBgYGBgSsZGAQMBFRaQCYZZFKBQUBhQcFAQUEmDRSWrbBsAZVWMNBpBpNWYGkGmVTwgIGBgaUZBBhYmoFBQCQPtPHiJM3WJtlJlqzkPfvT3b0zUPI/r8FgUK77v3F/s/sYDN4uveji4n1j8bedg1ZB1sF2BvoXyHzkec5w+KGxddBTIeNsiiwV2LaNJGnby9BzIfudHoqskqbhdkq2LcjGPbRtCEA+kZ4O2gQC8NW9xjRNDMOo1gRBwTDQOOmOkXberN0/kCRJADBNswYBGfIxwN9Bzzm+wEoIgKIo5LnKyZVcQZyWoN/KSRT78ZI9B1JMZVotC8uwSNOQIAgQQlSQ1NgnCq2HDQ8QJacwdd6cfWysbOpNIJqqMinSud4IiOP4UUjUbDKKJvj+9+VJvSnkbnRLHMf0+/3qxLjjDDHS7zMk+xwqgo6iVpBZKZPkZwWSAIZXn8sofCqkXUFu5spSh+gLEJ1hNCFJolq/1eaQezsqNeW+tz3PW7loMSOmriCEQAhRrV/skXUZmX9Hnv+qffElgLPzSwytyUH/iGkxJYpG1ab5jJi6QpZlZFmG53k1iB9aELKUkZu0iet+aRjGXjmPWYTUQLPsCCHo2H1OjvsEQcBIxBiWiakreJ6H709wevv3G2WNwnzxV8js+fN9si4a9G5Lx05phgF3vguAqlscHR6gmy/4enNVZUPVLRzH4TpM1pZm/tQ8NSQA19OAHm1HRU9yguCGKOmgaVOCaFxhYknj7FMTsNB0gYNfa1bf/9Zgw5DcU5lQJJyNVETURgBWV0LT1IceURmrB4hxGwBNF5xKAl1ubhVSm0Pu7Y8SqGCzGB4WHF8WKyCbl2ZtyZzeywbA+blfuqdGBQvCCEWOeadGDxClNkd2EUufjm73VWnbNq12lyxNwT/GiyVSqbU0Rx47ulsFzaLdeV1291sIIf5poO0cNAvD2Cv/B2QWvwHo4RhaIFQenAAAAABJRU5ErkJggg==" width="108" height="78" alt="PL42AC sprite">
+        
+        <div>
+          <p class="name">PL42AC</p>
+          <p class="role">Alstom / EMD diesel, 2006 · 33 built <a class="ref" href="https://en.wikipedia.org/wiki/Alstom_PL42AC" target="_blank" rel="noopener">photo &#8599;</a></p>
+          <ul class="figures"><li>4,200 hp</li><li>130 t</li><li>100 mph</li><li class="cat">any track</li></ul>
+        </div>
+      </article>
+      <article class="unit">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAaCAYAAADfcP5FAAACnElEQVR42r3WL2/bQBjH8W8kg4ACTzIwMEilgAMGAQYFAwEFgXkRA3sBnbQXULaC0UkDBQMDlRZQEGBpBpZmcKDAIMDSDhgYnLQDBgGRPJDV+Z81idOTrEjJKf7o5+d5zi2oeK11c/Ohvtnd3afWtj2t1wAtQ9bXOuysoH2QXbCzgA6BABhj0Fpze/u5WdCxkCAICIIAY0wzoFMheVEyLYvTa+hUiEwVURQDMBxcYabWcaBTIVmWoZRi9PgEgO1YlN3e4Qk1lYjKCoIrH5mkaNfD5F2wPYZe+jJQEzWSxGOyLCMvLABKISjyAID+RczASel57n7QMZBydoHfdWpIGMVMniJs28a68JClVSfyDAH4+PBr9xw6FuI5FkEQUE4tvj+MEEIwfowA5o+m7K8kUlISawelFEr9bgFYzUBsrv9BwnBMFCsAhBCLGilXExnrNkoVQLl5ljWViOM4aK1RWbE1kQVE1f8z//xTn2cWwBSbNubgRLLcIKWs2xeY18isvyOR3ZA6oSRJKqvtkE0kUsqDEtlo3y2JJDOX0ehHfWPbflPtwtSg5S/SSc4kTbZCtNYYY7j/FtX7SyEoUneja9YhL12tr/cPlS+8jR+klEyU4W3QrRPReYro9Q9K5GAQg3EVCMn7nmAdppSad04UI5N00b5b5sipkLqoh9cFozDg3QQCEa7AyqlVn8Ir7evFDJzHRiErNVSYGfdpxih0AXhODOAukkxSsfJotDHImUsU/WwMsvEKe3v3pfJ9v4YFYt5xMvZWIKFuY4ypJ+vZQJ3OZeV4guFwiO/7pFKhVIRrErTWJMZdmh9mZ9ueXEOLAv7dUgp0voBprQmfSqANmBp0zrXztO90LqvlwbhvmDW8qr2XbdvV//Y0ef0FQN8z4wYbiiYAAAAASUVORK5CYII=" width="108" height="78" alt="Comet V Coach sprite">
+        
+        <div>
+          <p class="name">Comet V Coach</p>
+          <p class="role">Alstom trailer, 2003 <a class="ref" href="https://en.wikipedia.org/wiki/Comet_V" target="_blank" rel="noopener">photo &#8599;</a></p>
+          <ul class="figures"><li>46 t</li><li>100 mph</li><li class="seats">117 seats</li><li class="cat">any track</li></ul>
+        </div>
+      </article>
+      <article class="unit">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAaCAYAAADfcP5FAAAC1ElEQVR42r3WIW/bQBTA8X+kAIMCTzIwMEilgACDAIOAgoCCgIKAgsKCgcGBTuoHCJi0gsFNKhgsiDSDgoBIC7A0A4MAAwNLO2BgcNIOHDCI5IG0btc2bdI4fdLJBpb903vv3rkBJW8VZ2efqo9dXHxpPPVM4y1A9yEP4yFsp6DnIKtgOwFtAgFQSiGlZDT6Wi/otRDP8/A8D6VUPaBtIVmuKXS+fQ9tC0nTFH8SAjAc9FBF83WgOiDz+RwpJXGiMa0mut3dPEN1lCaJQ/zrOa22DUCkm6isDabD0InXA9UBmc4CkvmMTrdPFMZI20HpPgD9vYCBFdN17OdBr4HoxR5u2/oPAhCFMQC60yGPbTCdCgJwPv69eg69FuJYTTzPQxfNqjQAXs9lIlRVmluIRhNICyEEQvxpADTrgZgc3kD8yV1pAKTtcBUvG7bvBAysawAm0kCIHNCPz7JtMyKlxJ+EWJb1YmmWEFG9Z3n9W51nTYACEwO1cUbSTBFFUVUay7KWzZq1IXOeyMhqSJWhMAzLpmGRJhFRFK3dI1djH5HmeD135a4BCBc2vv+z+rBpvitXYQAao9GozBX0ewc4jkGcZCRxuLI0AEGUvliah5B1o3Fy+rEMZz4Avf6Q46MhjmMQRRGJUBx4baSUjMdj9MLg9OSIIEqXu2aNjGwMwvtRmnszrDxjUaQAtN0DPpy+R2nJt8tLZJbcpNuk6A5I4k7tkKqpz85bwCkXlwVmcYWVZ6RxgNJD8iypMKrVR2RtiJ2dQCrQsWMAkB4K/OkJqgVmcUWeFRVE6T7ouzkilWIibWazX7VBHv3Cji6+l67rEugFPeBzcDPyg7uMSKWYSgOlVDVZdwZqtfZLy+kwHA5xXZc4Eggxw1YhUkpCZd+bH2rltt26ZLc3QvxpCAEyu4NJKZnONWAAqgLtMlae9q3Wfnl/MD43zGqO8tllmmb50jN1rn8DGkC73MIhPQAAAABJRU5ErkJggg==" width="108" height="78" alt="Comet V Cab Car sprite">
+        
+        <div>
+          <p class="name">Comet V Cab Car</p>
+          <p class="role">Alstom push-pull cab, 2003 <a class="ref" href="https://en.wikipedia.org/wiki/Comet_V" target="_blank" rel="noopener">photo &#8599;</a></p>
+          <ul class="figures"><li>47 t</li><li>100 mph</li><li class="seats">109 seats</li><li class="cat">any track</li></ul>
+        </div>
+      </article>
+      <article class="unit">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAdCAYAAADCdc79AAADcElEQVR42sXWr4/jRhTA8e9KBgEBU2mAgUEqGRgEBBgEBAQEBCyI1AMFBQsOFB64/gdlXakFB65SwYEFASs1YMGCgACDgAEBBgaWOsAgYKQOMDCwlILIzu/9cclen2TiWDOfPL/3xlew4lvGx4+/rABub3+7Ovb71bcCVZD92Ie9OegU5BTszUAvhVSRmZLxl9+vLg76GkhhNWEYEobh5TJ0DsT3ffLCuUwNnQtJ0xStNd3eEADn/4F0McZw++kL1pS0fJcuUOTL12fo7IxkFhU9IqVkFmk8t6QdDpiXkNv85aBzIcYYptMpcZIDMLruYK0kKi1JHAAQtJPnQa+FWGsxxuxAIpVijAGg6eR4fsi8BBV5ALie4oOj6HjuadDXQAA6nQ5SStI0hYbk/u4zeSFpB03C3pBJZnYggY0JhKE96NJoDg+L+hxI1TXj8Zg4ybn5qY/TdBkOesxLmIwbgIfrKbpkaK3JCokQPmFzr8vOhSileJgqkiRBpzkt34WGhLDHp9kmIxVEhiGZKeiHHkII3t/8sDk6XoM5lpGqWPu9FsaYozXSJaNhIpTp0PJd+v0eOlH1HNL6nzVoPp+vtNZEKqWBfXlGYs1sFtFyG8wiva6RMGRiDiFaa6TXrgvaFTCdTtFa1+vvgDY3D2HbENdtY3PDw+Subt/hdR/gICOeSXnnWv6Km+uMdNetvQ2p1rb23/oTZAe0Dyus3qkRpVQ90KpNTmUkLyQ3799hlylCCJRSLBaLk5AaNHmMVq5wTr6mbJmTxHMmD+vF+r0WDdE6WiNdZ8mjaZCXDfrddg2ZTP6uNxbiu9UpDIAz+iNnNFhy0/bZh63/iYO1FiEdPNkmKh2SI10TFxLZazPotAAOIJs1j0M2X4zDx/qV7cPWqXdYGsNdrOsRX0GstQghyMsmncA9mpHXxtV8Pl/dZwWzKEIlIQBhoPi5s9788yI5GPHjtCAvJEI63Px4jbX2bMjRoo6TbA1IQsJA4Xkek/FmxAP4vo9eFgRBgCu4GOTJLlvaklhpQOMsHjDWMsk8hHQYDXtP1sjZoOpw/fX2z9Wg19mFxXdkRcFiAcaYuv23J+ubgVqt71fSCxiNRlSwuqizhPv7+635YZ/tlrNBVWzDAKYP44PJ+pL2vRhoG7Z/fLwVYi9WT15CiNVzz1zy+g8GuZxHc/eLPQAAAABJRU5ErkJggg==" width="108" height="87" alt="MultiLevel Coach sprite">
+        
+        <div>
+          <p class="name">MultiLevel Coach</p>
+          <p class="role">Bombardier trailer, 2006 <a class="ref" href="https://en.wikipedia.org/wiki/Bombardier_MultiLevel_Coach" target="_blank" rel="noopener">photo &#8599;</a></p>
+          <ul class="figures"><li>61 t</li><li>100 mph</li><li class="seats">132 seats</li><li class="cat">any track</li></ul>
+        </div>
+      </article>
+      <article class="unit">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAdCAYAAADCdc79AAADW0lEQVR42sXXoW/jZhjH8W8kgwCDd5KBgYEnGRgYBBgYBAQEBBQEFBQM7E8ouLGBgWOLtAMFN6ngwIGCSgsIOGBQEOBJBgEBBpH2AgODV9oLDAwieaCNmzRNkzbp7ZEMojjOx8/vfZ84Laj5nvXhwy81wGj0e+u591vfC7SCPK2nsHcH7YLsgr0b6FDIqnK15ObLH62Tg94CqbQkDEPCMDxdh46BeJ5HWRmnWUPHQhaLBVJKou4AAOP/gUQopRh/S0iTOa5nEwFVWby+Q8d2RClFHMeUSxPTKMlVRRR1SZZQ6vJw0Ckgs9kMgLupJPBNHC8kViXZ3AfAD7L9oNdCtNYopTYgUkrGk3vM4KwHQLKEdOoAYDspl0ZKx7F3g94CAeh0OliWhVKKabogm90RhiGyqLAsi4WwNiC+nuMLRdCPaJuD7UV9DGS1a+I4BiBNJMKycf2QmamI1yAROV6ZMS4chPAIzcHmtj8WkqYpWuu90UTkSCmxnADXbgMghNj86XgN5rmOjL8lyEVBr+vujCYiR2uNEIJyadKLfKSUzRyS8p8WgJEkf9dShkzTBW304R2ZS0ZXX3HtNnJREPjmy9HkDsJqc97vo7UmjmOklNuPH1dXV3XbtAl8BynlFmwdYtsBulRk8+TgaMrKYnDWwxb311uHrK6t9b/NI4iRSc3kdoQXdLk4H/LTeb+BVVpurJE4/kT/4Q5dz6YX+YwVz0aDEFhOQN+3EQLSNG3m0HOQjQ59uZmg8gyggQW+g9b6ARI/LESfny/O0JXBOFdbkMdojPvzHj4/Hv/VfLEQP9S7MACt8PJj3et2qZIpSTJtYL/+NqLIM66vr5uTvaBLbjnNZH0pmqeQQ8sAWEhJvgRneEFU5CTJlMc7EvidHnd6SZyHUOyP5i2QpkNJktS3ecXddEqahQz7BZ7r4peKQqmtaC6NFKX13miOAq1ezLOcz7MMx3HI8xzHcRjfPEIsM6MKz8mke3Q0B4FWVegl81QCEmM2wTHblJ6DwkcIcdKO7Pwb9HH0Z93vdjZh86/kVUXbHFDkWQNZn6zvBnLdH2vL8RkOh6xg97vHoMgzbm9v1+aH3rltTwZa1ToMIJ7cbE3Wl+bIyUHrsKc/H++FeFL1i4cQot53zimP/wAPLauzYxfObQAAAABJRU5ErkJggg==" width="108" height="87" alt="MultiLevel Cab Car sprite">
+        
+        <div>
+          <p class="name">MultiLevel Cab Car</p>
+          <p class="role">Bombardier push-pull cab, 2006 <a class="ref" href="https://en.wikipedia.org/wiki/Bombardier_MultiLevel_Coach" target="_blank" rel="noopener">photo &#8599;</a></p>
+          <ul class="figures"><li>63 t</li><li>100 mph</li><li class="seats">127 seats</li><li class="cat">any track</li></ul>
+        </div>
+      </article>
+    </div>
+    <figure class="hero"><img src="data:image/png;base64,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" width="381" height="222" alt="An ALP-46 hauling three MultiLevel cars"><figcaption>ALP-46 with MultiLevels</figcaption></figure>
+    <p class="group">PATH — rapid transit</p>
+    <div class="roster">
+      <article class="unit">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAATCAYAAACKsM07AAAB+0lEQVR42q2UrY7bQBSFP0sBBgZTycAg4EYKCFgQGBBQYBhQUFCwoA/QN+jCLepKJXmAgIKUBSxYYGAQEGCpAwICLO2AgABLGRBgYMkFqZ2fpt0k20ssW9Z3zpx75zpQ8pq6v/9yALi7++zsvzvXChyDj6sSuljgJXBV1loeHr46ZwtcArbWIiIopV4+wbXgKIrQWv9d4FrwNElZ6BhjzOkmvwY8iyc03DYAzWxKtwh2Av8DXOQpSineGkuzL+S9EGc4HJbGGHIUgToPjOsTx1Oy5ZxN7p8EV9Ww1tK56bFaLlhZ/hA5cBy0ieMp6Xz6O4ot/J0FFeQs34fkIiRJgtYaY54dR0RKESEMQ4JmBz1fAOBy6Dh6HLNcNSjyFODA8SLY5p5lGVrrPWPrrUDlVkQIBx9QboHNGwBEj+N6IhpuG8/N6BcZIu06ispxBd4+19ubPOoNypG7qSEA3W4X3/eJoqj+ppSiX2R4noc3uK3Bxpg6xl2s63ofObPZrPSSJ5LvCZVQNSFa6xos0q6j2BQe49E3Zyf+pjwGHyy78fhHCaCMYTWZMgka+L6PO3uqo7DWkqYpxhi0/umcu7scKBFplSLC7cdP3HSa2DgmKYr6p/2MjXl2LlmO9UUTaZVV/mG4dfyv5l0ssJukVnl8D04172qBfaFrXe/XL4GZVbj0/tjOAAAAAElFTkSuQmCC" width="72" height="57" alt="PATH PA1/PA2 sprite">
+        
+        <div>
+          <p class="name">PATH PA1/PA2</p>
+          <p class="role">St. Louis Car, 1965-67 · 202 built <a class="ref" href="https://en.wikipedia.org/wiki/PATH_(rail_system)" target="_blank" rel="noopener">photo &#8599;</a></p>
+          <ul class="figures"><li>800 hp per pair</li><li>33 t per car</li><li>50 mph</li><li class="seats">200 riders</li><li class="cat">catenary only</li></ul>
+        </div>
+      </article>
+      <article class="unit">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAATCAYAAACKsM07AAAB8klEQVR42rWUL48aQRiHn01WrEBMkxUrEHMJAoFYgUAgTiAQJxAnKioq+Q49eVXlG/QE4gQCgThBkxEnEBWT3IgKBElHVKzY5EYgECR7gtuFg9Lyp/2ZzU52nueXvNnXg4xzcnv7+Q3g5uaTt/nunSrYBm8nFx0t+Bs4j3OOXu+Ld7DgGLBzjjiOCcMQ/3+BlVIopfYLzgU75wB2BeeAtdbrc39BvIzWgn8B9oMK4PiIoNyQBO1rvMFgkGmtWSCIxGHgoBTxMLrHWluAl4sZHQfl5gqcx0/TlFarhf5hSZJ0R/I7sDFmdfm18VUyo9yUTKMKiRA4Y9BaY8yT50kps0qtyfvrDqIUMp1OSBwE7AcDCCG4tK5o7Jx7hZqNYs8rQX4pF5WCJWma7gW3gwVhGJFU64iogp1qlFIFePV8Xv3J/cZV1g/mWGsLSOOyQzn0GQ6HO+BqrcE8rmOtZTabFXPIwZtwAL/R71FXA/S9JhelaUrJD7YaC5JqnbmUGGO4u/vqreXvsm3wm2U3Hn/LhBC4x0eS0YRJLUIIgT95oFpr8EtWcM4VjY158g7dXR5kSHmRxXFMt9tFSkk6G2FsqfhIKVXMwdqf3jHLsVh2Ul5kAK1Wi3b7A26e8n0y3ju8owV5cpEQ4o/DO1mwKTq19WZeAC9ZWMBj5SXYAAAAAElFTkSuQmCC" width="72" height="57" alt="PATH PA4 sprite">
+        
+        <div>
+          <p class="name">PATH PA4</p>
+          <p class="role">Kawasaki, 1986-88 · 95 built <a class="ref" href="https://en.wikipedia.org/wiki/PATH_(rail_system)" target="_blank" rel="noopener">photo &#8599;</a></p>
+          <ul class="figures"><li>1,000 hp per pair</li><li>34 t per car</li><li>55 mph</li><li class="seats">204 riders</li><li class="cat">catenary only</li></ul>
+        </div>
+      </article>
+      <article class="unit">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAATCAYAAACKsM07AAACFklEQVR42rWUIW/bQBSAP0sGBgE3ycAg4CoZBAQYBAQUFBQEDAQUDAwM9j+sMEErLFtBQEFAQEBBJh0oCBg4qQYDAZF2oMDAUg8EBERyQeSLkzZbk2mPWD7Z3/fuPb3nQcG/RK/X3wJcXX31qu/esYJd8G6UooMFfwOXYa3l+vqb927BIWBrLUmSEIYh/v8CK6VQSu0vUa/XLzILS2sQQiCEOAhsrX27yb1ev7DW8pSvWFrjzgMhqYe+E70F1lpvzv0lySralKhail044OB/AvtBDFi+IKi3JUHnAm84HBZaa5YIokoVyvIASCm3wEEt4n58hzHGgVfLOV0L9dM12M3Bzc1NEccx+pchy/ItyW4pSnCapgCvwLModrfUWpOmj54npSzi5imfLrqIWshsNiWzELAfDCCE4MxYl/EGmlYSe14Lyp9KUS1Ykef5XnAnWBKGEVmjhYhizEyjlHLg9fN5PcmD9sdiECwwZtPU9lmXeugzGo1egRvNNoukhTGG+Xzu+lCCq3AAvz24pqWG6DtNKcrznJof7GQsyBotFlKSpim3t9+9jfxDsQveWnaTyY9CCIF9eCAbT5k2I4QQ+NN7Gs02TzLGWusyTtNH7727y4MCKU+KJEm4vLxESkk+H5OamvtIKeX6YMxv75Dl6CZZypMC4Pz8nE7nM3aR83M62du8gwVllKLq1L7VvKMFVdGxWVfjBXKxc7yQ6XG8AAAAAElFTkSuQmCC" width="72" height="57" alt="PATH PA5 sprite">
+        
+        <div>
+          <p class="name">PATH PA5</p>
+          <p class="role">Kawasaki, 2009-11 · 340 built <a class="ref" href="https://en.wikipedia.org/wiki/PATH_(rail_system)" target="_blank" rel="noopener">photo &#8599;</a></p>
+          <ul class="figures"><li>1,200 hp per pair</li><li>35 t per car</li><li>55 mph</li><li class="seats">210 riders</li><li class="cat">catenary only</li></ul>
+        </div>
+      </article>
+    </div>
+
+  </section>
+
+  <section>
+    <h2>Realistic or balanced</h2>
+    <p>The GRF ships both stat sets. In <strong>NewGRF Settings → Parameters</strong>,
+      <em>Statistics</em> switches between the published prototype figures above and a
+      game-balanced set that scales capacity, power, speed and cost so the fleet sits
+      alongside OpenTTD's own vehicles instead of outclassing them. OpenTTD resolves
+      the choice when the GRF loads, so set it before starting a game.</p>
+    <p><a href="https://claude.ai/code/artifact/d339321b-8fa6-4d12-9782-0b28231cf320">See what changes, vehicle by vehicle →</a></p>
+  </section>
+
+  <section>
+    <h2>Details worth knowing</h2>
+    <div class="notes">
+      <div class="note">
+        <h3>The ALP-45DP really is dual-power</h3>
+        <p>A power callback reads the railtype under the locomotive: full output on
+          electrified track, diesel output everywhere else, with the exhaust switching
+          from sparks to diesel smoke to match.</p>
+      </div>
+      <div class="note">
+        <h3>EMUs come as married pairs</h3>
+        <p>The Arrow III and all three PATH classes are bought as articulated two-car
+          sets, the way they actually run. The PA1/PA2 and PA5 pair a cab car with a
+          cabless C car; the PA4, being all cab cars, has a cab at each end.</p>
+      </div>
+      <div class="note">
+        <h3>Every railroad in its own paint</h3>
+        <p>Pennsylvania Brunswick green and Tuscan red, Erie Lackawanna grey-maroon-
+          yellow, Jersey Central green, Lackawanna Pullman green, the U34CH's blue-and-
+          silver Bluebird, NJ TRANSIT's 1980s chevron stripes and then today's silver.
+          At 32 pixels these are impressions rather than reproductions.</p>
+      </div>
+      <div class="note">
+        <h3>Cab cars turn around</h3>
+        <p>CTRL+click a cab car in the depot to flip it, so the cab faces the right way
+          for push-pull running.</p>
+      </div>
+      <div class="note">
+        <h3>Catenary and third rail are the same thing here</h3>
+        <p>OpenTTD has one electrified railtype, so the ALP-46, ALP-46A, Arrow III and
+          every PATH class all need electrified track. The PL42AC, ALP-45DP and the
+          trailer cars run on plain track too.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>How the sprites were drawn</h2>
+    <p>Nothing was pixelled by hand. Each vehicle is a small 3D model — boxes for
+      carbody, roof, bogies and pantographs, flat decals for windows, doors,
+      corrugation and stripes — projected into OpenTTD's own isometric mapping for all
+      eight directions:</p>
+    <pre><span class="c"># one tile = 16 world units = 64 x 32 px</span>
+screen_x = (wy - wx) * 2
+screen_y = (wy + wx) - wz</pre>
+    <p style="margin-top:18px">Faces are back-face culled against the view direction,
+      painted in layer then depth order, shaded by the direction each face points,
+      rendered at 4× and downsampled with a mask-weighted filter so edges don't bleed,
+      then quantised to the OpenTTD DOS palette. Because every direction comes from the
+      same model, consists line up exactly on straight track. Palette indices stay
+      inside 1–197, which keeps the liveries clear of the company-colour range — the
+      trains stay NJ TRANSIT silver and PATH stainless whatever colour your company
+      is.</p>
+  </section>
+
+  <footer>
+    <p>Fan-made set for a game. Not affiliated with or endorsed by NJ TRANSIT or the
+      Port Authority of New York and New Jersey.</p>
+    <p>Figures from published specifications:
+      <a href="https://en.wikipedia.org/wiki/Bombardier_ALP-46">ALP-46 / ALP-46A</a>,
+      <a href="https://en.wikipedia.org/wiki/Bombardier_ALP-45DP">ALP-45DP</a>,
+      <a href="https://en.wikipedia.org/wiki/Alstom_PL42AC">PL42AC</a>,
+      <a href="https://en.wikipedia.org/wiki/Arrow_(railcar)">Arrow III</a>,
+      <a href="https://en.wikipedia.org/wiki/Comet_V">Comet V</a>,
+      <a href="https://en.wikipedia.org/wiki/Bombardier_MultiLevel_Coach">MultiLevel</a>,
+      <a href="https://en.wikipedia.org/wiki/PATH_(rail_system)">PATH</a>.
+      Arrow III seating is rounded to 120 per car; PATH per-car power and weight are
+      estimates, since published figures for those are not readily available, and PATH
+      capacity counts standing riders because that is how rapid transit is measured.</p>
+  </footer>
+
+</div>

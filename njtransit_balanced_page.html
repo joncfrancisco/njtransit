@@ -1,0 +1,359 @@
+<title>Rebalanced Fleet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+
+<style>
+  :root {
+    --ground:   #ebeef2;
+    --surface:  #ffffff;
+    --ink:      #161a21;
+    --muted:    #5b6472;
+    --faint:    #858e9c;
+    --line:     #d4d9e1;
+    --accent:   #0f7a6b;
+    --accent-w: #dff0ec;
+    --orange:   #d9690f;
+    --shadow:   0 1px 2px rgba(20, 26, 40, .06), 0 8px 24px rgba(20, 26, 40, .05);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground:   #0f1319;
+      --surface:  #161b23;
+      --ink:      #e8edf4;
+      --muted:    #98a3b2;
+      --faint:    #6f7a89;
+      --line:     #252d39;
+      --accent:   #4fc7b0;
+      --accent-w: #12302c;
+      --orange:   #f0902f;
+      --shadow:   0 1px 2px rgba(0, 0, 0, .4), 0 10px 28px rgba(0, 0, 0, .28);
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground:   #0f1319;
+    --surface:  #161b23;
+    --ink:      #e8edf4;
+    --muted:    #98a3b2;
+    --faint:    #6f7a89;
+    --line:     #252d39;
+    --accent:   #4fc7b0;
+    --accent-w: #12302c;
+    --orange:   #f0902f;
+    --shadow:   0 1px 2px rgba(0, 0, 0, .4), 0 10px 28px rgba(0, 0, 0, .28);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.62;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap { max-width: 880px; margin: 0 auto; padding: 56px 24px 88px; }
+
+  h1, h2, h3 { font-family: "Barlow Semi Condensed", "IBM Plex Sans", sans-serif; text-wrap: balance; margin: 0; }
+  h1 { font-size: clamp(38px, 7vw, 58px); font-weight: 700; letter-spacing: -.01em; line-height: 1.02; }
+  h2 { font-size: 27px; font-weight: 600; letter-spacing: .01em; }
+  h3 { font-size: 19px; font-weight: 600; }
+
+  .eyebrow {
+    font-family: "Barlow Semi Condensed", sans-serif;
+    font-size: 14px; font-weight: 600;
+    letter-spacing: .2em; text-transform: uppercase;
+    color: var(--orange); margin: 0 0 10px;
+  }
+  .lede { font-size: 18px; color: var(--muted); margin: 14px 0 0; max-width: 62ch; }
+
+  .stripe {
+    height: 7px; border: 0; margin: 30px 0 0;
+    background:
+      linear-gradient(#1b44c8, #1b44c8) top / 100% 4px no-repeat,
+      linear-gradient(#d9690f, #d9690f) bottom / 100% 2px no-repeat;
+  }
+
+  .hero {
+    margin: 26px 0 0; padding: 22px 18px 16px;
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: 3px; box-shadow: var(--shadow); overflow-x: auto;
+  }
+  .hero img { display: block; margin: 0 auto; image-rendering: pixelated; }
+  .hero figcaption {
+    margin-top: 14px; text-align: center;
+    font-family: "IBM Plex Mono", monospace; font-size: 12px; color: var(--faint);
+  }
+
+  .meta {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    list-style: none; padding: 0; margin: 22px 0 0;
+    font-family: "IBM Plex Mono", monospace; font-size: 12.5px;
+  }
+  .meta li {
+    border: 1px solid var(--line); border-radius: 2px;
+    padding: 4px 9px; color: var(--muted); background: var(--surface);
+  }
+
+  section { margin-top: 54px; }
+  section > h2 { display: flex; align-items: baseline; gap: 12px; }
+  section > h2::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+  section > p { max-width: 65ch; }
+
+  ol.steps { margin: 18px 0 0; padding-left: 20px; }
+  ol.steps li { margin-bottom: 8px; }
+  code {
+    font-family: "IBM Plex Mono", monospace; font-size: 13.5px;
+    background: var(--accent-w); color: var(--ink);
+    padding: 1px 5px; border-radius: 2px;
+  }
+
+  .paths { margin-top: 20px; overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; font-size: 14.5px; }
+  .paths th, .paths td { text-align: left; padding: 9px 14px 9px 0; border-bottom: 1px solid var(--line); white-space: nowrap; }
+  .paths th { font-family: "Barlow Semi Condensed", sans-serif; font-size: 13px; letter-spacing: .12em; text-transform: uppercase; color: var(--faint); font-weight: 600; }
+  .paths td:last-child { font-family: "IBM Plex Mono", monospace; font-size: 13px; color: var(--muted); }
+
+  .group {
+    font-family: "Barlow Semi Condensed", sans-serif; font-size: 14px;
+    letter-spacing: .16em; text-transform: uppercase; color: var(--faint);
+    font-weight: 600; margin: 26px 0 8px;
+  }
+  .roster { display: flex; flex-direction: column; gap: 2px; }
+  .unit {
+    display: grid; grid-template-columns: 132px 1fr; gap: 4px 20px;
+    align-items: center; padding: 16px 18px;
+    background: var(--surface); border: 1px solid var(--line); border-radius: 3px;
+  }
+  .unit img { image-rendering: pixelated; display: block; }
+  .unit .name { font-family: "Barlow Semi Condensed", sans-serif; font-size: 22px; font-weight: 600; line-height: 1.15; margin: 0; }
+  .unit .role { font-size: 14px; color: var(--muted); margin: 2px 0 0; }
+  .unit .figures {
+    margin: 8px 0 0; padding: 0; list-style: none;
+    display: flex; flex-wrap: wrap; gap: 4px 16px;
+    font-family: "IBM Plex Mono", monospace; font-size: 12.5px;
+    font-variant-numeric: tabular-nums; color: var(--muted);
+  }
+  .unit.has-photo { grid-template-columns: 132px 118px 1fr; }
+  .unit .photo { margin: 0; }
+  .unit .photo img {
+    display: block; width: 118px; height: auto; border-radius: 2px;
+    border: 1px solid var(--line);
+  }
+  .unit .photo figcaption {
+    font-family: "IBM Plex Mono", monospace; font-size: 10px; line-height: 1.35;
+    color: var(--faint); margin-top: 4px; max-width: 118px;
+  }
+  .unit .ref {
+    font-family: "IBM Plex Mono", monospace; font-size: 11.5px;
+    letter-spacing: .04em; white-space: nowrap; margin-left: 8px;
+    text-decoration: none; border-bottom: 1px solid var(--accent-w);
+  }
+  .unit .ref:hover { border-bottom-color: var(--accent); }
+  .unit .figures .cat { color: var(--accent); }
+  .unit .figures .seats { color: var(--orange); }
+
+  .notes { display: grid; gap: 20px; margin-top: 22px; }
+  .note { border-left: 3px solid var(--accent); padding-left: 16px; }
+  .note h3 { margin-bottom: 2px; }
+  .note p { margin: 0; color: var(--muted); max-width: 62ch; }
+
+  pre {
+    margin: 20px 0 0; padding: 16px 18px; overflow-x: auto;
+    background: var(--surface); border: 1px solid var(--line); border-radius: 3px;
+    font-family: "IBM Plex Mono", monospace; font-size: 13px; line-height: 1.7;
+    color: var(--ink);
+  }
+  pre .c { color: var(--faint); }
+
+  footer { margin-top: 64px; padding-top: 22px; border-top: 1px solid var(--line); color: var(--faint); font-size: 13.5px; }
+  footer p { margin: 0 0 8px; max-width: 66ch; }
+  a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+  @media (max-width: 560px) {
+    .unit { grid-template-columns: 1fr; }
+    .unit img { margin-bottom: 6px; }
+  }
+
+  .rules { display: grid; grid-template-columns: repeat(auto-fit, minmax(186px, 1fr)); gap: 2px; margin-top: 24px; }
+  .rule { background: var(--surface); border: 1px solid var(--line); border-radius: 3px; padding: 16px 16px 18px; }
+  .rule .mult {
+    font-family: "IBM Plex Mono", monospace; font-size: 20px; font-weight: 500;
+    color: var(--accent); margin: 0 0 6px; font-variant-numeric: tabular-nums;
+  }
+  .rule h3 { font-size: 17px; margin-bottom: 4px; }
+  .rule p { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.55; }
+
+  .cmp { margin-top: 24px; overflow-x: auto; border: 1px solid var(--line); border-radius: 3px; background: var(--surface); }
+  .cmp table { font-size: 13.5px; font-variant-numeric: tabular-nums; }
+  .cmp th, .cmp td { padding: 10px 9px; border-bottom: 1px solid var(--line); text-align: right; white-space: nowrap; }
+  .cmp thead th {
+    font-family: "Barlow Semi Condensed", sans-serif; font-size: 12.5px;
+    letter-spacing: .12em; text-transform: uppercase; color: var(--faint);
+    font-weight: 600; text-align: right; position: sticky; top: 0; background: var(--surface);
+  }
+  .cmp tbody th, .cmp thead th:first-child { text-align: left; padding-left: 14px; font-family: "Barlow Semi Condensed", sans-serif; font-size: 17px; font-weight: 600; color: var(--ink); }
+  .cmp tbody tr:last-child th, .cmp tbody tr:last-child td { border-bottom: 0; }
+  .cmp .was { color: var(--faint); }
+  .cmp .arrow { color: var(--line); padding: 0 4px; }
+  .cmp .now { color: var(--accent); font-weight: 500; }
+  .cmp .same .now { color: var(--muted); font-weight: 400; }
+  .cmp .none { color: var(--line); }
+  .cmp .tag { font-family: "IBM Plex Mono", monospace; font-size: 10.5px; letter-spacing: .1em; color: #d63c3e; vertical-align: 2px; margin-left: 6px; }
+  .units { font-family: "IBM Plex Mono", monospace; font-size: 12px; color: var(--faint); margin-top: 10px; }
+  .cmp tr.grp th {
+    font-family: "Barlow Semi Condensed", sans-serif; font-size: 12.5px;
+    letter-spacing: .14em; text-transform: uppercase; color: var(--faint);
+    font-weight: 600; text-align: left; padding-top: 20px; background: var(--surface);
+  }
+</style>
+
+<div class="wrap">
+
+  <header>
+    <p class="eyebrow">NJ TRANSIT + PATH Trainset · Parameter</p>
+    <h1>Rebalanced Fleet</h1>
+    <p class="lede">The realistic figures make an honest model and an overpowered
+      NewGRF: a single MultiLevel carries three vanilla carriages' worth of passengers,
+      an ALP-46A out-muscles anything in the base set, and a K4s Pacific arrives in 1914
+      with 3,286 horsepower. This is the same twenty-six vehicles with the numbers
+      re-struck for play — and what each one becomes.</p>
+    <hr class="stripe">
+    <ul class="meta">
+      <li>NewGRF parameter</li>
+      <li>Statistics: Game-balanced</li>
+      <li>Same sprites, dates and liveries</li>
+      <li>26 vehicles, 1914 – 2012</li>
+    </ul>
+  </header>
+
+  <section>
+    <h2>Turning it on</h2>
+    <ol class="steps">
+      <li>In <strong>NewGRF Settings</strong>, select the trainset and open
+          <strong>Parameters</strong>.</li>
+      <li>Set <strong>Statistics</strong> to <em>Game-balanced</em>.</li>
+      <li>Do it before starting the game. OpenTTD resolves the parameter while the GRF
+          loads, so changing it mid-game needs a restart.</li>
+    </ol>
+    <p style="margin-top:18px">Under the hood the GRF carries both stat sets. The
+      balanced values sit behind an <code>if (stats == 1)</code> block, which compiles
+      to an Action 7 skip: with the parameter at 0 OpenTTD steps straight over them and
+      the realistic properties stand.</p>
+  </section>
+
+  <section>
+    <h2>The four rules</h2>
+    <p>Every balanced number comes from one of these, applied across the whole roster
+      rather than tuned vehicle by vehicle — so the fleet keeps its internal shape: an
+      Arrow III is still the poor relation of a MultiLevel, and a 1950 RS-3 still can't
+      touch a GG1.</p>
+    <div class="rules">
+      <div class="rule"><p class="mult">&times;0.40</p><h3>Capacity</h3><p>A full-length car lands near OpenTTD's own 40-passenger carriage instead of tripling it. A MultiLevel still tops the roster, at 55 rather than 132.</p></div>
+      <div class="rule"><p class="mult">&times;0.45</p><h3>Power</h3><p>The strongest electric makes 3,400 hp instead of 7,500, so an ALP-46A leads a heavy train well without making every base-set engine pointless.</p></div>
+      <div class="rule"><p class="mult">&times;0.6 / 0.9</p><h3>Weight</h3><p>Trailers lose about 40% so the lighter power can still accelerate them; locomotives keep most of theirs, because tractive effort is struck off weight.</p></div>
+      <div class="rule"><p class="mult">50 → 110</p><h3>Speed</h3><p>Instead of a flat 100 mph across thirty years of equipment, speed becomes a progression: 1965 PATH cars at 50, the Arrow III at 80, the ALP-46A at 110.</p></div>
+    </div>
+    <p style="margin-top:20px">Purchase and running costs are then re-struck against
+      the new capacity and power, so cost per seat stays roughly level across the set
+      and against the base game. Dates, lengths, tractive effort coefficients, air drag,
+      reliability and every sprite are untouched: those are facts about the vehicle, not
+      balance knobs.</p>
+  </section>
+
+  <section>
+    <h2>Vehicle by vehicle</h2>
+    <div class="cmp">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Vehicle</th>
+            <th scope="col">Speed</th>
+            <th scope="col">Power</th>
+            <th scope="col">Weight</th>
+            <th scope="col">Capacity</th>
+            <th scope="col">Buy</th>
+            <th scope="col">Run</th>
+          </tr>
+        </thead>
+        <tbody>
+        <tr class="grp"><th colspan="7" scope="colgroup">Classic era — the predecessor railroads</th></tr>
+        <tr><th scope="row">PRR K4s Pacific</th><td class="chg"><span class="was">87</span><span class="arrow">→</span><span class="now">75</span></td><td class="chg"><span class="was">3286</span><span class="arrow">→</span><span class="now">1400</span></td><td class="chg"><span class="was">237</span><span class="arrow">→</span><span class="now">130</span></td><td class="none">—</td><td class="chg"><span class="was">120</span><span class="arrow">→</span><span class="now">78</span></td><td class="chg"><span class="was">132</span><span class="arrow">→</span><span class="now">90</span></td></tr>
+        <tr><th scope="row">EMD E8</th><td class="chg"><span class="was">100</span><span class="arrow">→</span><span class="now">90</span></td><td class="chg"><span class="was">2250</span><span class="arrow">→</span><span class="now">1100</span></td><td class="chg"><span class="was">143</span><span class="arrow">→</span><span class="now">105</span></td><td class="none">—</td><td class="chg"><span class="was">145</span><span class="arrow">→</span><span class="now">92</span></td><td class="chg"><span class="was">95</span><span class="arrow">→</span><span class="now">62</span></td></tr>
+        <tr><th scope="row">ALCO RS-3</th><td class="chg"><span class="was">70</span><span class="arrow">→</span><span class="now">65</span></td><td class="chg"><span class="was">1600</span><span class="arrow">→</span><span class="now">800</span></td><td class="chg"><span class="was">112</span><span class="arrow">→</span><span class="now">84</span></td><td class="none">—</td><td class="chg"><span class="was">96</span><span class="arrow">→</span><span class="now">62</span></td><td class="chg"><span class="was">80</span><span class="arrow">→</span><span class="now">52</span></td></tr>
+        <tr><th scope="row">PRR GG1</th><td class="chg"><span class="was">100</span><span class="arrow">→</span><span class="now">95</span></td><td class="chg"><span class="was">4620</span><span class="arrow">→</span><span class="now">2800</span></td><td class="chg"><span class="was">215</span><span class="arrow">→</span><span class="now">155</span></td><td class="none">—</td><td class="chg"><span class="was">190</span><span class="arrow">→</span><span class="now">128</span></td><td class="chg"><span class="was">96</span><span class="arrow">→</span><span class="now">68</span></td></tr>
+        <tr><th scope="row">PRR MP54 MU</th><td class="chg"><span class="was">65</span><span class="arrow">→</span><span class="now">60</span></td><td class="chg"><span class="was">450</span><span class="arrow">→</span><span class="now">380</span></td><td class="chg"><span class="was">55</span><span class="arrow">→</span><span class="now">33</span></td><td class="chg"><span class="was">72</span><span class="arrow">→</span><span class="now">30</span></td><td class="chg"><span class="was">78</span><span class="arrow">→</span><span class="now">46</span></td><td class="chg"><span class="was">38</span><span class="arrow">→</span><span class="now">18</span></td></tr>
+        <tr><th scope="row">DL&W MU</th><td class="chg"><span class="was">63</span><span class="arrow">→</span><span class="now">60</span></td><td class="chg"><span class="was">1020</span><span class="arrow">→</span><span class="now">700</span></td><td class="chg"><span class="was">67</span><span class="arrow">→</span><span class="now">40</span></td><td class="chg"><span class="was">84</span><span class="arrow">→</span><span class="now">34</span></td><td class="chg"><span class="was">92</span><span class="arrow">→</span><span class="now">54</span></td><td class="chg"><span class="was">44</span><span class="arrow">→</span><span class="now">21</span></td></tr>
+        <tr><th scope="row">Stillwell Coach</th><td class="chg"><span class="was">70</span><span class="arrow">→</span><span class="now">80</span></td><td class="none">—</td><td class="chg"><span class="was">46</span><span class="arrow">→</span><span class="now">26</span></td><td class="chg"><span class="was">86</span><span class="arrow">→</span><span class="now">34</span></td><td class="chg"><span class="was">40</span><span class="arrow">→</span><span class="now">24</span></td><td class="chg"><span class="was">18</span><span class="arrow">→</span><span class="now">9</span></td></tr>
+        <tr class="grp"><th colspan="7" scope="colgroup">Transition era — NJDOT and early NJ TRANSIT</th></tr>
+        <tr><th scope="row">GE U34CH</th><td class="same"><span class="was">70</span><span class="arrow">→</span><span class="now">70</span></td><td class="chg"><span class="was">3430</span><span class="arrow">→</span><span class="now">1700</span></td><td class="chg"><span class="was">165</span><span class="arrow">→</span><span class="now">118</span></td><td class="none">—</td><td class="chg"><span class="was">165</span><span class="arrow">→</span><span class="now">108</span></td><td class="chg"><span class="was">118</span><span class="arrow">→</span><span class="now">76</span></td></tr>
+        <tr><th scope="row">Arrow I</th><td class="chg"><span class="was">100</span><span class="arrow">→</span><span class="now">85</span></td><td class="chg"><span class="was">700</span><span class="arrow">→</span><span class="now">560</span></td><td class="chg"><span class="was">55</span><span class="arrow">→</span><span class="now">33</span></td><td class="chg"><span class="was">110</span><span class="arrow">→</span><span class="now">42</span></td><td class="chg"><span class="was">105</span><span class="arrow">→</span><span class="now">62</span></td><td class="chg"><span class="was">50</span><span class="arrow">→</span><span class="now">26</span></td></tr>
+        <tr><th scope="row">Arrow II</th><td class="chg"><span class="was">100</span><span class="arrow">→</span><span class="now">85</span></td><td class="chg"><span class="was">1000</span><span class="arrow">→</span><span class="now">850</span></td><td class="chg"><span class="was">57</span><span class="arrow">→</span><span class="now">34</span></td><td class="chg"><span class="was">116</span><span class="arrow">→</span><span class="now">46</span></td><td class="chg"><span class="was">115</span><span class="arrow">→</span><span class="now">70</span></td><td class="chg"><span class="was">52</span><span class="arrow">→</span><span class="now">29</span></td></tr>
+        <tr><th scope="row">Comet I Coach</th><td class="chg"><span class="was">100</span><span class="arrow">→</span><span class="now">105</span></td><td class="none">—</td><td class="chg"><span class="was">48</span><span class="arrow">→</span><span class="now">28</span></td><td class="chg"><span class="was">131</span><span class="arrow">→</span><span class="now">46</span></td><td class="chg"><span class="was">60</span><span class="arrow">→</span><span class="now">33</span></td><td class="chg"><span class="was">25</span><span class="arrow">→</span><span class="now">12</span></td></tr>
+        <tr><th scope="row">Comet I Cab Car</th><td class="chg"><span class="was">100</span><span class="arrow">→</span><span class="now">105</span></td><td class="none">—</td><td class="chg"><span class="was">49</span><span class="arrow">→</span><span class="now">29</span></td><td class="chg"><span class="was">115</span><span class="arrow">→</span><span class="now">42</span></td><td class="chg"><span class="was">66</span><span class="arrow">→</span><span class="now">36</span></td><td class="chg"><span class="was">27</span><span class="arrow">→</span><span class="now">13</span></td></tr>
+        <tr><th scope="row">Comet II Coach</th><td class="chg"><span class="was">100</span><span class="arrow">→</span><span class="now">110</span></td><td class="none">—</td><td class="chg"><span class="was">44</span><span class="arrow">→</span><span class="now">28</span></td><td class="chg"><span class="was">120</span><span class="arrow">→</span><span class="now">44</span></td><td class="chg"><span class="was">62</span><span class="arrow">→</span><span class="now">34</span></td><td class="chg"><span class="was">26</span><span class="arrow">→</span><span class="now">13</span></td></tr>
+        <tr><th scope="row">ALP-44</th><td class="same"><span class="was">100</span><span class="arrow">→</span><span class="now">100</span></td><td class="chg"><span class="was">7000</span><span class="arrow">→</span><span class="now">3100</span></td><td class="chg"><span class="was">94</span><span class="arrow">→</span><span class="now">86</span></td><td class="none">—</td><td class="chg"><span class="was">190</span><span class="arrow">→</span><span class="now">130</span></td><td class="chg"><span class="was">84</span><span class="arrow">→</span><span class="now">60</span></td></tr>
+        <tr class="grp"><th colspan="7" scope="colgroup">Modern NJ TRANSIT</th></tr>
+        <tr><th scope="row">Arrow III EMU</th><td class="chg"><span class="was">100</span><span class="arrow">→</span><span class="now">80</span></td><td class="chg"><span class="was">1125</span><span class="arrow">→</span><span class="now">900</span></td><td class="chg"><span class="was">57</span><span class="arrow">→</span><span class="now">34</span></td><td class="chg"><span class="was">120</span><span class="arrow">→</span><span class="now">46</span></td><td class="chg"><span class="was">118</span><span class="arrow">→</span><span class="now">72</span></td><td class="chg"><span class="was">52</span><span class="arrow">→</span><span class="now">30</span></td></tr>
+        <tr><th scope="row">ALP-46</th><td class="chg"><span class="was">100</span><span class="arrow">→</span><span class="now">95</span></td><td class="chg"><span class="was">7100</span><span class="arrow">→</span><span class="now">3000</span></td><td class="chg"><span class="was">91</span><span class="arrow">→</span><span class="now">84</span></td><td class="none">—</td><td class="chg"><span class="was">205</span><span class="arrow">→</span><span class="now">135</span></td><td class="chg"><span class="was">88</span><span class="arrow">→</span><span class="now">62</span></td></tr>
+        <tr><th scope="row">ALP-46A</th><td class="chg"><span class="was">100</span><span class="arrow">→</span><span class="now">110</span></td><td class="chg"><span class="was">7500</span><span class="arrow">→</span><span class="now">3400</span></td><td class="chg"><span class="was">92</span><span class="arrow">→</span><span class="now">84</span></td><td class="none">—</td><td class="chg"><span class="was">228</span><span class="arrow">→</span><span class="now">158</span></td><td class="chg"><span class="was">92</span><span class="arrow">→</span><span class="now">66</span></td></tr>
+        <tr><th scope="row">ALP-45DP</th><td class="same"><span class="was">100</span><span class="arrow">→</span><span class="now">100</span></td><td class="chg"><span class="was">5360 / 3600</span><span class="arrow">→</span><span class="now">2600 / 1800</span></td><td class="chg"><span class="was">130</span><span class="arrow">→</span><span class="now">98</span></td><td class="none">—</td><td class="chg"><span class="was">250</span><span class="arrow">→</span><span class="now">175</span></td><td class="chg"><span class="was">120</span><span class="arrow">→</span><span class="now">86</span></td></tr>
+        <tr><th scope="row">PL42AC</th><td class="chg"><span class="was">100</span><span class="arrow">→</span><span class="now">90</span></td><td class="chg"><span class="was">4200</span><span class="arrow">→</span><span class="now">2000</span></td><td class="chg"><span class="was">130</span><span class="arrow">→</span><span class="now">96</span></td><td class="none">—</td><td class="chg"><span class="was">188</span><span class="arrow">→</span><span class="now">128</span></td><td class="chg"><span class="was">112</span><span class="arrow">→</span><span class="now">78</span></td></tr>
+        <tr><th scope="row">Comet V Coach</th><td class="chg"><span class="was">100</span><span class="arrow">→</span><span class="now">110</span></td><td class="none">—</td><td class="chg"><span class="was">46</span><span class="arrow">→</span><span class="now">28</span></td><td class="chg"><span class="was">117</span><span class="arrow">→</span><span class="now">42</span></td><td class="chg"><span class="was">62</span><span class="arrow">→</span><span class="now">34</span></td><td class="chg"><span class="was">26</span><span class="arrow">→</span><span class="now">13</span></td></tr>
+        <tr><th scope="row">Comet V Cab Car</th><td class="chg"><span class="was">100</span><span class="arrow">→</span><span class="now">110</span></td><td class="none">—</td><td class="chg"><span class="was">47</span><span class="arrow">→</span><span class="now">29</span></td><td class="chg"><span class="was">109</span><span class="arrow">→</span><span class="now">38</span></td><td class="chg"><span class="was">70</span><span class="arrow">→</span><span class="now">38</span></td><td class="chg"><span class="was">28</span><span class="arrow">→</span><span class="now">14</span></td></tr>
+        <tr><th scope="row">MultiLevel Coach</th><td class="chg"><span class="was">100</span><span class="arrow">→</span><span class="now">110</span></td><td class="none">—</td><td class="chg"><span class="was">61</span><span class="arrow">→</span><span class="now">36</span></td><td class="chg"><span class="was">132</span><span class="arrow">→</span><span class="now">55</span></td><td class="chg"><span class="was">86</span><span class="arrow">→</span><span class="now">48</span></td><td class="chg"><span class="was">32</span><span class="arrow">→</span><span class="now">17</span></td></tr>
+        <tr><th scope="row">MultiLevel Cab Car</th><td class="chg"><span class="was">100</span><span class="arrow">→</span><span class="now">110</span></td><td class="none">—</td><td class="chg"><span class="was">63</span><span class="arrow">→</span><span class="now">37</span></td><td class="chg"><span class="was">127</span><span class="arrow">→</span><span class="now">52</span></td><td class="chg"><span class="was">94</span><span class="arrow">→</span><span class="now">52</span></td><td class="chg"><span class="was">34</span><span class="arrow">→</span><span class="now">18</span></td></tr>
+        <tr class="grp"><th colspan="7" scope="colgroup">PATH — rapid transit</th></tr>
+        <tr><th scope="row">PATH PA1/PA2 <span class="tag">PATH</span></th><td class="same"><span class="was">50</span><span class="arrow">→</span><span class="now">50</span></td><td class="chg"><span class="was">800</span><span class="arrow">→</span><span class="now">560</span></td><td class="chg"><span class="was">33</span><span class="arrow">→</span><span class="now">20</span></td><td class="chg"><span class="was">100</span><span class="arrow">→</span><span class="now">38</span></td><td class="chg"><span class="was">92</span><span class="arrow">→</span><span class="now">54</span></td><td class="chg"><span class="was">40</span><span class="arrow">→</span><span class="now">20</span></td></tr>
+        <tr><th scope="row">PATH PA4 <span class="tag">PATH</span></th><td class="same"><span class="was">55</span><span class="arrow">→</span><span class="now">55</span></td><td class="chg"><span class="was">1000</span><span class="arrow">→</span><span class="now">700</span></td><td class="chg"><span class="was">34</span><span class="arrow">→</span><span class="now">20</span></td><td class="chg"><span class="was">102</span><span class="arrow">→</span><span class="now">40</span></td><td class="chg"><span class="was">106</span><span class="arrow">→</span><span class="now">64</span></td><td class="chg"><span class="was">42</span><span class="arrow">→</span><span class="now">22</span></td></tr>
+        <tr><th scope="row">PATH PA5 <span class="tag">PATH</span></th><td class="chg"><span class="was">55</span><span class="arrow">→</span><span class="now">60</span></td><td class="chg"><span class="was">1200</span><span class="arrow">→</span><span class="now">860</span></td><td class="chg"><span class="was">35</span><span class="arrow">→</span><span class="now">21</span></td><td class="chg"><span class="was">105</span><span class="arrow">→</span><span class="now">44</span></td><td class="chg"><span class="was">126</span><span class="arrow">→</span><span class="now">76</span></td><td class="chg"><span class="was">44</span><span class="arrow">→</span><span class="now">24</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="units">realistic → balanced · speed mph · power hp (electric/diesel for
+      the ALP-45DP) · weight tonnes per car · capacity per car · buy and running are
+      OpenTTD cost factors</p>
+  </section>
+
+  <section>
+    <h2>What it feels like</h2>
+    <div class="notes">
+      <div class="note">
+        <h3>A rush-hour MultiLevel train</h3>
+        <p>Six MultiLevels behind an ALP-46A carry 330 passengers instead of 800 — still
+          the biggest thing on your network, but a busy station now needs more than one
+          train an hour.</p>
+      </div>
+      <div class="note">
+        <h3>PATH stays a metro</h3>
+        <p>A PA5 pair costs less than two MultiLevel coaches and carries 88 riders at
+          60 mph in half the train length. Short, cheap and frequent is what these are
+          for, and the balanced costs reward running them that way.</p>
+      </div>
+      <div class="note">
+        <h3>Speed becomes a reason to upgrade</h3>
+        <p>With everything at a flat 100 mph the newer equipment only differed on paper.
+          At 50 / 65 / 80 / 95 / 110 the fleet has an actual generational ladder, and
+          holding on to 1950s stock costs you something.</p>
+      </div>
+      <div class="note">
+        <h3>Steam stays awkward, on purpose</h3>
+        <p>The K4s keeps its low tractive effort coefficient in both modes — all that
+          weight sits in a tender that contributes nothing to adhesion. It is fast once
+          rolling and hopeless at starting a heavy train, which is exactly why the E8s
+          replaced it.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p><a href="https://claude.ai/code/artifact/bf7b1895-7069-47c3-8f2d-4412c7d354bc">← Back to the trainset, install steps and full roster</a></p>
+    <p>Fan-made set for a game. Not affiliated with or endorsed by NJ TRANSIT or the
+      Port Authority of New York and New Jersey.</p>
+  </footer>
+
+</div>

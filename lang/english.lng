@@ -1,0 +1,70 @@
+##grflangid 0x01
+
+STR_GRF_NAME                :NJ TRANSIT + PATH Trainset
+STR_GRF_DESC                :{ORANGE}NJ TRANSIT + PATH Trainset{}{BLACK}Modern New Jersey rail: ALP-46, ALP-46A and ALP-45DP electrics, the PL42AC diesel, Arrow III EMUs, Comet V coaches, MultiLevel cars, and three generations of PATH rapid transit.{}{}Set {GOLD}Statistics{BLACK} below to choose realistic prototype figures or game-balanced ones.
+
+STR_PARAM_STATS             :Statistics
+STR_PARAM_STATS_DESC        :Realistic uses published prototype figures. Game-balanced scales capacity, power, speed and cost so the set sits alongside OpenTTD's own vehicles. Change this before starting a game.
+STR_PARAM_REALISTIC         :Realistic
+STR_PARAM_BALANCED          :Game-balanced
+
+# vehicle names
+STR_NAME_ALP46              :ALP-46
+STR_NAME_ALP46A             :ALP-46A
+STR_NAME_ALP45DP            :ALP-45DP
+STR_NAME_PL42AC             :PL42AC
+STR_NAME_ARROW3_B           :Arrow III EMU
+STR_NAME_ARROW3_A           :Arrow III EMU
+STR_NAME_COMET5             :Comet V Coach
+STR_NAME_COMET5_CAB         :Comet V Cab Car
+STR_NAME_MULTILEVEL         :MultiLevel Coach
+STR_NAME_MULTILEVEL_CAB     :MultiLevel Cab Car
+STR_NAME_PATH_PA1_B         :PATH PA1/PA2
+STR_NAME_PATH_PA1_A         :PATH PA1/PA2
+STR_NAME_PATH_PA4_B         :PATH PA4
+STR_NAME_PATH_PA4_A         :PATH PA4
+STR_NAME_PATH_PA5_B         :PATH PA5
+STR_NAME_PATH_PA5_A         :PATH PA5
+STR_NAME_K4S                :PRR K4s Pacific
+STR_NAME_E8                 :EMD E8
+STR_NAME_RS3                :ALCO RS-3
+STR_NAME_U34CH              :GE U34CH
+STR_NAME_GG1                :PRR GG1
+STR_NAME_ALP44              :ALP-44
+STR_NAME_MP54               :PRR MP54 MU
+STR_NAME_DLWMU              :DL&W MU
+STR_NAME_ARROW1             :Arrow I
+STR_NAME_ARROW2_B           :Arrow II
+STR_NAME_ARROW2_A           :Arrow II
+STR_NAME_STILLWELL          :Stillwell Coach
+STR_NAME_COMET1             :Comet I Coach
+STR_NAME_COMET1_CAB         :Comet I Cab Car
+STR_NAME_COMET2             :Comet II Coach
+
+# purchase window information
+STR_PURCHASE_ALP46          :{BLACK}Bombardier, 2001-2002. 29 built.{}TRAXX-family 25 kV / 12 kV electric for Midtown Direct services. 7,100 hp at rail, 71,000 lbf starting tractive effort.{}{GOLD}Electrified track only.
+STR_PURCHASE_ALP46A         :{BLACK}Bombardier, 2009-2011. 36 built.{}Uprated ALP-46 with 7,500 hp at rail and a 125 mph capable body, held to 100 mph in NJ TRANSIT service.{}{GOLD}Electrified track only.
+STR_PURCHASE_ALP45DP        :{BLACK}Bombardier, 2011-2012. Dual-power.{}5,360 hp under the wires, 3,600 hp on its two Caterpillar diesels, so it can run Hoboken services straight through to New York.{}{GOLD}Full power on electrified track, reduced power elsewhere.
+STR_PURCHASE_PL42AC         :{BLACK}Alstom / EMD, 2003-2006. 33 built.{}EMD 16-710G3B-T1 rated 4,200 hp, AC traction, head-end power for the coaches behind it.
+STR_PURCHASE_ARROW3_A       :{BLACK}General Electric, 1977-1978.{}Self-propelled electric married pair, the backbone of NJ TRANSIT electric service for over forty years. Buying one gives you both cars.{}{GOLD}Electrified track only.
+STR_PURCHASE_COMET5         :{BLACK}Alstom, 2002-2004.{}Stainless steel single-level commuter coach, 85 ft over couplers.
+STR_PURCHASE_COMET5_CAB     :{BLACK}Alstom, 2002-2004.{}Comet V with an operating cab for push-pull service. Use CTRL+click in the depot to turn it around.
+STR_PURCHASE_MULTILEVEL     :{BLACK}Bombardier, 2006-2009.{}MultiLevel trailer. Two seating decks inside the same clearance envelope, the highest capacity car NJ TRANSIT runs.
+STR_PURCHASE_MULTILEVEL_CAB :{BLACK}Bombardier, 2006-2009.{}MultiLevel cab car for push-pull service. Use CTRL+click in the depot to turn it around.
+STR_PURCHASE_PATH_PA1_A     :{BLACK}St. Louis Car Company, 1965-1967.{}The cars that replaced the Hudson & Manhattan tubes' original stock: painted aluminium bodies, two doors a side, 51 ft over couplers. Bought as an A car plus a cabless C car.{}{GOLD}Third rail - electrified track only.
+STR_PURCHASE_PATH_PA4_A     :{BLACK}Kawasaki, 1986-1988. 95 built.{}PATH's first stainless steel cars, with three doors a side for faster loading at Journal Square and 33rd Street. All cab cars, so a set has a cab at each end.{}{GOLD}Third rail - electrified track only.
+STR_PURCHASE_PATH_PA5_A     :{BLACK}Kawasaki, 2009-2011. 340 built.{}The current PATH fleet: stainless bodies, three doors a side, longitudinal seating for 35 and standing room for a rush hour under the river.{}{GOLD}Third rail - electrified track only.
+STR_PURCHASE_K4S            :{BLACK}Juniata Shops and Baldwin, 1914-1928. 425 built.{}The Pennsylvania's standard passenger Pacific, and the last steam on the New York & Long Branch - regular runs ended in 1956, the final excursion behind No. 612 in October 1957.{}{GOLD}Dark Green Locomotive Enamel. Heavy, thirsty, and magnificent at speed.
+STR_PURCHASE_E8             :{BLACK}EMD, 1949-1954. 450 A units built.{}Twin 1,125 hp 567B V12s under a streamlined nose. The Pennsylvania was the largest buyer; Erie Lackawanna ran 25 out of Hoboken, and NJDOT bought ex-Penn Central examples in 1976 for commuter work.
+STR_PURCHASE_RS3            :{BLACK}ALCO, 1950-1956. 1,418 built.{}The go-anywhere road switcher: 1,600 hp from a 244 V12, equally at home on a commuter train or a local freight. The Jersey Central ran about 26 in dark green and yellow; Erie Lackawanna had 62.
+STR_PURCHASE_U34CH          :{BLACK}General Electric, 1970-73. 32 for NJDOT.{}Bought new to haul the Comet coaches on the Bergen County lines, with head-end power taken off the 3,600 hp FDL-16 - which is why they idled at a constant roar. Retired from passenger work in 1994.{}{GOLD}The blue-and-silver Bluebird scheme.
+STR_PURCHASE_GG1            :{BLACK}GE and Altoona Works, 1934-1943. 139 built.{}Raymond Loewy's welded carbody over a 4,620 hp continuous rating and an 8,500 hp short burst. NJ TRANSIT inherited thirteen and ran them to the very end: the last revenue trip left New York Penn at 5:20 pm on 28 October 1983, forty-nine years after the class was new.{}{GOLD}Electrified track only.
+STR_PURCHASE_ALP44          :{BLACK}ASEA / ABB, 1989-1997. 32 for NJ TRANSIT.{}The AEM-7 derivative that replaced the GG1s and E60s: 7,000 hp in a 51 ft body weighing barely a hundred tons. Retired by 2011.{}{GOLD}Electrified track only.
+STR_PURCHASE_MP54           :{BLACK}Pennsylvania Railroad, MU cars from 1915.{}Riveted steel cars with arched clerestory roofs, 72 seats and a pantograph on the roof, working the corridor to Trenton and the Princeton Dinky. The Arrow IIs displaced them from New Jersey in 1977.{}{GOLD}Electrified track only.
+STR_PURCHASE_DLWMU          :{BLACK}Pullman and GE, 1929-1930. 141 motor cars.{}Built for the Lackawanna's 3,000 volt DC Morris & Essex electrification and used, in Pullman green, for fifty-four years - Lackawanna, Erie Lackawanna, Conrail and finally NJ TRANSIT, last run August 1984.{}{GOLD}Electrified track only.
+STR_PURCHASE_ARROW1         :{BLACK}St. Louis Car Company, 1968-69. 35 single cars.{}New Jersey's first self-propelled stainless steel cars, run by Penn Central for the state. Chronically unreliable: all 35 were out of service by 1980, and 30 came back as unpowered Comet IB trailers.{}{GOLD}Electrified track only.
+STR_PURCHASE_ARROW2_A       :{BLACK}General Electric, 1974. 70 cars, all married pairs.{}The cars that finally retired the MP54s, reseated 3-and-2 to squeeze in 119 riders and repainted into NJ TRANSIT stripes at their 1983 overhaul. Withdrawn in 1997 with tired car bodies.{}{GOLD}Electrified track only.
+STR_PURCHASE_STILLWELL      :{BLACK}Pressed Steel Car, Pullman and ACF.{}Lewis Stillwell's steel commuter coaches for the Erie: arched clerestory roof, wooden-slat seats for 86, and a ride New Jersey commuters endured into the early 1970s until the Comets arrived.
+STR_PURCHASE_COMET1         :{BLACK}Pullman-Standard, 1970-73. 155 built.{}Aluminium-bodied, head-end powered and paid for by the state: the first modern commuter coach in New Jersey, in Erie Lackawanna maroon and yellow over bare metal. Nicknamed Sliders for their low doors.
+STR_PURCHASE_COMET1_CAB     :{BLACK}Pullman-Standard, 1970-73. 35 cab cars.{}The other end of a U34CH push-pull set. Use CTRL+click in the depot to turn it around.
+STR_PURCHASE_COMET2         :{BLACK}Bombardier, 1982-1989. 161 built.{}NJ TRANSIT's first order of its own, in the angular chevron stripes of the early eighties. Long end doors with trapdoors let one car work both low platforms and high ones - the operational advance over the Comet I.
