@@ -13,8 +13,10 @@ Sprite order is N, NE, E, SE, S, SW, W, NW, i.e. world heading angle
 phi = 225deg - 45deg * index.
 
 Note that a tile is 16 world units but a train vehicle is not: OpenTTD's
-VEHICLE_LENGTH is 8, so a full-length 8/8 vehicle is half a tile. See
-LENGTH_SCALE and squash_to_length() below.
+VEHICLE_LENGTH is 8, so a full-length 8/8 vehicle is half a tile. Each model
+is also drawn to its own real-world length rather than uniformly filling that
+slot, so a short engine reads as visibly shorter than a long coach even when
+the two share an NML `length`. See scale_to_length() below.
 """
 
 import math
@@ -431,31 +433,42 @@ CAR_L = 14.5           # 8/8 length vehicles
 # OpenTTD measures a train vehicle in eighths of VEHICLE_LENGTH, and
 # VEHICLE_LENGTH is 8 against a tile's 16 (src/vehicle_type.h, src/map_type.h).
 # A full-length 8/8 vehicle is therefore half a tile, and the game spaces
-# consecutive vehicles by exactly `length` world units - not the 2 x `length`
-# a full tile would suggest.
+# consecutive vehicles by exactly the NML `length` property in world units -
+# not the 2 x `length` a full tile would suggest.
 #
-# The models above are laid out in carbody units, twice that scale, because the
-# detail work - bogie insets, door pitch, cab fractions - is easier to reason
-# about at a size where a bogie is not one world unit long. squash_to_length()
-# halves every model down its long axis just before rendering, so the sprite
-# that ships is exactly as long as the room the game leaves for the vehicle.
-# Draw at full scale and every car in a consist overlaps the next by ~45%.
-LENGTH_SCALE = 0.5
+# The models above are laid out in carbody units, roughly twice that scale,
+# because the detail work - bogie insets, door pitch, cab fractions - is
+# easier to reason about at a size where a bogie is not one world unit long.
+# scale_to_length() brings each one down to its own real-world length (from
+# fleet.py's `length_ft`) rather than uniformly filling the NML `length` slot:
+# two prototypes of very different size often round to the same eighth-of-a-
+# tile bucket (a 65 ft engine and an 85 ft coach can both be an 8/8 vehicle),
+# and filling the slot regardless would draw them the same length. Capping at
+# the slot (minus COUPLING_GAP) is still enforced, so nothing can overlap the
+# next vehicle in a consist even if a length_ft figure runs long.
+COUPLING_GAP = 0.6      # world units of visible gap, fixed regardless of car length
+REFERENCE_FT = 85.0     # a modern 85 ft coach is the longest prototype in the set...
+REFERENCE_LEN = 8       # ...and it carries the longest NML `length`, 8/8
+WORLD_UNITS_PER_FOOT = (REFERENCE_LEN - COUPLING_GAP) / REFERENCE_FT
 
 
-def squash_to_length(quads):
-    """Scale a model into OpenTTD's vehicle-length units, centred on the
-    vehicle reference point.
+def scale_to_length(quads, length_ft, length):
+    """Scale a model to its prototype length, centred on the vehicle
+    reference point and capped at the room `length` (the NML property, in
+    world units) leaves for it.
 
     Every normal in this set points either along x or square across it, so a
     pure x scale leaves all of them facing the right way and none of them need
     renormalising.
     """
     xs = [p[0] for q in quads for p in q.pts]
+    raw = max(xs) - min(xs)
     mid = (min(xs) + max(xs)) / 2.0
+    drawn = min(length_ft * WORLD_UNITS_PER_FOOT, length - COUPLING_GAP)
+    scale = drawn / raw
     for q in quads:
-        q.pts = [((p[0] - mid) * LENGTH_SCALE, p[1], p[2]) for p in q.pts]
-    return quads
+        q.pts = [((p[0] - mid) * scale, p[1], p[2]) for p in q.pts]
+    return quads, drawn
 
 
 def model_alp46(a=False):
@@ -595,36 +608,24 @@ def make_preview(names, scale=4):
     return path
 
 
-def check_length(name, quads, length):
-    """A sprite must not be longer than the room OpenTTD leaves the vehicle.
-
-    `length` is the vehicle's NML length property, in eighths, which is also
-    its span in world units. Anything longer here reaches into the next
-    vehicle in the consist.
-    """
-    xs = [p[0] for q in quads for p in q.pts]
-    drawn = max(xs) - min(xs)
-    if drawn > length + 1e-6:
-        raise SystemExit(
-            "{}: sprite is {:.2f} world units long but the vehicle is only "
-            "{} - consists would overlap".format(name, drawn, length))
-    return drawn
-
-
 def main():
     os.makedirs(OUT_DIR, exist_ok=True)
     from fleet import VEHICLES
     from historic import models as historic_models   # late: it imports us back
     MODELS.update(historic_models())
-    lengths = {v["sprite"]: v["length"] for v in VEHICLES}
+    specs = {v["sprite"]: (v["length_ft"], v["length"]) for v in VEHICLES}
     names = []
     for name, builder in MODELS.items():
-        quads = squash_to_length(builder())
-        drawn = check_length(name, quads, lengths[name])
+        length_ft, length = specs[name]
+        assert length > COUPLING_GAP, "{}: length {} too small for a " \
+            "{} unit coupling gap".format(name, length, COUPLING_GAP)
+        quads, drawn = scale_to_length(builder(), length_ft, length)
         render_vehicle(name, quads)
         names.append(name)
-        print("wrote {:<18} {:.2f} of {} world units ({:.0f}%)".format(
-            name + ".png", drawn, lengths[name], 100 * drawn / lengths[name]))
+        capped = " (capped)" if length_ft * WORLD_UNITS_PER_FOOT > drawn + 1e-6 else ""
+        print("wrote {:<18} {:.2f} of {} world units, {:.0f} ft prototype ({:.0f}% "
+              "of slot){}".format(name + ".png", drawn, length, length_ft,
+                                  100 * drawn / length, capped))
     print("preview:", make_preview(names))
 
 

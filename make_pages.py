@@ -476,11 +476,14 @@ screen_y = (wy + wx) - wz</pre>
     <p style="margin-top:18px">A tile is 16 world units, but a train vehicle is not.
       OpenTTD's <code>VEHICLE_LENGTH</code> is 8 against a tile's 16, so a full-length
       8/8 vehicle is half a tile and the game spaces vehicles by the
-      <code>length</code> property in world units — not twice it. The models are built
-      at double scale, where the detail work is easier, and squashed down their long
-      axis before rendering; the generator then refuses to write any sprite that
-      overruns its vehicle, which is what keeps consists from telescoping into each
-      other.</p>
+      <code>length</code> property in world units — not twice it.</p>
+    <p style="margin-top:18px">That property is also coarse: an integer from 1 to 8,
+      so a 65 ft locomotive and an 85 ft coach can round to the same bucket. Each
+      vehicle is drawn to its own published length instead of stretched to fill
+      whatever bucket it landed in, capped at what the bucket actually allows so a
+      generous estimate can never make a sprite overrun into the next vehicle — a
+      short engine just shows a little more coupling gap, which is the correct
+      read for a short engine.</p>
     <p style="margin-top:18px">Faces are back-face culled against the view direction,
       painted in layer then depth order, shaded by the direction each face points,
       rendered at 4× and downsampled with a mask-weighted filter so edges don't bleed,

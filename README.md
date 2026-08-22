@@ -205,18 +205,33 @@ ranges — a GG1 stays Tuscan red whatever colour your company is.
 
 #### Vehicle length
 
-The one thing that is easy to get wrong: a tile is 16 world units, but a train
-vehicle is *not*. OpenTTD's `VEHICLE_LENGTH` is 8 (`src/vehicle_type.h`) against a
-tile's `TILE_SIZE` of 16, so a full-length 8/8 vehicle is **half a tile**, and the
-game spaces consecutive vehicles by exactly the `length` property in world units —
+Two different things are both called "length" here, and getting either one wrong
+shows up as a sprite that overlaps its neighbour or as a train where every vehicle
+looks the same size.
+
+The first is a unit mistake: a tile is 16 world units, but a train vehicle is
+*not*. OpenTTD's `VEHICLE_LENGTH` is 8 (`src/vehicle_type.h`) against a tile's
+`TILE_SIZE` of 16, so a full-length 8/8 vehicle is **half a tile**, and the game
+spaces consecutive vehicles by exactly the NML `length` property in world units —
 not twice that. A sprite drawn to a full tile overlaps its neighbour by about 45%.
 
-The models are laid out at twice that scale, where a bogie is more than one unit
-long and the detail work is easier to reason about, and `squash_to_length()` halves
-them down the x axis just before rendering. `gen_sprites.py` then checks every
-sprite against its `length` in `fleet.py` and refuses to write one that overruns,
-so the sheets cannot drift out of step with the fleet table again. The current set
-sits at 87–96% of its allotted length, the remainder being coupling gap.
+The second is coarseness: `length` is an integer from 1 to 8, so two prototypes of
+quite different size often round to the same bucket — a 65 ft ALP-46 and an 85 ft
+MultiLevel coach are both an 8/8 vehicle. Scaling every model to fill its bucket
+draws the locomotive as long as the coach, which is what a set that only fixes the
+first problem ends up looking like.
+
+`fleet.py` carries a second figure per vehicle, `length_ft` — the published
+prototype length over couplers — alongside the NML `length` bucket. The models are
+built at roughly twice final scale, where a bogie is more than one unit long and
+the detail work is easier to reason about, and `scale_to_length()` in
+`gen_sprites.py` scales each one down to `length_ft` (converted to world units by a
+fixed ft-per-unit ratio, calibrated so an 85 ft coach very nearly fills an 8/8
+slot), capped at whatever the `length` bucket actually allows so a generous
+`length_ft` estimate can never make a sprite overrun into the next vehicle. A short
+engine in a bucket sized for something longer just shows more coupling gap around
+it — which is the correct read: it *is* a short engine sharing a slot built for
+something bigger.
 
 Each sheet is 8 cells of 52 × 40 px at a common reference point (offsets −26, −26),
 one cell per direction in the order N, NE, E, SE, S, SW, W, NW.
