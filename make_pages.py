@@ -50,21 +50,27 @@ def sprite_img(sprite, direction=5, alt=""):
 
 
 def consist(items, direction=3, pad=4):
+    """Lay a train out the way OpenTTD does: each vehicle sits `length` world
+    units behind the one in front - length is in eighths of VEHICLE_LENGTH, and
+    VEHICLE_LENGTH is half a tile, so the step is `length`, not 2 x `length`."""
     phi = math.radians(225 - 45 * direction)
     c, s = math.cos(phi), math.sin(phi)
-    pts, pos = [], np.array([0.0, 0.0])
+    pts, pos, depth = [], np.array([0.0, 0.0]), 0.0
     for sprite, length in items:
-        pts.append((sprite, pos.copy()))
-        step = 2.0 * length
-        wx, wy = -c * step, -s * step
+        pts.append((sprite, pos.copy(), depth))
+        wx, wy = -c * length, -s * length
         pos = pos + np.array([(wy - wx) * 2.0, (wy + wx)])
+        depth += wx + wy
     xs = [p[1][0] for p in pts]
     ys = [p[1][1] for p in pts]
     W = int(max(xs) - min(xs)) + CW + pad * 2
     H = int(max(ys) - min(ys)) + CH + pad * 2
     cv = np.zeros((H, W, 4), dtype=np.uint8)
     ox, oy = -int(min(xs)) + pad, -int(min(ys)) + pad
-    for sprite, pt in reversed(pts):
+    # far to near along the (1, 1, 2) view direction, so the vehicle nearest the
+    # camera wins the overlap - which of the two ends that is depends on which
+    # way the train is pointing, so sort rather than assume.
+    for sprite, pt, d in sorted(pts, key=lambda p: p[2]):
         a = rgba(cell(sprite, direction))
         x0, y0 = int(round(pt[0])) + ox, int(round(pt[1])) + oy
         yy, xx = np.nonzero(a[..., 3])
@@ -467,6 +473,14 @@ def build_main(balanced_url):
     <pre><span class="c"># one tile = 16 world units = 64 x 32 px</span>
 screen_x = (wy - wx) * 2
 screen_y = (wy + wx) - wz</pre>
+    <p style="margin-top:18px">A tile is 16 world units, but a train vehicle is not.
+      OpenTTD's <code>VEHICLE_LENGTH</code> is 8 against a tile's 16, so a full-length
+      8/8 vehicle is half a tile and the game spaces vehicles by the
+      <code>length</code> property in world units — not twice it. The models are built
+      at double scale, where the detail work is easier, and squashed down their long
+      axis before rendering; the generator then refuses to write any sprite that
+      overruns its vehicle, which is what keeps consists from telescoping into each
+      other.</p>
     <p style="margin-top:18px">Faces are back-face culled against the view direction,
       painted in layer then depth order, shaded by the direction each face points,
       rendered at 4× and downsampled with a mask-weighted filter so edges don't bleed,

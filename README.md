@@ -203,6 +203,21 @@ straight track and stay consistent through curves. Palette indices are restricte
 1–197, which keeps the liveries clear of the company-colour and animated-colour
 ranges — a GG1 stays Tuscan red whatever colour your company is.
 
+#### Vehicle length
+
+The one thing that is easy to get wrong: a tile is 16 world units, but a train
+vehicle is *not*. OpenTTD's `VEHICLE_LENGTH` is 8 (`src/vehicle_type.h`) against a
+tile's `TILE_SIZE` of 16, so a full-length 8/8 vehicle is **half a tile**, and the
+game spaces consecutive vehicles by exactly the `length` property in world units —
+not twice that. A sprite drawn to a full tile overlaps its neighbour by about 45%.
+
+The models are laid out at twice that scale, where a bogie is more than one unit
+long and the detail work is easier to reason about, and `squash_to_length()` halves
+them down the x axis just before rendering. `gen_sprites.py` then checks every
+sprite against its `length` in `fleet.py` and refuses to write one that overruns,
+so the sheets cannot drift out of step with the fleet table again. The current set
+sits at 87–96% of its allotted length, the remainder being coupling gap.
+
 Each sheet is 8 cells of 52 × 40 px at a common reference point (offsets −26, −26),
 one cell per direction in the order N, NE, E, SE, S, SW, W, NW.
 
