@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """Render labelled roster images for both stat sets."""
 
+import os
+
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont
 from nml import palette as nmlpal
@@ -11,7 +13,29 @@ CW, CH = 52, 40
 SCALE = 4
 PAL = np.array(nmlpal.raw_palette_data[0]).reshape(256, 3)
 
-FONT_DIR = "/usr/share/fonts/truetype/dejavu/"
+# DejaVu Sans ships under different paths per platform/package manager. Check
+# them in order and use whichever exists; `brew install --cask font-dejavu`
+# on macOS and the dejavu-fonts-ttf / fonts-dejavu-core package on Linux both
+# land in one of these.
+_FONT_DIRS = [
+    os.path.expanduser("~/Library/Fonts"),               # macOS, Homebrew cask
+    "/Library/Fonts",                                     # macOS, system-wide
+    "/usr/share/fonts/truetype/dejavu",                   # Debian/Ubuntu
+    "/usr/share/fonts/dejavu-sans-fonts",                 # Fedora/RHEL
+    "/usr/share/fonts/dejavu",                             # Arch
+]
+FONT_DIR = next((d for d in _FONT_DIRS
+                  if os.path.exists(os.path.join(d, "DejaVuSans.ttf"))), None)
+if FONT_DIR is None:
+    raise SystemExit(
+        "make_roster.py needs DejaVu Sans and couldn't find it in any of:\n  "
+        + "\n  ".join(_FONT_DIRS)
+        + "\n\nInstall it and re-run:\n"
+          "  macOS:  brew install --cask font-dejavu\n"
+          "  Debian/Ubuntu: sudo apt install fonts-dejavu-core\n"
+          "  Fedora: sudo dnf install dejavu-sans-fonts")
+FONT_DIR = FONT_DIR + os.sep
+
 f_name = ImageFont.truetype(FONT_DIR + "DejaVuSans-Bold.ttf", 19)
 f_spec = ImageFont.truetype(FONT_DIR + "DejaVuSans.ttf", 14)
 f_head = ImageFont.truetype(FONT_DIR + "DejaVuSans-Bold.ttf", 26)
