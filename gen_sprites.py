@@ -446,7 +446,15 @@ CAR_L = 14.5           # 8/8 length vehicles
 # and filling the slot regardless would draw them the same length. Capping at
 # the slot (minus COUPLING_GAP) is still enforced, so nothing can overlap the
 # next vehicle in a consist even if a length_ft figure runs long.
-COUPLING_GAP = 0.6      # world units of visible gap, fixed regardless of car length
+# JPplusShinkansen (this set's sister project) goes further still: its
+# EMUs are drawn ~25% past their reserved NML `length` slot (see its "10/8"
+# spritesets, drawn to 10/8 of a tile against an 8/8 reserved length), by
+# overhanging cab art into neighbouring near-zero-length connector vehicles.
+# NJ Transit has no such connector parts, so it cannot overhang the slot
+# outright - but the 0.6 gap below was leaving every vehicle stubbier than
+# it needed to be well short of that; 0.3 still keeps a real, visible
+# coupling gap while letting each car use noticeably more of its slot.
+COUPLING_GAP = 0.3      # world units of visible gap, fixed regardless of car length
 REFERENCE_FT = 85.0     # a modern 85 ft coach is the longest prototype in the set...
 REFERENCE_LEN = 8       # ...and it carries the longest NML `length`, 8/8
 WORLD_UNITS_PER_FOOT = (REFERENCE_LEN - COUPLING_GAP) / REFERENCE_FT
