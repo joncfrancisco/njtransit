@@ -11,6 +11,12 @@ Projection (matches OpenTTD's RemapCoords, tile = 16 world units = 64x32 px):
     screen_y = (wy + wx) - wz
 Sprite order is N, NE, E, SE, S, SW, W, NW, i.e. world heading angle
 phi = 225deg - 45deg * index.
+
+Note that a tile is 16 world units but a train vehicle is not: OpenTTD's
+VEHICLE_LENGTH is 8, so a full-length 8/8 vehicle is half a tile. Each model
+is also drawn to its own real-world length rather than uniformly filling that
+slot, so a short engine reads as visibly shorter than a long coach even when
+the two share an NML `length`. See scale_to_length() below.
 """
 
 import math
@@ -422,6 +428,57 @@ LOCO_L = 13.0          # 7/8 length vehicles
 CAR_L = 14.5           # 8/8 length vehicles
 
 
+# ------------------------------------------------------------ vehicle length --
+#
+# OpenTTD measures a train vehicle in eighths of VEHICLE_LENGTH, and
+# VEHICLE_LENGTH is 8 against a tile's 16 (src/vehicle_type.h, src/map_type.h).
+# A full-length 8/8 vehicle is therefore half a tile, and the game spaces
+# consecutive vehicles by exactly the NML `length` property in world units -
+# not the 2 x `length` a full tile would suggest.
+#
+# The models above are laid out in carbody units, roughly twice that scale,
+# because the detail work - bogie insets, door pitch, cab fractions - is
+# easier to reason about at a size where a bogie is not one world unit long.
+# scale_to_length() brings each one down to its own real-world length (from
+# fleet.py's `length_ft`) rather than uniformly filling the NML `length` slot:
+# two prototypes of very different size often round to the same eighth-of-a-
+# tile bucket (a 65 ft engine and an 85 ft coach can both be an 8/8 vehicle),
+# and filling the slot regardless would draw them the same length. Capping at
+# the slot (minus COUPLING_GAP) is still enforced, so nothing can overlap the
+# next vehicle in a consist even if a length_ft figure runs long.
+# JPplusShinkansen (this set's sister project) goes further still: its
+# EMUs are drawn ~25% past their reserved NML `length` slot (see its "10/8"
+# spritesets, drawn to 10/8 of a tile against an 8/8 reserved length), by
+# overhanging cab art into neighbouring near-zero-length connector vehicles.
+# NJ Transit has no such connector parts, so it cannot overhang the slot
+# outright - but the 0.6 gap below was leaving every vehicle stubbier than
+# it needed to be well short of that; 0.3 still keeps a real, visible
+# coupling gap while letting each car use noticeably more of its slot.
+COUPLING_GAP = 0.3      # world units of visible gap, fixed regardless of car length
+REFERENCE_FT = 85.0     # a modern 85 ft coach is the longest prototype in the set...
+REFERENCE_LEN = 8       # ...and it carries the longest NML `length`, 8/8
+WORLD_UNITS_PER_FOOT = (REFERENCE_LEN - COUPLING_GAP) / REFERENCE_FT
+
+
+def scale_to_length(quads, length_ft, length):
+    """Scale a model to its prototype length, centred on the vehicle
+    reference point and capped at the room `length` (the NML property, in
+    world units) leaves for it.
+
+    Every normal in this set points either along x or square across it, so a
+    pure x scale leaves all of them facing the right way and none of them need
+    renormalising.
+    """
+    xs = [p[0] for q in quads for p in q.pts]
+    raw = max(xs) - min(xs)
+    mid = (min(xs) + max(xs)) / 2.0
+    drawn = min(length_ft * WORLD_UNITS_PER_FOOT, length - COUPLING_GAP)
+    scale = drawn / raw
+    for q in quads:
+        q.pts = [((p[0] - mid) * scale, p[1], p[2]) for p in q.pts]
+    return quads, drawn
+
+
 def model_alp46(a=False):
     return loco_body(LOCO_L, HALF_W, 3.05, 9.5, 10.5, SILVER_LOCO,
                      cabs=2, pantos=(-2.6, 2.6))
@@ -561,13 +618,22 @@ def make_preview(names, scale=4):
 
 def main():
     os.makedirs(OUT_DIR, exist_ok=True)
+    from fleet import VEHICLES
     from historic import models as historic_models   # late: it imports us back
     MODELS.update(historic_models())
+    specs = {v["sprite"]: (v["length_ft"], v["length"]) for v in VEHICLES}
     names = []
     for name, builder in MODELS.items():
-        render_vehicle(name, builder())
+        length_ft, length = specs[name]
+        assert length > COUPLING_GAP, "{}: length {} too small for a " \
+            "{} unit coupling gap".format(name, length, COUPLING_GAP)
+        quads, drawn = scale_to_length(builder(), length_ft, length)
+        render_vehicle(name, quads)
         names.append(name)
-        print("wrote", name + ".png")
+        capped = " (capped)" if length_ft * WORLD_UNITS_PER_FOOT > drawn + 1e-6 else ""
+        print("wrote {:<18} {:.2f} of {} world units, {:.0f} ft prototype ({:.0f}% "
+              "of slot){}".format(name + ".png", drawn, length, length_ft,
+                                  100 * drawn / length, capped))
     print("preview:", make_preview(names))
 
 

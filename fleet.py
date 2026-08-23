@@ -21,6 +21,19 @@ Each entry carries two stat sets:
 
 Tractive effort coefficients, air drag, lengths, dates and liveries are the
 same in both modes: those are facts about the vehicle, not balance knobs.
+
+Two different notions of "length" appear together on every entry:
+
+  length     the NML length property: room reserved in a consist, in eighths
+             of a tile (OpenTTD's VEHICLE_LENGTH). An integer 1-8, and a fact
+             about how the vehicle occupies track, not a balance knob either.
+
+  length_ft  published prototype length over couplers, in feet. gen_sprites.py
+             draws each vehicle to this figure (scaled, and capped at what
+             `length` allows) so a stubby 51 ft engine reads as visibly
+             shorter than an 85 ft coach even when both carry the same NML
+             `length` - which they often do, since two very differently sized
+             prototypes can round to the same eighth-of-a-tile bucket.
 """
 
 # --------------------------------------------------------------- NJ TRANSIT --
@@ -29,7 +42,7 @@ VEHICLES = [
     dict(
         nml="alp46", sprite="njt_alp46", name="ALP-46",
         role="Bombardier electric, 2002 · 29 built",
-        intro=(2002, 3, 1), length=7, track="ELRL",
+        intro=(2002, 3, 1), length_ft=65, length=7, track="ELRL",
         engine_class="ENGINE_CLASS_ELECTRIC", effect="VISUAL_EFFECT_ELECTRIC",
         run_base="RUNNING_COST_ELECTRIC", te=0.35, drag=0.06,
         flags=["TRAIN_FLAG_FLIP"],
@@ -44,7 +57,7 @@ VEHICLES = [
     dict(
         nml="alp46a", sprite="njt_alp46a", name="ALP-46A",
         role="Bombardier electric, 2011 · 36 built",
-        intro=(2011, 5, 7), length=7, track="ELRL",
+        intro=(2011, 5, 7), length_ft=65, length=7, track="ELRL",
         engine_class="ENGINE_CLASS_ELECTRIC", effect="VISUAL_EFFECT_ELECTRIC",
         run_base="RUNNING_COST_ELECTRIC", te=0.35, drag=0.06,
         flags=["TRAIN_FLAG_FLIP"],
@@ -59,7 +72,7 @@ VEHICLES = [
     dict(
         nml="alp45dp", sprite="njt_alp45dp", name="ALP-45DP",
         role="Bombardier dual-power, 2012",
-        intro=(2012, 4, 1), length=8, track="RAIL",
+        intro=(2012, 4, 1), length_ft=71.5, length=8, track="RAIL",
         engine_class="ENGINE_CLASS_DIESEL", effect="VISUAL_EFFECT_DIESEL",
         run_base="RUNNING_COST_DIESEL", te=0.23, drag=0.07,
         flags=["TRAIN_FLAG_FLIP"],
@@ -76,7 +89,7 @@ VEHICLES = [
     dict(
         nml="pl42ac", sprite="njt_pl42ac", name="PL42AC",
         role="Alstom / EMD diesel, 2006 · 33 built",
-        intro=(2006, 1, 1), length=8, track="RAIL",
+        intro=(2006, 1, 1), length_ft=69.8, length=8, track="RAIL",
         engine_class="ENGINE_CLASS_DIESEL", effect="VISUAL_EFFECT_DIESEL",
         run_base="RUNNING_COST_DIESEL", te=0.24, drag=0.07,
         flags=["TRAIN_FLAG_FLIP"],
@@ -93,7 +106,7 @@ VEHICLES = [
     dict(
         nml="arrow3_b", sprite="njt_arrow3_b", name="Arrow III EMU",
         hidden=True,
-        intro=(1978, 1, 1), length=8, track="ELRL",
+        intro=(1978, 1, 1), length_ft=85, length=8, track="ELRL",
         engine_class="ENGINE_CLASS_ELECTRIC", effect=None,
         run_base="RUNNING_COST_ELECTRIC", te=0.30, drag=0.05,
         flags=["TRAIN_FLAG_MU"],
@@ -105,7 +118,7 @@ VEHICLES = [
     dict(
         nml="arrow3_a", sprite="njt_arrow3_a", name="Arrow III EMU",
         role="General Electric married pair, 1978",
-        intro=(1978, 1, 1), length=8, track="ELRL",
+        intro=(1978, 1, 1), length_ft=85, length=8, track="ELRL",
         engine_class="ENGINE_CLASS_ELECTRIC", effect="VISUAL_EFFECT_ELECTRIC",
         run_base="RUNNING_COST_ELECTRIC", te=0.30, drag=0.05,
         flags=["TRAIN_FLAG_MU"], artic="arrow3_b", pair=True,
@@ -121,7 +134,7 @@ VEHICLES = [
     dict(
         nml="comet5", sprite="njt_comet5", name="Comet V Coach",
         role="Alstom trailer, 2003",
-        intro=(2003, 1, 1), length=8, track="RAIL",
+        intro=(2003, 1, 1), length_ft=85, length=8, track="RAIL",
         engine_class=None, effect=None,
         run_base="RUNNING_COST_DIESEL", te=0.30, drag=0.05,
         flags=["TRAIN_FLAG_FLIP"],
@@ -135,7 +148,7 @@ VEHICLES = [
     dict(
         nml="comet5_cab", sprite="njt_comet5_cab", name="Comet V Cab Car",
         role="Alstom push-pull cab, 2003",
-        intro=(2003, 1, 1), length=8, track="RAIL",
+        intro=(2003, 1, 1), length_ft=85, length=8, track="RAIL",
         engine_class=None, effect=None,
         run_base="RUNNING_COST_DIESEL", te=0.30, drag=0.05,
         flags=["TRAIN_FLAG_FLIP"],
@@ -149,7 +162,7 @@ VEHICLES = [
     dict(
         nml="multilevel", sprite="njt_ml", name="MultiLevel Coach",
         role="Bombardier trailer, 2006",
-        intro=(2006, 9, 1), length=8, track="RAIL",
+        intro=(2006, 9, 1), length_ft=85, length=8, track="RAIL",
         engine_class=None, effect=None,
         run_base="RUNNING_COST_DIESEL", te=0.30, drag=0.05,
         flags=["TRAIN_FLAG_FLIP"], loading=18,
@@ -164,7 +177,7 @@ VEHICLES = [
     dict(
         nml="multilevel_cab", sprite="njt_ml_cab", name="MultiLevel Cab Car",
         role="Bombardier push-pull cab, 2006",
-        intro=(2006, 9, 1), length=8, track="RAIL",
+        intro=(2006, 9, 1), length_ft=85, length=8, track="RAIL",
         engine_class=None, effect=None,
         run_base="RUNNING_COST_DIESEL", te=0.30, drag=0.05,
         flags=["TRAIN_FLAG_FLIP"], loading=18,
@@ -182,7 +195,7 @@ VEHICLES = [
     dict(
         nml="path_pa1_b", sprite="path_pa1_b", name="PATH PA1/PA2",
         hidden=True,
-        intro=(1965, 9, 1), length=5, track="ELRL",
+        intro=(1965, 9, 1), length_ft=51, length=5, track="ELRL",
         engine_class="ENGINE_CLASS_ELECTRIC", effect=None,
         run_base="RUNNING_COST_ELECTRIC", te=0.30, drag=0.05,
         flags=["TRAIN_FLAG_MU"], loading=25,
@@ -194,7 +207,7 @@ VEHICLES = [
     dict(
         nml="path_pa1_a", sprite="path_pa1_a", name="PATH PA1/PA2",
         role="St. Louis Car, 1965-67 · 202 built",
-        intro=(1965, 9, 1), length=5, track="ELRL",
+        intro=(1965, 9, 1), length_ft=51, length=5, track="ELRL",
         engine_class="ENGINE_CLASS_ELECTRIC", effect="VISUAL_EFFECT_ELECTRIC",
         run_base="RUNNING_COST_ELECTRIC", te=0.30, drag=0.05,
         flags=["TRAIN_FLAG_MU"], artic="path_pa1_b", pair=True, loading=25,
@@ -210,7 +223,7 @@ VEHICLES = [
     dict(
         nml="path_pa4_b", sprite="path_pa4_b", name="PATH PA4",
         hidden=True,
-        intro=(1987, 1, 1), length=5, track="ELRL",
+        intro=(1987, 1, 1), length_ft=51, length=5, track="ELRL",
         engine_class="ENGINE_CLASS_ELECTRIC", effect=None,
         run_base="RUNNING_COST_ELECTRIC", te=0.30, drag=0.05,
         flags=["TRAIN_FLAG_MU"], loading=25,
@@ -222,7 +235,7 @@ VEHICLES = [
     dict(
         nml="path_pa4_a", sprite="path_pa4_a", name="PATH PA4",
         role="Kawasaki, 1986-88 · 95 built",
-        intro=(1987, 1, 1), length=5, track="ELRL",
+        intro=(1987, 1, 1), length_ft=51, length=5, track="ELRL",
         engine_class="ENGINE_CLASS_ELECTRIC", effect="VISUAL_EFFECT_ELECTRIC",
         run_base="RUNNING_COST_ELECTRIC", te=0.30, drag=0.05,
         flags=["TRAIN_FLAG_MU"], artic="path_pa4_b", pair=True, loading=25,
@@ -238,7 +251,7 @@ VEHICLES = [
     dict(
         nml="path_pa5_b", sprite="path_pa5_b", name="PATH PA5",
         hidden=True,
-        intro=(2011, 6, 1), length=5, track="ELRL",
+        intro=(2011, 6, 1), length_ft=51, length=5, track="ELRL",
         engine_class="ENGINE_CLASS_ELECTRIC", effect=None,
         run_base="RUNNING_COST_ELECTRIC", te=0.30, drag=0.05,
         flags=["TRAIN_FLAG_MU"], loading=28,
@@ -250,7 +263,7 @@ VEHICLES = [
     dict(
         nml="path_pa5_a", sprite="path_pa5_a", name="PATH PA5",
         role="Kawasaki, 2009-11 · 340 built",
-        intro=(2011, 6, 1), length=5, track="ELRL",
+        intro=(2011, 6, 1), length_ft=51, length=5, track="ELRL",
         engine_class="ENGINE_CLASS_ELECTRIC", effect="VISUAL_EFFECT_ELECTRIC",
         run_base="RUNNING_COST_ELECTRIC", te=0.30, drag=0.05,
         flags=["TRAIN_FLAG_MU"], artic="path_pa5_b", pair=True, loading=28,
@@ -274,7 +287,7 @@ VEHICLES += [
     dict(
         nml="k4s", sprite="hist_k4s", name="PRR K4s Pacific",
         role="Pennsylvania Railroad 4-6-2, 1914-57",
-        intro=(1914, 5, 1), length=8, track="RAIL",
+        intro=(1914, 5, 1), length_ft=83.5, length=8, track="RAIL",
         engine_class="ENGINE_CLASS_STEAM", effect="VISUAL_EFFECT_STEAM",
         run_base="RUNNING_COST_STEAM", te=0.09, drag=0.09,
         flags=["TRAIN_FLAG_FLIP"],
@@ -291,7 +304,7 @@ VEHICLES += [
     dict(
         nml="e8", sprite="hist_e8", name="EMD E8",
         role="Erie Lackawanna passenger diesel, 1950",
-        intro=(1950, 3, 1), length=7, track="RAIL",
+        intro=(1950, 3, 1), length_ft=70.3, length=7, track="RAIL",
         engine_class="ENGINE_CLASS_DIESEL", effect="VISUAL_EFFECT_DIESEL",
         run_base="RUNNING_COST_DIESEL", te=0.18, drag=0.06,
         flags=["TRAIN_FLAG_FLIP"],
@@ -307,7 +320,7 @@ VEHICLES += [
     dict(
         nml="rs3", sprite="hist_rs3", name="ALCO RS-3",
         role="Jersey Central road switcher, 1950",
-        intro=(1950, 5, 1), length=6, track="RAIL",
+        intro=(1950, 5, 1), length_ft=56.5, length=6, track="RAIL",
         engine_class="ENGINE_CLASS_DIESEL", effect="VISUAL_EFFECT_DIESEL",
         run_base="RUNNING_COST_DIESEL", te=0.25, drag=0.08,
         flags=["TRAIN_FLAG_FLIP"],
@@ -323,7 +336,7 @@ VEHICLES += [
     dict(
         nml="u34ch", sprite="hist_u34ch", name="GE U34CH",
         role="Erie Lackawanna / NJDOT, 1970",
-        intro=(1970, 9, 1), length=7, track="RAIL",
+        intro=(1970, 9, 1), length_ft=67.3, length=7, track="RAIL",
         engine_class="ENGINE_CLASS_DIESEL", effect="VISUAL_EFFECT_DIESEL",
         run_base="RUNNING_COST_DIESEL", te=0.25, drag=0.07,
         flags=["TRAIN_FLAG_FLIP"],
@@ -340,7 +353,7 @@ VEHICLES += [
     dict(
         nml="gg1", sprite="hist_gg1", name="PRR GG1",
         role="Pennsylvania Railroad electric, 1935",
-        intro=(1935, 1, 1), length=8, track="ELRL",
+        intro=(1935, 1, 1), length_ft=79.5, length=8, track="ELRL",
         engine_class="ENGINE_CLASS_ELECTRIC", effect="VISUAL_EFFECT_ELECTRIC",
         run_base="RUNNING_COST_ELECTRIC", te=0.14, drag=0.06,
         flags=["TRAIN_FLAG_FLIP"],
@@ -358,7 +371,7 @@ VEHICLES += [
     dict(
         nml="alp44", sprite="hist_alp44", name="ALP-44",
         role="NJ TRANSIT electric, 1990",
-        intro=(1990, 6, 1), length=6, track="ELRL",
+        intro=(1990, 6, 1), length_ft=51, length=6, track="ELRL",
         engine_class="ENGINE_CLASS_ELECTRIC", effect="VISUAL_EFFECT_ELECTRIC",
         run_base="RUNNING_COST_ELECTRIC", te=0.25, drag=0.06,
         flags=["TRAIN_FLAG_FLIP"],
@@ -374,7 +387,7 @@ VEHICLES += [
     dict(
         nml="mp54", sprite="hist_mp54", name="PRR MP54 MU",
         role="Pennsylvania Railroad electric MU, 1915",
-        intro=(1915, 1, 1), length=6, track="ELRL",
+        intro=(1915, 1, 1), length_ft=64.5, length=6, track="ELRL",
         engine_class="ENGINE_CLASS_ELECTRIC", effect="VISUAL_EFFECT_ELECTRIC",
         run_base="RUNNING_COST_ELECTRIC", te=0.30, drag=0.05,
         flags=["TRAIN_FLAG_MU"], loading=22,
@@ -391,7 +404,7 @@ VEHICLES += [
     dict(
         nml="dlwmu", sprite="hist_dlwmu", name="DL&W MU",
         role="Lackawanna electric MU, 1930",
-        intro=(1930, 9, 1), length=7, track="ELRL",
+        intro=(1930, 9, 1), length_ft=70.1, length=7, track="ELRL",
         engine_class="ENGINE_CLASS_ELECTRIC", effect="VISUAL_EFFECT_ELECTRIC",
         run_base="RUNNING_COST_ELECTRIC", te=0.30, drag=0.05,
         flags=["TRAIN_FLAG_MU"], loading=22,
@@ -408,7 +421,7 @@ VEHICLES += [
     dict(
         nml="arrow1", sprite="hist_arrow1", name="Arrow I",
         role="St. Louis Car single unit, 1968",
-        intro=(1968, 10, 30), length=8, track="ELRL",
+        intro=(1968, 10, 30), length_ft=85, length=8, track="ELRL",
         engine_class="ENGINE_CLASS_ELECTRIC", effect="VISUAL_EFFECT_ELECTRIC",
         run_base="RUNNING_COST_ELECTRIC", te=0.30, drag=0.05,
         flags=["TRAIN_FLAG_MU"], loading=20,
@@ -425,7 +438,7 @@ VEHICLES += [
     dict(
         nml="arrow2_b", sprite="hist_arrow2_b", name="Arrow II",
         hidden=True,
-        intro=(1974, 10, 1), length=8, track="ELRL",
+        intro=(1974, 10, 1), length_ft=85, length=8, track="ELRL",
         engine_class="ENGINE_CLASS_ELECTRIC", effect=None,
         run_base="RUNNING_COST_ELECTRIC", te=0.30, drag=0.05,
         flags=["TRAIN_FLAG_MU"], loading=20,
@@ -437,7 +450,7 @@ VEHICLES += [
     dict(
         nml="arrow2_a", sprite="hist_arrow2_a", name="Arrow II",
         role="General Electric married pair, 1974",
-        intro=(1974, 10, 1), length=8, track="ELRL",
+        intro=(1974, 10, 1), length_ft=85, length=8, track="ELRL",
         engine_class="ENGINE_CLASS_ELECTRIC", effect="VISUAL_EFFECT_ELECTRIC",
         run_base="RUNNING_COST_ELECTRIC", te=0.30, drag=0.05,
         flags=["TRAIN_FLAG_MU"], artic="arrow2_b", pair=True, loading=20,
@@ -454,7 +467,7 @@ VEHICLES += [
     dict(
         nml="stillwell", sprite="hist_stillwell", name="Stillwell Coach",
         role="Erie Railroad commuter coach, 1924",
-        intro=(1924, 1, 1), length=6, track="RAIL",
+        intro=(1924, 1, 1), length_ft=72, length=6, track="RAIL",
         engine_class=None, effect=None,
         run_base="RUNNING_COST_DIESEL", te=0.30, drag=0.05,
         flags=["TRAIN_FLAG_FLIP"], loading=16,
@@ -470,7 +483,7 @@ VEHICLES += [
     dict(
         nml="comet1", sprite="hist_comet1", name="Comet I Coach",
         role="Pullman-Standard trailer, 1971",
-        intro=(1971, 1, 1), length=8, track="RAIL",
+        intro=(1971, 1, 1), length_ft=85, length=8, track="RAIL",
         engine_class=None, effect=None,
         run_base="RUNNING_COST_DIESEL", te=0.30, drag=0.05,
         flags=["TRAIN_FLAG_FLIP"], loading=20,
@@ -486,7 +499,7 @@ VEHICLES += [
     dict(
         nml="comet1_cab", sprite="hist_comet1_cab", name="Comet I Cab Car",
         role="Pullman-Standard push-pull cab, 1971",
-        intro=(1971, 1, 1), length=8, track="RAIL",
+        intro=(1971, 1, 1), length_ft=85, length=8, track="RAIL",
         engine_class=None, effect=None,
         run_base="RUNNING_COST_DIESEL", te=0.30, drag=0.05,
         flags=["TRAIN_FLAG_FLIP"], loading=20,
@@ -500,7 +513,7 @@ VEHICLES += [
     dict(
         nml="comet2", sprite="hist_comet2", name="Comet II Coach",
         role="Bombardier trailer, 1983",
-        intro=(1983, 1, 1), length=8, track="RAIL",
+        intro=(1983, 1, 1), length_ft=85, length=8, track="RAIL",
         engine_class=None, effect=None,
         run_base="RUNNING_COST_DIESEL", te=0.30, drag=0.05,
         flags=["TRAIN_FLAG_FLIP"], loading=20,
