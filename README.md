@@ -1,12 +1,13 @@
 # NJ TRANSIT + PATH Trainset for OpenTTD
 
-A NewGRF covering a century of New Jersey railroading: 26 buyable vehicles from a
+A NewGRF covering a century of New Jersey railroading: 27 buyable vehicles from a
 1914 Pennsylvania Railroad K4s Pacific through the fallen-flag diesels, the GG1's
-last run in 1983, NJ TRANSIT's modern fleet and three generations of PATH rapid
-transit — each in its own railroad's livery, with two selectable stat sets.
+last run in 1983, NJ TRANSIT's modern fleet, three generations of PATH rapid
+transit and the Hudson-Bergen light rail car — each in its own railroad's livery,
+with two selectable stat sets.
 
 Built with [NML](https://github.com/OpenTTD/nml) 0.9. Verified to load cleanly in
-OpenTTD 13.4 at both parameter settings — 31 engine slots registered, no GRF errors.
+OpenTTD 13.4 at both parameter settings — 32 engine slots registered, no GRF errors.
 All sprites are generated from 3D models rather than hand-pixelled.
 
 ---
@@ -114,6 +115,12 @@ Capacity and weight are per car for the married pairs.
 | PATH PA4 (pair) | 1987 | 55 | 1000 → 700 | 34 → 20 | 102 → 40 | 106 → 64 | 42 → 22 |
 | PATH PA5 (pair) | 2011 | 55 → 60 | 1200 → 860 | 35 → 21 | 105 → 44 | 126 → 76 | 44 → 24 |
 
+**Hudson-Bergen Light Rail**
+
+| Vehicle | Intro | Speed mph | Power hp | Weight t | Capacity | Buy | Running |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| HBLR Light Rail | 2000 | 55 | 670 → 470 | 45 → 27 | 178 → 70 | 112 → 68 | 38 → 18 |
+
 Power for the married pairs is carried on the lead car and applies to the set. Buy
 and running are OpenTTD cost factors, not currency.
 
@@ -135,11 +142,18 @@ and running are OpenTTD cost factors, not currency.
 - **EMUs come as married pairs.** The Arrow II, Arrow III and all three PATH classes
   are bought as articulated two-car sets. The MP54, DL&W MU and Arrow I ran as single
   cars and are modelled that way.
+- **The light rail car is a tram, not a train.** The Hudson-Bergen car is
+  double-articulated — three body sections over three trucks, with a bellows at each
+  joint and the floor dropped between them. It is the one vehicle here that is a
+  complete train on its own: buy one, or couple two or three the way the real line
+  does.
 - **Cab cars can be turned around.** CTRL+click a cab car in the depot to flip it so
   the cab faces the right way for push-pull running.
-- **Catenary and third rail are the same thing here.** OpenTTD has one electrified
-  railtype, so the GG1, MP54, DL&W MU, Arrows, ALP-44/46/46A and every PATH class
-  need electrified track. Steam, diesels and all trailer cars run on plain track.
+- **Catenary, third rail and trolley wire are the same thing here.** OpenTTD has one
+  electrified railtype, so the GG1, MP54, DL&W MU, Arrows, ALP-44/46/46A, every PATH
+  class and the HBLR car — 25 kV overhead, 600 volt third rail and a 750 volt trolley
+  wire in reality — all need electrified track. Steam, diesels and all trailer cars
+  run on plain track.
 - **Vehicles expire.** Model lives follow the prototypes: the K4s is gone by 1958,
   the GG1 in 1983, the Arrow I in 1980, the DL&W MUs in 1984, the U34CH in 1995.
 
@@ -251,7 +265,7 @@ make_pages.py         builds the two published HTML pages
 photos/               optional: drop photos here to embed them in the roster
 njtransit.pnml        generated NML source
 lang/english.lng      generated names, purchase text and parameter strings
-sprites/*.png         generated 8bpp sprite sheets, 31 of them
+sprites/*.png         generated 8bpp sprite sheets, 32 of them
 sprite_preview.png    every vehicle in every direction, 4x
 roster.png            labelled roster, realistic figures
 roster_balanced.png   labelled roster, balanced figures
@@ -270,7 +284,8 @@ Modern NJ TRANSIT and PATH:
 [Comet V](https://en.wikipedia.org/wiki/Comet_V),
 [MultiLevel](https://en.wikipedia.org/wiki/Bombardier_MultiLevel_Coach),
 [PATH](https://en.wikipedia.org/wiki/PATH_(rail_system)),
-[PA5 order](https://www.railway-technology.com/projects/ny-path/).
+[PA5 order](https://www.railway-technology.com/projects/ny-path/),
+[Hudson-Bergen Light Rail](https://en.wikipedia.org/wiki/Hudson%E2%80%93Bergen_Light_Rail).
 
 Historical stock:
 [PRR K4s](https://en.wikipedia.org/wiki/Pennsylvania_Railroad_class_K4) and
@@ -305,6 +320,10 @@ can change them in `fleet.py` if you disagree:
   figures for the PA1/PA2, PA4 and PA5 are not readily available. PATH capacity
   counts standing riders, because that is how rapid transit capacity is measured;
   everything else is counted in seats.
+- **HBLR power, weight and capacity** are the same kind of estimate: 670 hp for the
+  four traction motors, 45 t and a 178-rider crush load are plausible figures for a
+  90 ft double-articulated LRV rather than published NJ TRANSIT ones. Its capacity
+  counts standing riders too. The 55 mph and the April 2000 opening are sourced.
 - **Comet I and Comet II weights, and Comet II seating**, rest on the Comet family
   range rather than per-series figures.
 - **The Stillwell coach's livery is a guess.** No source reached describes the Erie

@@ -198,7 +198,7 @@ VEHICLES = [
         intro=(1965, 9, 1), length_ft=51, length=5, track="ELRL",
         engine_class="ENGINE_CLASS_ELECTRIC", effect=None,
         run_base="RUNNING_COST_ELECTRIC", te=0.30, drag=0.05,
-        flags=["TRAIN_FLAG_MU"], loading=25,
+        flags=["TRAIN_FLAG_MU"], loading=25, riders=True,
         real=dict(speed=50, power=0, weight=33, cap=100, cost=0, run=0,
                   model_life="VEHICLE_NEVER_EXPIRES", life=45, decay=22),
         bal=dict(speed=50, power=0, weight=20, cap=38, cost=0, run=0,
@@ -210,7 +210,7 @@ VEHICLES = [
         intro=(1965, 9, 1), length_ft=51, length=5, track="ELRL",
         engine_class="ENGINE_CLASS_ELECTRIC", effect="VISUAL_EFFECT_ELECTRIC",
         run_base="RUNNING_COST_ELECTRIC", te=0.30, drag=0.05,
-        flags=["TRAIN_FLAG_MU"], artic="path_pa1_b", pair=True, loading=25,
+        flags=["TRAIN_FLAG_MU"], artic="path_pa1_b", pair=True, loading=25, riders=True,
         real=dict(speed=50, power=800, weight=33, cap=100, cost=92, run=40,
                   model_life=46, life=45, decay=22),
         bal=dict(speed=50, power=560, weight=20, cap=38, cost=54, run=20,
@@ -226,7 +226,7 @@ VEHICLES = [
         intro=(1987, 1, 1), length_ft=51, length=5, track="ELRL",
         engine_class="ENGINE_CLASS_ELECTRIC", effect=None,
         run_base="RUNNING_COST_ELECTRIC", te=0.30, drag=0.05,
-        flags=["TRAIN_FLAG_MU"], loading=25,
+        flags=["TRAIN_FLAG_MU"], loading=25, riders=True,
         real=dict(speed=55, power=0, weight=34, cap=102, cost=0, run=0,
                   model_life="VEHICLE_NEVER_EXPIRES", life=40, decay=18),
         bal=dict(speed=55, power=0, weight=20, cap=40, cost=0, run=0,
@@ -238,7 +238,7 @@ VEHICLES = [
         intro=(1987, 1, 1), length_ft=51, length=5, track="ELRL",
         engine_class="ENGINE_CLASS_ELECTRIC", effect="VISUAL_EFFECT_ELECTRIC",
         run_base="RUNNING_COST_ELECTRIC", te=0.30, drag=0.05,
-        flags=["TRAIN_FLAG_MU"], artic="path_pa4_b", pair=True, loading=25,
+        flags=["TRAIN_FLAG_MU"], artic="path_pa4_b", pair=True, loading=25, riders=True,
         real=dict(speed=55, power=1000, weight=34, cap=102, cost=106, run=42,
                   model_life=40, life=40, decay=18),
         bal=dict(speed=55, power=700, weight=20, cap=40, cost=64, run=22,
@@ -254,7 +254,7 @@ VEHICLES = [
         intro=(2011, 6, 1), length_ft=51, length=5, track="ELRL",
         engine_class="ENGINE_CLASS_ELECTRIC", effect=None,
         run_base="RUNNING_COST_ELECTRIC", te=0.30, drag=0.05,
-        flags=["TRAIN_FLAG_MU"], loading=28,
+        flags=["TRAIN_FLAG_MU"], loading=28, riders=True,
         real=dict(speed=55, power=0, weight=35, cap=105, cost=0, run=0,
                   model_life="VEHICLE_NEVER_EXPIRES", life=40, decay=14),
         bal=dict(speed=60, power=0, weight=21, cap=44, cost=0, run=0,
@@ -266,7 +266,7 @@ VEHICLES = [
         intro=(2011, 6, 1), length_ft=51, length=5, track="ELRL",
         engine_class="ENGINE_CLASS_ELECTRIC", effect="VISUAL_EFFECT_ELECTRIC",
         run_base="RUNNING_COST_ELECTRIC", te=0.30, drag=0.05,
-        flags=["TRAIN_FLAG_MU"], artic="path_pa5_b", pair=True, loading=28,
+        flags=["TRAIN_FLAG_MU"], artic="path_pa5_b", pair=True, loading=28, riders=True,
         real=dict(speed=55, power=1200, weight=35, cap=105, cost=126, run=44,
                   model_life=45, life=40, decay=14),
         bal=dict(speed=60, power=860, weight=21, cap=44, cost=76, run=24,
@@ -275,6 +275,29 @@ VEHICLES = [
                  "stainless bodies, three doors a side, longitudinal seating for 35 "
                  "and standing room for a rush hour under the river.{}{GOLD}Third "
                  "rail - electrified track only.",
+    ),
+    # ------------------------------------------------- HUDSON-BERGEN LIGHT RAIL --
+    # A double-articulated low-floor tram, not a mainline car: three body
+    # sections over three trucks, 750 V DC off the overhead. Runs as a single
+    # unit - HBLR couples one to three of them into a train - so this one is
+    # bought on its own rather than as a married pair like the PATH stock.
+    dict(
+        nml="hblr_lrv", sprite="njt_hblr", name="HBLR Light Rail",
+        role="Kinki Sharyo low-floor LRV, 2000 \u00b7 52 built",
+        intro=(2000, 4, 15), length_ft=90, length=8, track="ELRL",
+        engine_class="ENGINE_CLASS_ELECTRIC", effect="VISUAL_EFFECT_ELECTRIC",
+        run_base="RUNNING_COST_ELECTRIC", te=0.32, drag=0.05,
+        flags=["TRAIN_FLAG_MU"], loading=32, riders=True,
+        real=dict(speed=55, power=670, weight=45, cap=178, cost=112, run=38,
+                  model_life=45, life=35, decay=16),
+        bal=dict(speed=55, power=470, weight=27, cap=70, cost=68, run=18,
+                 model_life=45, life=35, decay=16),
+        purchase="{BLACK}Kinki Sharyo, 1998-2005. 52 built.{}Double-articulated "
+                 "low-floor light rail car for the Hudson-Bergen line, which opened "
+                 "in April 2000 between Bayonne and Jersey City. Three body sections, "
+                 "wide doors and room for well over a hundred standing riders. Runs "
+                 "singly or coupled into two- and three-car trains.{}{GOLD}750 V "
+                 "overhead - electrified track only.",
     ),
 ]
 
@@ -559,6 +582,7 @@ PHOTOS = {
     'path_pa1_a': 'https://en.wikipedia.org/wiki/PATH_(rail_system)',
     'path_pa4_a': 'https://en.wikipedia.org/wiki/PATH_(rail_system)',
     'path_pa5_a': 'https://en.wikipedia.org/wiki/PATH_(rail_system)',
+    'hblr_lrv': 'https://en.wikipedia.org/wiki/Hudson%E2%80%93Bergen_Light_Rail',
 }
 
 for _v in VEHICLES:
@@ -580,6 +604,8 @@ GROUPS = [
       "comet5", "comet5_cab", "multilevel", "multilevel_cab"]),
     ("PATH — rapid transit",
      ["path_pa1_a", "path_pa4_a", "path_pa5_a"]),
+    ("Hudson-Bergen Light Rail",
+     ["hblr_lrv"]),
 ]
 
 ROSTER_ORDER = [k for _, keys in GROUPS for k in keys]
@@ -599,7 +625,7 @@ def figures(v, mode):
     out.append("{} mph".format(s["speed"]))
     if s["cap"]:
         total = s["cap"] * (2 if v.get("pair") else 1)
-        out.append("{} seats".format(total) if "PATH" not in v["name"]
-                   else "{} riders".format(total))
+        out.append("{} riders".format(total) if v.get("riders")
+                   else "{} seats".format(total))
     out.append("catenary only" if v["track"] == "ELRL" else "any track")
     return out

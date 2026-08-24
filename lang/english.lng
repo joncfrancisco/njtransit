@@ -1,7 +1,7 @@
 ##grflangid 0x01
 
 STR_GRF_NAME                :NJ TRANSIT + PATH Trainset
-STR_GRF_DESC                :{ORANGE}NJ TRANSIT + PATH Trainset{}{BLACK}Modern New Jersey rail: ALP-46, ALP-46A and ALP-45DP electrics, the PL42AC diesel, Arrow III EMUs, Comet V coaches, MultiLevel cars, and three generations of PATH rapid transit.{}{}Set {GOLD}Statistics{BLACK} below to choose realistic prototype figures or game-balanced ones.
+STR_GRF_DESC                :{ORANGE}NJ TRANSIT + PATH Trainset{}{BLACK}Modern New Jersey rail: ALP-46, ALP-46A and ALP-45DP electrics, the PL42AC diesel, Arrow III EMUs, Comet V coaches, MultiLevel cars, three generations of PATH rapid transit and the Hudson-Bergen light rail car.{}{}Set {GOLD}Statistics{BLACK} below to choose realistic prototype figures or game-balanced ones.
 
 STR_PARAM_STATS             :Statistics
 STR_PARAM_STATS_DESC        :Realistic uses published prototype figures. Game-balanced scales capacity, power, speed and cost so the set sits alongside OpenTTD's own vehicles. Change this before starting a game.
@@ -25,6 +25,7 @@ STR_NAME_PATH_PA4_B         :PATH PA4
 STR_NAME_PATH_PA4_A         :PATH PA4
 STR_NAME_PATH_PA5_B         :PATH PA5
 STR_NAME_PATH_PA5_A         :PATH PA5
+STR_NAME_HBLR_LRV           :HBLR Light Rail
 STR_NAME_K4S                :PRR K4s Pacific
 STR_NAME_E8                 :EMD E8
 STR_NAME_RS3                :ALCO RS-3
@@ -54,6 +55,7 @@ STR_PURCHASE_MULTILEVEL_CAB :{BLACK}Bombardier, 2006-2009.{}MultiLevel cab car f
 STR_PURCHASE_PATH_PA1_A     :{BLACK}St. Louis Car Company, 1965-1967.{}The cars that replaced the Hudson & Manhattan tubes' original stock: painted aluminium bodies, two doors a side, 51 ft over couplers. Bought as an A car plus a cabless C car.{}{GOLD}Third rail - electrified track only.
 STR_PURCHASE_PATH_PA4_A     :{BLACK}Kawasaki, 1986-1988. 95 built.{}PATH's first stainless steel cars, with three doors a side for faster loading at Journal Square and 33rd Street. All cab cars, so a set has a cab at each end.{}{GOLD}Third rail - electrified track only.
 STR_PURCHASE_PATH_PA5_A     :{BLACK}Kawasaki, 2009-2011. 340 built.{}The current PATH fleet: stainless bodies, three doors a side, longitudinal seating for 35 and standing room for a rush hour under the river.{}{GOLD}Third rail - electrified track only.
+STR_PURCHASE_HBLR_LRV       :{BLACK}Kinki Sharyo, 1998-2005. 52 built.{}Double-articulated low-floor light rail car for the Hudson-Bergen line, which opened in April 2000 between Bayonne and Jersey City. Three body sections, wide doors and room for well over a hundred standing riders. Runs singly or coupled into two- and three-car trains.{}{GOLD}750 V overhead - electrified track only.
 STR_PURCHASE_K4S            :{BLACK}Juniata Shops and Baldwin, 1914-1928. 425 built.{}The Pennsylvania's standard passenger Pacific, and the last steam on the New York & Long Branch - regular runs ended in 1956, the final excursion behind No. 612 in October 1957.{}{GOLD}Dark Green Locomotive Enamel. Heavy, thirsty, and magnificent at speed.
 STR_PURCHASE_E8             :{BLACK}EMD, 1949-1954. 450 A units built.{}Twin 1,125 hp 567B V12s under a streamlined nose. The Pennsylvania was the largest buyer; Erie Lackawanna ran 25 out of Hoboken, and NJDOT bought ex-Penn Central examples in 1976 for commuter work.
 STR_PURCHASE_RS3            :{BLACK}ALCO, 1950-1956. 1,418 built.{}The go-anywhere road switcher: 1,600 hp from a 244 V12, equally at home on a commuter train or a local freight. The Jersey Central ran about 26 in dark green and yellow; Erie Lackawanna had 62.

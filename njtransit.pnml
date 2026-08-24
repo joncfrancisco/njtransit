@@ -12,7 +12,7 @@ grf {
     grfid:                  "NJT\01";
     name:                   string(STR_GRF_NAME);
     desc:                   string(STR_GRF_DESC);
-    version:                3;
+    version:                4;
     min_compatible_version: 1;
     param {
         stats {
@@ -62,6 +62,7 @@ spriteset(set_path_pa4_b, "sprites/path_pa4_b.png") { tmpl_8views(0) }
 spriteset(set_path_pa4_a, "sprites/path_pa4_a.png") { tmpl_8views(0) }
 spriteset(set_path_pa5_b, "sprites/path_pa5_b.png") { tmpl_8views(0) }
 spriteset(set_path_pa5_a, "sprites/path_pa5_a.png") { tmpl_8views(0) }
+spriteset(set_njt_hblr, "sprites/njt_hblr.png") { tmpl_8views(0) }
 spriteset(set_hist_k4s, "sprites/hist_k4s.png") { tmpl_8views(0) }
 spriteset(set_hist_e8, "sprites/hist_e8.png") { tmpl_8views(0) }
 spriteset(set_hist_rs3, "sprites/hist_rs3.png") { tmpl_8views(0) }
@@ -217,7 +218,7 @@ item(FEAT_TRAINS, path_pa5_b, 14) {
     }
 }
 
-item(FEAT_TRAINS, arrow2_b, 25) {
+item(FEAT_TRAINS, arrow2_b, 26) {
     property {
         name:                           string(STR_NAME_ARROW2_B);
         climates_available:             NO_CLIMATE;
@@ -648,7 +649,39 @@ item(FEAT_TRAINS, path_pa5_a, 15) {
     }
 }
 
-item(FEAT_TRAINS, k4s, 16) {
+item(FEAT_TRAINS, hblr_lrv, 16) {
+    property {
+        name:                           string(STR_NAME_HBLR_LRV);
+        climates_available:             ALL_CLIMATES;
+        introduction_date:              date(2000, 4, 15);
+        model_life:                     45;
+        vehicle_life:                   35;
+        reliability_decay:              16;
+        cost_factor:                    112;
+        running_cost_factor:            38;
+        running_cost_base:              RUNNING_COST_ELECTRIC;
+        speed:                          55 mph;
+        power:                          670 hp;
+        weight:                         45 ton;
+        tractive_effort_coefficient:    0.32;
+        air_drag_coefficient:           0.05;
+        length:                         8;
+        track_type:                     ELRL;
+        engine_class:                   ENGINE_CLASS_ELECTRIC;
+        visual_effect_and_powered:      visual_effect_and_powered(VISUAL_EFFECT_ELECTRIC, 0, DISABLE_WAGON_POWER);
+        misc_flags:                     bitmask(TRAIN_FLAG_MU);
+        refittable_cargo_classes:       bitmask(CC_PASSENGERS);
+        cargo_capacity:                 178;
+        loading_speed:                  32;
+        sprite_id:                      SPRITE_ID_NEW_TRAIN;
+    }
+    graphics {
+        default:                   set_njt_hblr;
+        additional_text:           string(STR_PURCHASE_HBLR_LRV);
+    }
+}
+
+item(FEAT_TRAINS, k4s, 17) {
     property {
         name:                           string(STR_NAME_K4S);
         climates_available:             ALL_CLIMATES;
@@ -678,7 +711,7 @@ item(FEAT_TRAINS, k4s, 16) {
     }
 }
 
-item(FEAT_TRAINS, e8, 17) {
+item(FEAT_TRAINS, e8, 18) {
     property {
         name:                           string(STR_NAME_E8);
         climates_available:             ALL_CLIMATES;
@@ -708,7 +741,7 @@ item(FEAT_TRAINS, e8, 17) {
     }
 }
 
-item(FEAT_TRAINS, rs3, 18) {
+item(FEAT_TRAINS, rs3, 19) {
     property {
         name:                           string(STR_NAME_RS3);
         climates_available:             ALL_CLIMATES;
@@ -738,7 +771,7 @@ item(FEAT_TRAINS, rs3, 18) {
     }
 }
 
-item(FEAT_TRAINS, u34ch, 19) {
+item(FEAT_TRAINS, u34ch, 20) {
     property {
         name:                           string(STR_NAME_U34CH);
         climates_available:             ALL_CLIMATES;
@@ -768,7 +801,7 @@ item(FEAT_TRAINS, u34ch, 19) {
     }
 }
 
-item(FEAT_TRAINS, gg1, 20) {
+item(FEAT_TRAINS, gg1, 21) {
     property {
         name:                           string(STR_NAME_GG1);
         climates_available:             ALL_CLIMATES;
@@ -798,7 +831,7 @@ item(FEAT_TRAINS, gg1, 20) {
     }
 }
 
-item(FEAT_TRAINS, alp44, 21) {
+item(FEAT_TRAINS, alp44, 22) {
     property {
         name:                           string(STR_NAME_ALP44);
         climates_available:             ALL_CLIMATES;
@@ -828,7 +861,7 @@ item(FEAT_TRAINS, alp44, 21) {
     }
 }
 
-item(FEAT_TRAINS, mp54, 22) {
+item(FEAT_TRAINS, mp54, 23) {
     property {
         name:                           string(STR_NAME_MP54);
         climates_available:             ALL_CLIMATES;
@@ -860,7 +893,7 @@ item(FEAT_TRAINS, mp54, 22) {
     }
 }
 
-item(FEAT_TRAINS, dlwmu, 23) {
+item(FEAT_TRAINS, dlwmu, 24) {
     property {
         name:                           string(STR_NAME_DLWMU);
         climates_available:             ALL_CLIMATES;
@@ -892,7 +925,7 @@ item(FEAT_TRAINS, dlwmu, 23) {
     }
 }
 
-item(FEAT_TRAINS, arrow1, 24) {
+item(FEAT_TRAINS, arrow1, 25) {
     property {
         name:                           string(STR_NAME_ARROW1);
         climates_available:             ALL_CLIMATES;
@@ -924,7 +957,7 @@ item(FEAT_TRAINS, arrow1, 24) {
     }
 }
 
-item(FEAT_TRAINS, arrow2_a, 26) {
+item(FEAT_TRAINS, arrow2_a, 27) {
     property {
         name:                           string(STR_NAME_ARROW2_A);
         climates_available:             ALL_CLIMATES;
@@ -957,7 +990,7 @@ item(FEAT_TRAINS, arrow2_a, 26) {
     }
 }
 
-item(FEAT_TRAINS, stillwell, 27) {
+item(FEAT_TRAINS, stillwell, 28) {
     property {
         name:                           string(STR_NAME_STILLWELL);
         climates_available:             ALL_CLIMATES;
@@ -987,7 +1020,7 @@ item(FEAT_TRAINS, stillwell, 27) {
     }
 }
 
-item(FEAT_TRAINS, comet1, 28) {
+item(FEAT_TRAINS, comet1, 29) {
     property {
         name:                           string(STR_NAME_COMET1);
         climates_available:             ALL_CLIMATES;
@@ -1017,7 +1050,7 @@ item(FEAT_TRAINS, comet1, 28) {
     }
 }
 
-item(FEAT_TRAINS, comet1_cab, 29) {
+item(FEAT_TRAINS, comet1_cab, 30) {
     property {
         name:                           string(STR_NAME_COMET1_CAB);
         climates_available:             ALL_CLIMATES;
@@ -1047,7 +1080,7 @@ item(FEAT_TRAINS, comet1_cab, 29) {
     }
 }
 
-item(FEAT_TRAINS, comet2, 30) {
+item(FEAT_TRAINS, comet2, 31) {
     property {
         name:                           string(STR_NAME_COMET2);
         climates_available:             ALL_CLIMATES;
@@ -1221,6 +1254,15 @@ if (stats == 1) {
             cargo_capacity:             44;
             cost_factor:                76;
             running_cost_factor:        24;
+        }
+    }
+    item(FEAT_TRAINS, hblr_lrv) {
+        property {
+            power:                      470 hp;
+            weight:                     27 ton;
+            cargo_capacity:             70;
+            cost_factor:                68;
+            running_cost_factor:        18;
         }
     }
     item(FEAT_TRAINS, k4s) {

@@ -47,6 +47,7 @@ LABEL = (236, 240, 244)
 SPEC = (150, 160, 172)
 ORANGE = (240, 124, 26)
 RED = (214, 60, 62)
+BLUE = (72, 138, 236)
 
 ROW_H = 122
 SPR_X = 26
@@ -102,6 +103,9 @@ def render_row(img, d, v, mode, y, i):
         nw = d.textlength(v["name"], font=f_name)
         if v["nml"].startswith("path_"):
             d.text((TXT_X + nw + 12, y + ROW_H // 2 - 29), "PATH", font=f_tag, fill=RED)
+        elif v["nml"].startswith("hblr_"):
+            d.text((TXT_X + nw + 12, y + ROW_H // 2 - 29), "LIGHT RAIL", font=f_tag,
+                   fill=BLUE)
         d.text((TXT_X, y + ROW_H // 2 - 6), v["role"], font=f_spec, fill=SPEC)
         d.text((TXT_X, y + ROW_H // 2 + 16), "  ·  ".join(figures(v, mode)),
                font=f_spec, fill=(190, 198, 208))
