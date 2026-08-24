@@ -1,0 +1,57 @@
+name: Build NewGRF
+
+# Builds sprites -> njtransit.pnml -> njtransit.grf from source on every push
+# and pull request, so a broken build fails in CI instead of at release time.
+# Pushing a tag like v3 additionally attaches the compiled njtransit.grf to a
+# GitHub Release.
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Generate sprites
+        run: python3 gen_sprites.py
+
+      - name: Generate NML source
+        run: python3 gen_nml.py
+
+      - name: Compile the NewGRF
+        run: nmlc --grf njtransit.grf njtransit.pnml
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: njtransit.grf
+          path: njtransit.grf
+
+  release:
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: njtransit.grf
+
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: njtransit.grf
+          generate_release_notes: true
