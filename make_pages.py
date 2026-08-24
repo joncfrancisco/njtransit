@@ -369,18 +369,18 @@ def build_main(balanced_url):
   <header>
     <p class="eyebrow">OpenTTD · NewGRF</p>
     <h1>NJ TRANSIT Trainset</h1>
-    <p class="lede">Twenty-six vehicles covering a century of New Jersey railroading:
+    <p class="lede">Twenty-seven vehicles covering a century of New Jersey railroading:
       a PRR K4s Pacific and Erie Lackawanna diesels, the GG1 through to its last run in
-      1983, NJ TRANSIT's modern fleet, and three generations of PATH rapid transit —
-      each in its own railroad's livery, with real figures and a switch for people who
-      would rather have balanced ones.</p>
+      1983, NJ TRANSIT's modern fleet, three generations of PATH rapid transit and the
+      Hudson-Bergen light rail car — each in its own railroad's livery, with real
+      figures and a switch for people who would rather have balanced ones.</p>
     <hr class="stripe">
     <figure class="hero">
       %s
       <figcaption>PRR K4s Pacific and Stillwell coaches, 1950</figcaption>
     </figure>
     <ul class="meta">
-      <li>26 vehicles</li>
+      <li>27 vehicles</li>
       <li>1914 – 2012</li>
       <li>Realistic or balanced stats</li>
       <li>Built with NML 0.9</li>
@@ -451,15 +451,24 @@ def build_main(balanced_url):
           At 32 pixels these are impressions rather than reproductions.</p>
       </div>
       <div class="note">
+        <h3>The light rail car is a tram, not a train</h3>
+        <p>The Hudson-Bergen car is double-articulated: three body sections over three
+          trucks, with a bellows at each joint and the floor dropped between them. It is
+          the one vehicle in the set that is a complete train on its own — buy one, or
+          couple two or three the way the real line does.</p>
+      </div>
+      <div class="note">
         <h3>Cab cars turn around</h3>
         <p>CTRL+click a cab car in the depot to flip it, so the cab faces the right way
           for push-pull running.</p>
       </div>
       <div class="note">
         <h3>Catenary and third rail are the same thing here</h3>
-        <p>OpenTTD has one electrified railtype, so the ALP-46, ALP-46A, Arrow III and
-          every PATH class all need electrified track. The PL42AC, ALP-45DP and the
-          trailer cars run on plain track too.</p>
+        <p>OpenTTD has one electrified railtype, so 25 kV catenary, PATH's third rail
+          and the light rail car's 750 volt trolley wire are all the same thing here:
+          the ALP-46, ALP-46A, Arrow III, every PATH class and the HBLR car all need
+          electrified track. The PL42AC, ALP-45DP and the trailer cars run on plain
+          track too.</p>
       </div>
     </div>
   </section>
@@ -504,10 +513,13 @@ screen_y = (wy + wx) - wz</pre>
       <a href="https://en.wikipedia.org/wiki/Arrow_(railcar)">Arrow III</a>,
       <a href="https://en.wikipedia.org/wiki/Comet_V">Comet V</a>,
       <a href="https://en.wikipedia.org/wiki/Bombardier_MultiLevel_Coach">MultiLevel</a>,
-      <a href="https://en.wikipedia.org/wiki/PATH_(rail_system)">PATH</a>.
-      Arrow III seating is rounded to 120 per car; PATH per-car power and weight are
-      estimates, since published figures for those are not readily available, and PATH
-      capacity counts standing riders because that is how rapid transit is measured.</p>
+      <a href="https://en.wikipedia.org/wiki/PATH_(rail_system)">PATH</a>,
+      <a href="https://en.wikipedia.org/wiki/Hudson%%E2%%80%%93Bergen_Light_Rail">Hudson-Bergen
+      Light Rail</a>.
+      Arrow III seating is rounded to 120 per car; PATH and HBLR per-car power and
+      weight are estimates, since published figures for those are not readily available,
+      and their capacity counts standing riders because that is how rapid transit is
+      measured.</p>
   </footer>
 
 </div>
@@ -562,8 +574,11 @@ def build_balanced(main_url):
                   '</tr>\n' % title)
         for k in keys:
             v = BY_ID[k]
-            tag = (' <span class="tag">PATH</span>'
-                   if v["nml"].startswith("path_") else "")
+            tag = ""
+            if v["nml"].startswith("path_"):
+                tag = ' <span class="tag">PATH</span>'
+            elif v["nml"].startswith("hblr_"):
+                tag = ' <span class="tag">LIGHT RAIL</span>'
             table += ('        <tr><th scope="row">%s%s</th>%s</tr>\n'
                       % (v["name"], tag, metric_cells(v)))
 
@@ -617,14 +632,14 @@ def build_balanced(main_url):
     <p class="lede">The realistic figures make an honest model and an overpowered
       NewGRF: a single MultiLevel carries three vanilla carriages' worth of passengers,
       an ALP-46A out-muscles anything in the base set, and a K4s Pacific arrives in 1914
-      with 3,286 horsepower. This is the same twenty-six vehicles with the numbers
+      with 3,286 horsepower. This is the same twenty-seven vehicles with the numbers
       re-struck for play — and what each one becomes.</p>
     <hr class="stripe">
     <ul class="meta">
       <li>NewGRF parameter</li>
       <li>Statistics: Game-balanced</li>
       <li>Same sprites, dates and liveries</li>
-      <li>26 vehicles, 1914 – 2012</li>
+      <li>27 vehicles, 1914 – 2012</li>
     </ul>
   </header>
 

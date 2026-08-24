@@ -30,7 +30,7 @@ grf {
     grfid:                  "NJT\\01";
     name:                   string(STR_GRF_NAME);
     desc:                   string(STR_GRF_DESC);
-    version:                3;
+    version:                4;
     min_compatible_version: 1;
     param {
         stats {
@@ -214,8 +214,9 @@ def main():
     lng.append(
         "STR_GRF_DESC                :{ORANGE}NJ TRANSIT + PATH Trainset{}{BLACK}"
         "Modern New Jersey rail: ALP-46, ALP-46A and ALP-45DP electrics, the PL42AC "
-        "diesel, Arrow III EMUs, Comet V coaches, MultiLevel cars, and three "
-        "generations of PATH rapid transit.{}{}Set {GOLD}Statistics{BLACK} below to "
+        "diesel, Arrow III EMUs, Comet V coaches, MultiLevel cars, three "
+        "generations of PATH rapid transit and the Hudson-Bergen light rail "
+        "car.{}{}Set {GOLD}Statistics{BLACK} below to "
         "choose realistic prototype figures or game-balanced ones.")
     lng.append("")
     lng.append("STR_PARAM_STATS             :Statistics")

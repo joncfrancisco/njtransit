@@ -62,6 +62,14 @@ PATH_RED    = (198, 32, 38)
 PATH_ROOF   = (120, 126, 132)
 AC_UNIT     = (78, 84, 90)
 
+# Hudson-Bergen light rail: silver body under a dark glazing mask, with
+# rubber bellows at the two articulations.
+LRV_BODY    = (200, 206, 212)
+LRV_MASK    = (40, 44, 50)
+LRV_BELLOWS = (56, 58, 62)
+LRV_GLASS   = (92, 116, 142)   # lighter than GLASS: dark glass on a dark mask
+                               # loses the windows altogether at this size
+
 EPS = 0.06  # decal offset above a face, in world units
 
 # paint layers: solid geometry first, then decals in this order
@@ -421,11 +429,109 @@ def metro_body(length, half_w, doors=3, cab=0, body_rgb=PATH_STEEL,
     return q
 
 
+def lrv_body(length, half_w, doors=(0.0, 3.6), panto_x=-4.6):
+    """Hudson-Bergen light rail car: a double-articulated low-floor tram.
+
+    Three body sections over three trucks, which is the shape that separates
+    this from everything else in the set: it gets a centre truck the mainline
+    cars do not have, and a bellows at each articulation. The floor sits low,
+    the roof sits well under a mainline car's, and a dark glazing mask wraps
+    the car at window height.
+
+    doors: x offsets of the doorways, mirrored about the centre (0.0 is not
+    mirrored). Doorways and articulations both break the window rows.
+    """
+    hl = length / 2.0
+    body_z0, body_z1, roof_z1 = 2.2, 7.35, 8.0
+    band_z0, band_z1 = body_z1 - 2.1, body_z1 - 0.42
+    joint = length * 0.092          # articulations bracketing the low-floor bay
+    door_hw = 0.42                  # a 4 ft doorway at this model's scale
+
+    q = []
+    # three trucks: powered under each end section, unpowered under the middle
+    q += running_gear(length, half_w, truck_z=2.0, inset=2.9)
+    bw = half_w * 0.80
+    q += box(-1.5, 1.5, -bw, bw, 0.85, 2.0, BOGIE)
+    for wx in (-1.15, 0.15):
+        q += box(wx, wx + 1.0, -bw - 0.18, bw + 0.18, 0.0, 1.35, WHEEL)
+
+    q += box(-hl + 1.0, hl - 1.0, -half_w * 0.9, half_w * 0.9,
+             1.75, body_z0 + 0.2, UNDER)
+    q += box(-hl, hl, -half_w, half_w, body_z0, body_z1, LRV_BODY,
+             top_rgb=LRV_BODY)
+    q += box(-hl + 0.3, hl - 0.3, -half_w * 0.86, half_w * 0.86,
+             body_z1, roof_z1, ROOF, top_rgb=ROOF)
+    # air conditioning over the end section the pantograph does not sit on
+    q += box(hl * 0.27, hl * 0.72, -half_w * 0.46, half_w * 0.46,
+             roof_z1, roof_z1 + 0.3, AC_UNIT)
+
+    # the glazing mask wraps the car at window height
+    q += side_decal(-hl + 0.2, hl - 0.2, band_z0, band_z1, half_w, LRV_MASK,
+                    layer=L_TEXTURE)
+    for sgn in (1, -1):
+        q += end_decal(sgn * hl, sgn, -half_w * 0.94, half_w * 0.94,
+                       band_z0, band_z1, LRV_MASK, layer=L_TEXTURE)
+
+    door_x = sorted({sgn * dx for dx in doors for sgn in (-1, 1)})
+    for dx in door_x:
+        q += side_decal(dx - door_hw, dx + door_hw, body_z0 + 0.15,
+                        band_z1 - 0.15, half_w, shade(LRV_BODY, 0.72),
+                        layer=L_DOOR)
+        q += side_decal(dx - door_hw + 0.1, dx + door_hw - 0.1, band_z0 + 0.2,
+                        band_z1 - 0.2, half_w, LRV_GLASS, layer=L_WINDOW)
+
+    # passenger windows fill what the doorways, the joints and the cabs leave
+    blocked = [(dx - door_hw - 0.28, dx + door_hw + 0.28) for dx in door_x]
+    blocked += [(j - 0.34, j + 0.34) for j in (-joint, joint)]
+    edges = [-hl + 2.4]
+    for a, b in sorted(blocked):
+        edges += [a, b]
+    edges.append(hl - 2.4)
+    for a, b in zip(edges[0::2], edges[1::2]):
+        if b - a > 0.85:
+            q += window_row(a, b, band_z0 + 0.22, band_z1 - 0.22, half_w,
+                            max(1, int((b - a) / 1.5)), rgb=LRV_GLASS)
+
+    # bellows at the two articulations, over the stripes and up onto the roof
+    for j in (-joint, joint):
+        q += side_decal(j - 0.26, j + 0.26, body_z0, body_z1, half_w,
+                        LRV_BELLOWS, layer=L_WINDOW)
+        q += top_decal(j - 0.26, j + 0.26, -half_w * 0.86, half_w * 0.86,
+                       roof_z1, LRV_BELLOWS)
+
+    # a cab at each end: these run either way round without being turned
+    for sgn in (1, -1):
+        q += side_decal(sgn * (hl - 2.2), sgn * (hl - 0.4),
+                        band_z0 + 0.2, band_z1 - 0.2, half_w, GLASS_DARK,
+                        layer=L_WINDOW)
+        q += end_decal(sgn * hl, sgn, -half_w * 0.8, half_w * 0.8,
+                       band_z0 + 0.1, band_z1 + 0.12, GLASS_DARK,
+                       layer=L_WINDOW)
+        q += end_decal(sgn * hl, sgn, -half_w * 0.74, -half_w * 0.38,
+                       body_z0 + 0.55, body_z0 + 1.05, HEADLIGHT, flat=True,
+                       layer=L_LIGHT)
+        q += end_decal(sgn * hl, sgn, half_w * 0.38, half_w * 0.74,
+                       body_z0 + 0.55, body_z0 + 1.05, HEADLIGHT, flat=True,
+                       layer=L_LIGHT)
+
+    # NJ TRANSIT stripes, shallower than a mainline car's to fit the low body
+    q += livery_stripes(-hl + 0.25, hl - 0.25, half_w, body_z0 + 0.8,
+                        blue_h=1.0, orange_h=0.42, gap=0.14)
+    for sgn in (1, -1):
+        q += end_decal(sgn * hl, sgn, -half_w * 0.9, half_w * 0.9,
+                       body_z0 + 0.8, body_z0 + 1.8, NJT_BLUE, layer=L_STRIPE)
+
+    q += pantograph(panto_x, half_w, roof_z1, up=1.25)
+    return q
+
+
 HALF_W = 1.75          # half body width in world units
 PATH_HALF_W = 1.52     # PATH cars are narrower: 9 ft 2 in against 10 ft 6 in
 PATH_L = 9.0           # 51 ft 8 in against 85 ft, so 5/8 vehicle length
 LOCO_L = 13.0          # 7/8 length vehicles
 CAR_L = 14.5           # 8/8 length vehicles
+LRV_HALF_W = 1.45      # 8 ft 8 in over the body: narrower again than a PATH car
+LRV_L = 15.4           # 90 ft over couplers, the longest prototype in the set
 
 
 # ------------------------------------------------------------ vehicle length --
@@ -455,8 +561,10 @@ CAR_L = 14.5           # 8/8 length vehicles
 # it needed to be well short of that; 0.3 still keeps a real, visible
 # coupling gap while letting each car use noticeably more of its slot.
 COUPLING_GAP = 0.3      # world units of visible gap, fixed regardless of car length
-REFERENCE_FT = 85.0     # a modern 85 ft coach is the longest prototype in the set...
-REFERENCE_LEN = 8       # ...and it carries the longest NML `length`, 8/8
+REFERENCE_FT = 85.0     # a modern 85 ft coach sets the scale...
+REFERENCE_LEN = 8       # ...against the longest NML `length`, 8/8. The 90 ft
+                        # light rail car is the one prototype longer than the
+                        # reference, so it draws capped at its slot.
 WORLD_UNITS_PER_FOOT = (REFERENCE_LEN - COUPLING_GAP) / REFERENCE_FT
 
 
@@ -521,6 +629,7 @@ MODELS = {
                                          body_rgb=PATH_STEEL, roof_ac=True),
     "path_pa5_b":     lambda: metro_body(PATH_L, PATH_HALF_W, doors=3, cab=0,
                                          body_rgb=PATH_STEEL, roof_ac=True),
+    "njt_hblr":       lambda: lrv_body(LRV_L, LRV_HALF_W),
 }
 
 
