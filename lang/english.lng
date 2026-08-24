@@ -1,7 +1,7 @@
 ##grflangid 0x01
 
-STR_GRF_NAME                :NJ TRANSIT + PATH Trainset
-STR_GRF_DESC                :{ORANGE}NJ TRANSIT + PATH Trainset{}{BLACK}Modern New Jersey rail: ALP-46, ALP-46A and ALP-45DP electrics, the PL42AC diesel, Arrow III EMUs, Comet V coaches, MultiLevel cars, three generations of PATH rapid transit and the Hudson-Bergen light rail car.{}{}Set {GOLD}Statistics{BLACK} below to choose realistic prototype figures or game-balanced ones.
+STR_GRF_NAME                :NJ TRANSIT + PATH Vehicle Set
+STR_GRF_DESC                :{ORANGE}NJ TRANSIT + PATH Vehicle Set{}{BLACK}A century of New Jersey transit. Rail: ALP-46, ALP-46A and ALP-45DP electrics, the PL42AC diesel, Arrow III EMUs, Comet V coaches, MultiLevel cars, three generations of PATH rapid transit and the Hudson-Bergen light rail car, back through the fallen-flag railroads to a 1914 K4s Pacific.{}{}Road: eleven buses from a 1935 Public Service All-Service Vehicle to a battery-electric Xcelsior, including two articulated sixty-footers.{}{}Set {GOLD}Statistics{BLACK} below to choose realistic prototype figures or game-balanced ones.
 
 STR_PARAM_STATS             :Statistics
 STR_PARAM_STATS_DESC        :Realistic uses published prototype figures. Game-balanced scales capacity, power, speed and cost so the set sits alongside OpenTTD's own vehicles. Change this before starting a game.
@@ -41,6 +41,19 @@ STR_NAME_STILLWELL          :Stillwell Coach
 STR_NAME_COMET1             :Comet I Coach
 STR_NAME_COMET1_CAB         :Comet I Cab Car
 STR_NAME_COMET2             :Comet II Coach
+STR_NAME_ASV                :Yellow Coach ASV
+STR_NAME_NEWLOOK            :GMC New Look
+STR_NAME_FLX870             :Grumman-Flxible 870
+STR_NAME_MC9                :MCI MC-9
+STR_NAME_B10M_B             :Volvo B10M Artic
+STR_NAME_B10M_A             :Volvo B10M Artic
+STR_NAME_METROB             :Flxible Metro-B
+STR_NAME_RTS06              :Nova Bus RTS-06
+STR_NAME_NABI416            :NABI 416.15
+STR_NAME_D4500CT            :MCI D4500CT
+STR_NAME_XD60_B             :New Flyer XD60
+STR_NAME_XD60_A             :New Flyer XD60
+STR_NAME_XE40               :New Flyer XE40 CHARGE
 
 # purchase window information
 STR_PURCHASE_ALP46          :{BLACK}Bombardier, 2001-2002. 29 built.{}TRAXX-family 25 kV / 12 kV electric for Midtown Direct services. 7,100 hp at rail, 71,000 lbf starting tractive effort.{}{GOLD}Electrified track only.
@@ -70,3 +83,14 @@ STR_PURCHASE_STILLWELL      :{BLACK}Pressed Steel Car, Pullman and ACF.{}Lewis S
 STR_PURCHASE_COMET1         :{BLACK}Pullman-Standard, 1970-73. 155 built.{}Aluminium-bodied, head-end powered and paid for by the state: the first modern commuter coach in New Jersey, in Erie Lackawanna maroon and yellow over bare metal. Nicknamed Sliders for their low doors.
 STR_PURCHASE_COMET1_CAB     :{BLACK}Pullman-Standard, 1970-73. 35 cab cars.{}The other end of a U34CH push-pull set. Use CTRL+click in the depot to turn it around.
 STR_PURCHASE_COMET2         :{BLACK}Bombardier, 1982-1989. 161 built.{}NJ TRANSIT's first order of its own, in the angular chevron stripes of the early eighties. Long end doors with trapdoors let one car work both low platforms and high ones - the operational advance over the Comet I.
+STR_PURCHASE_ASV            :{BLACK}Yellow Coach for Public Service, 1935-1948. 357 built, all but one of them for New Jersey.{}The All-Service Vehicle drew from trolley wire where Public Service had strung it and ran as a gas-electric where it had not - the same trick as the ALP-45DP, fifty years earlier.{}{GOLD}Runs on any road.
+STR_PURCHASE_NEWLOOK        :{BLACK}GM Truck & Coach, 1960-1973.{}The fishbowl: six-piece curved windshield, Detroit Diesel 6V-71 under the back seat. NJ TRANSIT inherited its first buses from Transport of New Jersey in 1980 and these were most of them.
+STR_PURCHASE_FLX870         :{BLACK}Grumman Flxible, 1980-1981. 271 built.{}The Advanced Design Bus that gave the type its reputation: square, ADA-ready, and cracking its undercarriage A-frames across the whole industry.{}{GOLD}Breaks down more than anything else in the set.
+STR_PURCHASE_MC9            :{BLACK}Motor Coach Industries, 1982-1984. 700 built.{}The Crusader II highway coach, bought in quantity for the park-and-ride runs into the Port Authority terminal. High floor over baggage lockers, one door, and the fastest road vehicle of its decade here.
+STR_PURCHASE_B10M_A         :{BLACK}Volvo, 1985. 210 built.{}Sixty feet of bus on a mid-engined Swedish chassis, hinged in the middle so it can still take a city corner. Bought for the heaviest Hudson County loadings.{}{GOLD}Two sections, bought and sold as one vehicle.
+STR_PURCHASE_METROB         :{BLACK}Flxible, 1988-1989. 528 built.{}The 870 redrawn without the structural sins, in the chevron stripes the Comet IIs and Arrow IIIs were wearing at the same time. Detroit Diesel 6V-92TA.
+STR_PURCHASE_RTS06          :{BLACK}Nova Bus, 1999-2000. 580 built.{}The Rapid Transit Series that GM drew in 1977 and three companies went on building: ribbed sides, rounded corners, and the last of NJ TRANSIT's high-floor city buses.
+STR_PURCHASE_NABI416        :{BLACK}North American Bus Industries, 2009-2013. 1,049 built.{}The 40-SFW: forty feet, standard floor, wide body, Cummins ISL9. The single largest order in the fleet and the bus most NJ TRANSIT routes ran for a decade.
+STR_PURCHASE_D4500CT        :{BLACK}Motor Coach Industries, 2017-2022.{}Forty-five feet of commuter coach on the Lincoln Tunnel exclusive bus lane, which moves more people at rush hour than any single rail line in the set. Cummins X12, fifty-seven seats and no standees.
+STR_PURCHASE_XD60_A         :{BLACK}New Flyer, 2020. 110 built.{}Low-floor sixty-footers for the Newark and Hudson County trunk routes - the first articulated buses NJ TRANSIT had bought since the Volvos went in 2004. Cummins L9.{}{GOLD}Two sections, bought and sold as one vehicle.
+STR_PURCHASE_XE40           :{BLACK}New Flyer, 2022. 8 built.{}Xcelsior CHARGE NG: NJ TRANSIT's first battery-electric bus, into service on Camden route 452 on 24 October 2022 and the start of a zero-emission fleet by 2040. Batteries on the roof, no exhaust.{}{GOLD}Cheapest running cost in the set.

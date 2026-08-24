@@ -1,14 +1,17 @@
-# NJ TRANSIT + PATH Trainset for OpenTTD
+# NJ TRANSIT + PATH Vehicle Set for OpenTTD
 
-A NewGRF covering a century of New Jersey railroading: 27 buyable vehicles from a
+A NewGRF covering a century of New Jersey transit: 38 buyable vehicles from a
 1914 Pennsylvania Railroad K4s Pacific through the fallen-flag diesels, the GG1's
 last run in 1983, NJ TRANSIT's modern fleet, three generations of PATH rapid
-transit and the Hudson-Bergen light rail car — each in its own railroad's livery,
-with two selectable stat sets.
+transit and the Hudson-Bergen light rail car — plus eleven buses, because NJ
+TRANSIT Bus Operations is the second-largest bus fleet in the United States and
+predates the trains: it descends from Public Service, which was bustituting its
+own trolley lines before NJ TRANSIT existed. Each vehicle is in its own operator's
+livery, with two selectable stat sets.
 
-Built with [NML](https://github.com/OpenTTD/nml) 0.9. Verified to load cleanly in
-OpenTTD 13.4 at both parameter settings — 32 engine slots registered, no GRF errors.
-All sprites are generated from 3D models rather than hand-pixelled.
+Built with [NML](https://github.com/OpenTTD/nml) 0.9. Both stat sets compile into
+one GRF — 32 train items and 13 road vehicle items — with no nmlc errors or
+warnings. All sprites are generated from 3D models rather than hand-pixelled.
 
 ---
 
@@ -25,7 +28,8 @@ Drop `njtransit.grf` into your OpenTTD `newgrf` folder, then enable it from
 
 The set only adds vehicles, so it can be added to an existing save; engines appear
 from their introduction dates onwards. Start a game in 1930 and you get Lackawanna
-MU cars and Stillwell coaches; start in 2012 and you get ALP-45DPs and PA5s.
+MU cars, Stillwell coaches and Public Service All-Service Vehicles; start in 2012
+and you get ALP-45DPs, PA5s and NABI 416.15s.
 
 ---
 
@@ -38,7 +42,7 @@ switches between them:
   overpowered: a MultiLevel carries three vanilla carriages' worth of passengers, an
   ALP-46A out-muscles anything in the base set, and a K4s Pacific turns up in 1914
   with 3,286 horsepower.
-- **Game-balanced** — the same 26 vehicles with capacity, power, weight, speed and
+- **Game-balanced** — the same 38 vehicles with capacity, power, weight, speed and
   cost re-struck so the fleet sits alongside OpenTTD's own vehicles.
 
 OpenTTD resolves the parameter while the GRF loads (the balanced values sit behind an
@@ -61,6 +65,25 @@ MultiLevel, and a 1950 RS-3 still can't touch a GG1:
 Purchase and running costs are then re-struck against the new capacity and power.
 Dates, lengths, tractive effort coefficients, air drag, reliability and every sprite
 are identical in both modes: those are facts about the vehicle, not balance knobs.
+
+#### The buses get gentler rules, and barely move
+
+The four rules above are calibrated for rail, and applying them to a bus would break
+it. A real transit bus is already about the size of an OpenTTD road vehicle — a
+53-seat fishbowl against a vanilla bus's 31 is nothing like a MultiLevel's 132
+against a vanilla carriage's 40 — so ×0.40 on capacity would leave a forty-foot bus
+carrying *fewer* passengers than the base set's. The road fleet uses its own set:
+
+| | Rule | Why |
+| --- | --- | --- |
+| Capacity | ×0.65 | A 40 ft bus lands in the low thirties, right next to vanilla's 31, rather than under it. |
+| Power | ×0.60 | Gentler than the trains' ×0.45, because buses start low: the strongest here makes 425 hp, not 7,500. |
+| Weight | ×0.75 | One rule, since a bus has no trailers to treat differently. |
+| Speed | 30 → 65 mph | City buses under highway coaches, and the ladder climbs a little with each generation. |
+
+Capacity is seated capacity throughout the road fleet. Every real one of these carries
+standees too, but NJ TRANSIT publishes seats, and the rail side counts seats
+everywhere except PATH and the light rail car.
 
 ---
 
@@ -121,8 +144,34 @@ Capacity and weight are per car for the married pairs.
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | HBLR Light Rail | 2000 | 55 | 670 → 470 | 45 → 27 | 178 → 70 | 112 → 68 | 38 → 18 |
 
+**Buses — Public Service and early NJ TRANSIT**
+
+| Vehicle | Intro | Speed mph | Power hp | Weight t | Seats | Buy | Running |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| Yellow Coach ASV | 1935 | 35 → 30 | 150 → 90 | 11 → 8 | 40 → 26 | 22 → 16 | 62 → 44 |
+| GMC New Look | 1960 | 55 → 45 | 210 → 126 | 11 → 8 | 53 → 34 | 26 → 18 | 70 → 50 |
+| Grumman-Flxible 870 | 1981 | 55 → 48 | 218 → 130 | 12 → 9 | 47 → 31 | 28 → 20 | 78 → 56 |
+| MCI MC-9 | 1982 | 65 → 58 | 318 → 190 | 14 → 11 | 47 → 31 | 34 → 24 | 84 → 60 |
+| Volvo B10M Artic | 1985 | 55 → 50 | 250 → 150 | 17 → 13 | 65 → 42 | 40 → 28 | 92 → 66 |
+
+**Buses — modern NJ TRANSIT**
+
+| Vehicle | Intro | Speed mph | Power hp | Weight t | Seats | Buy | Running |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| Flxible Metro-B | 1988 | 55 → 52 | 277 → 166 | 12 → 9 | 45 → 29 | 29 → 21 | 76 → 54 |
+| Nova Bus RTS-06 | 1999 | 55 | 275 → 165 | 13 → 10 | 43 → 28 | 30 → 22 | 74 → 53 |
+| NABI 416.15 | 2009 | 55 → 58 | 330 → 198 | 13 → 10 | 44 → 29 | 32 → 23 | 72 → 52 |
+| MCI D4500CT | 2017 | 65 | 425 → 255 | 17 → 13 | 57 → 37 | 44 → 31 | 90 → 64 |
+| New Flyer XD60 | 2020 | 55 → 58 | 280 → 168 | 19 → 14 | 55 → 36 | 46 → 33 | 88 → 63 |
+| New Flyer XE40 CHARGE | 2022 | 55 → 60 | 335 → 201 | 15 → 11 | 38 → 25 | 50 → 36 | 46 → 33 |
+
+Bus weight and seats are for the whole vehicle: the two articulated sixty-footers
+carry them across a visible front section and a hidden rear one.
+
 Power for the married pairs is carried on the lead car and applies to the set. Buy
-and running are OpenTTD cost factors, not currency.
+and running are OpenTTD cost factors, not currency — and the road ones are struck
+against a different base from the rail ones, so a bus's 30 and a locomotive's 190
+are not comparable numbers.
 
 ### Things worth knowing
 
@@ -147,6 +196,20 @@ and running are OpenTTD cost factors, not currency.
   joint and the floor dropped between them. It is the one vehicle here that is a
   complete train on its own: buy one, or couple two or three the way the real line
   does.
+- **The buses are road vehicles, not trams.** All eleven run on ordinary road, so
+  towns build the network for them and nothing needs electrifying. The Volvo B10M and
+  the New Flyer XD60 are sixty-footers built the way the EMU married pairs are — a
+  visible front section that pulls a hidden rear section in behind it, bought and sold
+  as one vehicle.
+- **The All-Service Vehicle was dual-power too.** Public Service and Yellow Coach
+  built 357 of them from 1935, all but one for New Jersey: they drew from trolley wire
+  where Public Service had strung it and ran as gas-electrics where it had not, which
+  is the ALP-45DP's trick fifty years earlier. OpenTTD has nowhere to put that on a
+  road vehicle, so in game it is simply a bus that goes anywhere.
+- **The Grumman 870 breaks down.** Its reliability decay is 44 against 18-32 for
+  everything else in the set. The Advanced Design Bus cracked its undercarriage
+  A-frames across the whole industry, and NJ TRANSIT's 271 were gone inside sixteen
+  years while the Flxible Metro-Bs that replaced them lasted twenty.
 - **Cab cars can be turned around.** CTRL+click a cab car in the depot to flip it so
   the cab faces the right way for push-pull running.
 - **Catenary, third rail and trolley wire are the same thing here.** OpenTTD has one
@@ -175,6 +238,13 @@ or just `make`.
 flags, purchase text and sprite live there; the NML, the language file, the roster
 images and the artifact pages are all generated from it. Change a number there and
 rebuild — don't edit `njtransit.pnml`, it is overwritten.
+
+Trains live in `VEHICLES` and buses in `ROAD_VEHICLES`, because NML numbers item IDs
+separately per feature and the two get different properties: a road vehicle has no
+`track_type` or `engine_class`, takes `visual_effect` where a train takes
+`visual_effect_and_powered`, and can name a `sound_effect` for the noise it makes
+pulling away from a stop. Everything that treats the set as one fleet — sprites, the
+roster image, the pages — walks `ALL_VEHICLES` instead.
 
 ### Adding real-world photographs
 
@@ -247,8 +317,32 @@ engine in a bucket sized for something longer just shows more coupling gap aroun
 it — which is the correct read: it *is* a short engine sharing a slot built for
 something bigger.
 
+**The buses use a second, larger scale.** A tile is a tile whichever vehicle is
+standing on it, so in principle one calibration should serve both. In practice a
+40 ft bus at the rail scale comes out 3.6 world units long, which projects to about
+seven pixels — too few to carry a windscreen, a door and three window bays, and
+dwarfed by the body height those details need. OpenTTD's own artwork makes exactly
+the same concession: a vanilla bus is drawn very nearly as long as a vanilla wagon.
+So `ROAD_UNITS_PER_FOOT` calibrates the road fleet against itself, with a 45 ft
+highway coach filling the 8/8 slot an 85 ft rail coach fills. Within the road fleet
+every length is honest — the 33 ft All-Service Vehicle really is three quarters of
+an MCI — and a bus still reads as lower and narrower than a rail car beside it. It
+just is not half its length, which at 52 px it cannot be.
+
 Each sheet is 8 cells of 52 × 40 px at a common reference point (offsets −26, −26),
-one cell per direction in the order N, NE, E, SE, S, SW, W, NW.
+one cell per direction in the order N, NE, E, SE, S, SW, W, NW. Road vehicles use
+the same sheet layout and the same eight directions, so `tmpl_8views` serves both
+features.
+
+`buses.py` holds the road fleet. What separates a bus from a rail car in these
+models is mostly underneath: two or three axles instead of a pair of bogies, a floor
+a foot above the road instead of four feet above the rail, and an 8 ft 6 in body
+against a rail car's 10 ft 6. On top of that go the things you actually recognise —
+the fishbowl's wrap-around windscreen, the RTS's ribbed sides, the coaches' high
+floor over baggage lockers, roof pods for air conditioning and for the XE40's
+batteries, a bellows at the artics' joint, and trolley poles laid back along the
+All-Service Vehicle's roof. Those poles need one primitive the trains never did:
+`strut()`, a thin sloping slab, because `box()` is axis-aligned and cannot lean.
 
 ---
 
@@ -259,13 +353,14 @@ njtransit.grf         the compiled NewGRF — this is the file you install
 fleet.py              the fleet table: both stat sets, dates, flags, purchase text
 gen_sprites.py        sprite generator and the modern-stock models
 historic.py           liveries and models for the 1914-1990 stock
+buses.py              liveries and models for the road fleet
 gen_nml.py            generates njtransit.pnml and lang/english.lng
 make_roster.py        renders roster.png and roster_balanced.png
 make_pages.py         builds the two published HTML pages
 photos/               optional: drop photos here to embed them in the roster
 njtransit.pnml        generated NML source
 lang/english.lng      generated names, purchase text and parameter strings
-sprites/*.png         generated 8bpp sprite sheets, 32 of them
+sprites/*.png         generated 8bpp sprite sheets, 45 of them
 sprite_preview.png    every vehicle in every direction, 4x
 roster.png            labelled roster, realistic figures
 roster_balanced.png   labelled roster, balanced figures
@@ -303,6 +398,25 @@ Historical stock:
 [Whippany Railway Museum on the Comet I](https://whippanyrailwaymuseum.net/equipment/comet/),
 [the U34CH in service](https://www.trains.com/ctr/railroads/locomotives/nj-transit-ge-u34ch-diesel-locomotives/).
 
+Buses — the roster, the dates and the build counts come from the
+[NJ Transit bus fleet](https://en.wikipedia.org/wiki/NJ_Transit_bus_fleet) list and
+[NJ Transit Bus Operations](https://en.wikipedia.org/wiki/NJ_Transit_Bus_Operations),
+with [Transport of New Jersey](https://en.wikipedia.org/wiki/Transport_of_New_Jersey)
+for the Public Service years. Vehicle types:
+[GMC New Look](https://en.wikipedia.org/wiki/New_Look_bus),
+[Grumman 870](https://en.wikipedia.org/wiki/Grumman_870),
+[MCI MC-9](https://en.wikipedia.org/wiki/MCI_MC-9),
+[Volvo B10M](https://en.wikipedia.org/wiki/Volvo_B10M),
+[Flxible Metro](https://en.wikipedia.org/wiki/Flxible_Metro),
+[Rapid Transit Series](https://en.wikipedia.org/wiki/Rapid_Transit_Series),
+[MCI D4500](https://en.wikipedia.org/wiki/MCI_D4500),
+[New Flyer Xcelsior](https://en.wikipedia.org/wiki/New_Flyer_Xcelsior). The
+All-Service Vehicle is covered as a precursor in
+[dual-mode bus](https://en.wikipedia.org/wiki/Dual-mode_bus); the 357 built, from
+1935, all but one for Public Service, is the figure the trolleybus rosters carry.
+The first battery-electric bus entering service on Camden route 452 in October 2022
+is from [NJ TRANSIT's own announcement](https://www.njtransit.com/press-releases/nj-transit-introduces-agencys-first-battery-electric-bus-set-enter-service).
+
 ### Where the numbers are soft
 
 Everything below is a judgement call, not a sourced figure. They are listed so you
@@ -333,6 +447,25 @@ can change them in `fleet.py` if you disagree:
   as-built 100 mph rather than the 80 mph it was later restricted to.
 - Modern realistic speeds are capped at NJ TRANSIT's 100 mph operating limit even
   where the equipment is certified higher.
+- **Bus power, weight and top speed are estimates.** Transit agencies publish seat
+  counts and lengths, not curb weights or engine ratings, so the horsepower figures
+  are the engine families the sources name — a 6V-71 in the fishbowl, an ISL9 in the
+  NABI, an X12 in the D4500CT — at typical transit ratings, and the weights are
+  plausible figures for buses of that size. Top speeds are governed-speed estimates:
+  city buses at 55, highway coaches at 65.
+- **Bus seat counts are approximate for the older types.** The fishbowl's 53 is the
+  TDH-5303 designation itself; the rest are figures typical of the configuration NJ
+  TRANSIT ordered rather than per-order counts.
+- **The Public Service livery is the best-attested guess available.** Grey and blue is
+  documented for the Newark City Subway PCC cars in Public Service colours, and the
+  All-Service Vehicle is painted to match. The orange, red and blue on the later buses
+  is on firmer ground: those colours appeared on Transport of New Jersey buses in the
+  seventies, and NJ TRANSIT, which took TNJ over first, kept them — which is why the
+  buses and the Comet IIs wear the same three stripes.
+- **The articulated buses' split between sections is invented.** The published figures
+  are for the whole sixty-foot vehicle; dividing 65 seats into 38 up front and 27
+  behind, and 17 tonnes into 11 and 6, is a guess at where they sit. The totals are
+  what the sources give.
 
 This is a fan-made set for a game, not affiliated with or endorsed by NJ TRANSIT,
 the Port Authority of New York and New Jersey, or any of the railroads represented.

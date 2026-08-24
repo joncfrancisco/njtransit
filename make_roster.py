@@ -48,6 +48,7 @@ SPEC = (150, 160, 172)
 ORANGE = (240, 124, 26)
 RED = (214, 60, 62)
 BLUE = (72, 138, 236)
+GREEN = (86, 186, 118)
 
 ROW_H = 122
 SPR_X = 26
@@ -64,7 +65,7 @@ def render(mode, path, subtitle):
     H = HEAD + ROW_H * n_rows + GRP_H * len(GROUPS) + 18
     img = Image.new("RGB", (W, H), BG)
     d = ImageDraw.Draw(img)
-    title = "NJ TRANSIT + PATH Trainset"
+    title = "NJ TRANSIT + PATH Vehicle Set"
     d.text((26, 20), title, font=f_head, fill=LABEL)
     tw = d.textlength(title, font=f_head)
     d.text((26 + tw + 14, 30), subtitle, font=f_spec, fill=ORANGE)
@@ -106,6 +107,9 @@ def render_row(img, d, v, mode, y, i):
         elif v["nml"].startswith("hblr_"):
             d.text((TXT_X + nw + 12, y + ROW_H // 2 - 29), "LIGHT RAIL", font=f_tag,
                    fill=BLUE)
+        elif v["feature"] == "road":
+            d.text((TXT_X + nw + 12, y + ROW_H // 2 - 29), "BUS", font=f_tag,
+                   fill=GREEN)
         d.text((TXT_X, y + ROW_H // 2 - 6), v["role"], font=f_spec, fill=SPEC)
         d.text((TXT_X, y + ROW_H // 2 + 16), "  ·  ".join(figures(v, mode)),
                font=f_spec, fill=(190, 198, 208))

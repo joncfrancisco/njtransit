@@ -4,7 +4,7 @@ SPRITES = $(wildcard sprites/*.png)
 
 all: sprites nml $(GRF) roster
 
-sprites: gen_sprites.py
+sprites: gen_sprites.py historic.py buses.py fleet.py
 	python3 gen_sprites.py
 
 nml: gen_nml.py fleet.py

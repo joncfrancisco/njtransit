@@ -552,6 +552,240 @@ VEHICLES += [
 ]
 
 
+# ------------------------------------------------------------------- buses --
+# NJ TRANSIT Bus Operations is the second-largest bus fleet in the United
+# States, and it long predates the trains: the buses descend from Public
+# Service Coordinated Transport, which was bustituting its own trolley lines
+# before NJ TRANSIT existed. These are OpenTTD road vehicles rather than
+# trains, so they carry the road-vehicle running cost base and a `feature`
+# key that sends them to FEAT_ROADVEHS instead of FEAT_TRAINS.
+#
+# The balanced stat set moves the buses much less than it moves the trains,
+# because a real transit bus is already about the size of an OpenTTD road
+# vehicle - a 53-seat fishbowl against a vanilla bus's 31 is nothing like a
+# MultiLevel's 132 against a vanilla carriage's 40. The road rules are:
+#
+#   capacity  x0.65   a 40 ft bus lands in the thirties, next to vanilla's 31
+#   power     x0.60   gentler than the trains' x0.45; buses start low
+#   weight    x0.75
+#   speed     shaped into a 30 -> 65 mph ladder, city buses under coaches
+#
+# Capacity is seated capacity throughout. Every real one of these carries
+# standees too, but NJ TRANSIT publishes seats, and the rail side of this set
+# counts seats everywhere except PATH and the light rail car.
+
+ROAD_VEHICLES = [
+    dict(
+        nml="asv", sprite="bus_asv", name="Yellow Coach ASV", feature="road",
+        role="Public Service all-service vehicle, 1935 · 357 built",
+        intro=(1935, 6, 1), length_ft=33, length=6,
+        run_base="RUNNING_COST_ROADVEH", te=0.30, drag=0.10,
+        effect="VISUAL_EFFECT_DIESEL", sound="SOUND_DEPARTURE_OLD_BUS",
+        loading=8,
+        real=dict(speed=35, power=150, weight=11, cap=40, cost=22, run=62,
+                  model_life=25, life=15, decay=32),
+        bal=dict(speed=30, power=90, weight=8, cap=26, cost=16, run=44,
+                 model_life=25, life=15, decay=32),
+        purchase="{BLACK}Yellow Coach for Public Service, 1935-1948. 357 built, all "
+                 "but one of them for New Jersey.{}The All-Service Vehicle drew from "
+                 "trolley wire where Public Service had strung it and ran as a "
+                 "gas-electric where it had not - the same trick as the ALP-45DP, "
+                 "fifty years earlier.{}{GOLD}Runs on any road.",
+    ),
+    dict(
+        nml="newlook", sprite="bus_newlook", name="GMC New Look", feature="road",
+        role="Transport of New Jersey fishbowl, 1960",
+        intro=(1960, 1, 1), length_ft=40, length=8,
+        run_base="RUNNING_COST_ROADVEH", te=0.30, drag=0.10,
+        effect="VISUAL_EFFECT_DIESEL", sound="SOUND_DEPARTURE_OLD_BUS",
+        loading=10,
+        real=dict(speed=55, power=210, weight=11, cap=53, cost=26, run=70,
+                  model_life=25, life=15, decay=28),
+        bal=dict(speed=45, power=126, weight=8, cap=34, cost=18, run=50,
+                 model_life=25, life=15, decay=28),
+        purchase="{BLACK}GM Truck & Coach, 1960-1973.{}The fishbowl: six-piece curved "
+                 "windshield, Detroit Diesel 6V-71 under the back seat. NJ TRANSIT "
+                 "inherited its first buses from Transport of New Jersey in 1980 and "
+                 "these were most of them.",
+    ),
+    dict(
+        nml="flx870", sprite="bus_flx870", name="Grumman-Flxible 870", feature="road",
+        role="NJ TRANSIT, 1981 · 271 built",
+        intro=(1981, 3, 1), length_ft=40, length=8,
+        run_base="RUNNING_COST_ROADVEH", te=0.30, drag=0.10,
+        effect="VISUAL_EFFECT_DIESEL", sound="SOUND_DEPARTURE_OLD_BUS",
+        loading=10,
+        real=dict(speed=55, power=218, weight=12, cap=47, cost=28, run=78,
+                  model_life=15, life=12, decay=44),
+        bal=dict(speed=48, power=130, weight=9, cap=31, cost=20, run=56,
+                 model_life=15, life=12, decay=44),
+        purchase="{BLACK}Grumman Flxible, 1980-1981. 271 built.{}The Advanced Design "
+                 "Bus that gave the type its reputation: square, ADA-ready, and "
+                 "cracking its undercarriage A-frames across the whole industry.{}"
+                 "{GOLD}Breaks down more than anything else in the set.",
+    ),
+    dict(
+        nml="mc9", sprite="bus_mc9", name="MCI MC-9", feature="road",
+        role="Suburban coach, 1982 · 700 built",
+        intro=(1982, 6, 1), length_ft=45, length=8,
+        run_base="RUNNING_COST_ROADVEH", te=0.28, drag=0.07,
+        effect="VISUAL_EFFECT_DIESEL", sound="SOUND_DEPARTURE_MODERN_BUS",
+        loading=5,
+        real=dict(speed=65, power=318, weight=14, cap=47, cost=34, run=84,
+                  model_life=20, life=18, decay=26),
+        bal=dict(speed=58, power=190, weight=11, cap=31, cost=24, run=60,
+                 model_life=20, life=18, decay=26),
+        purchase="{BLACK}Motor Coach Industries, 1982-1984. 700 built.{}The Crusader II "
+                 "highway coach, bought in quantity for the park-and-ride runs into "
+                 "the Port Authority terminal. High floor over baggage lockers, one "
+                 "door, and the fastest road vehicle of its decade here.",
+    ),
+
+    # Volvo B10M articulated pair: the front section pulls in a hidden rear
+    # section as an articulated part, the same trick the EMU married pairs use.
+    dict(
+        nml="b10m_b", sprite="bus_b10m_b", name="Volvo B10M Artic", feature="road",
+        hidden=True,
+        intro=(1985, 1, 1), length_ft=22, length=4,
+        run_base="RUNNING_COST_ROADVEH", te=0.28, drag=0.10,
+        effect=None, loading=10,
+        real=dict(speed=55, power=0, weight=6, cap=27, cost=0, run=0,
+                  model_life=20, life=15, decay=30),
+        bal=dict(speed=50, power=0, weight=5, cap=17, cost=0, run=0,
+                 model_life=20, life=15, decay=30),
+    ),
+    dict(
+        nml="b10m_a", sprite="bus_b10m_a", name="Volvo B10M Artic", feature="road",
+        role="Articulated bus, 1985 · 210 built",
+        intro=(1985, 1, 1), length_ft=38, length=7, artic="b10m_b",
+        artic_with="b10m_b",
+        run_base="RUNNING_COST_ROADVEH", te=0.28, drag=0.10,
+        effect="VISUAL_EFFECT_DIESEL", sound="SOUND_DEPARTURE_MODERN_BUS",
+        loading=10,
+        real=dict(speed=55, power=250, weight=11, cap=38, cost=40, run=92,
+                  model_life=20, life=15, decay=30),
+        bal=dict(speed=50, power=150, weight=8, cap=25, cost=28, run=66,
+                 model_life=20, life=15, decay=30),
+        purchase="{BLACK}Volvo, 1985. 210 built.{}Sixty feet of bus on a mid-engined "
+                 "Swedish chassis, hinged in the middle so it can still take a city "
+                 "corner. Bought for the heaviest Hudson County loadings.{}{GOLD}Two "
+                 "sections, bought and sold as one vehicle.",
+    ),
+
+    dict(
+        nml="metrob", sprite="bus_metrob", name="Flxible Metro-B", feature="road",
+        role="NJ TRANSIT, 1988 · 528 built",
+        intro=(1988, 9, 1), length_ft=40, length=8,
+        run_base="RUNNING_COST_ROADVEH", te=0.30, drag=0.10,
+        effect="VISUAL_EFFECT_DIESEL", sound="SOUND_DEPARTURE_MODERN_BUS",
+        loading=10,
+        real=dict(speed=55, power=277, weight=12, cap=45, cost=29, run=76,
+                  model_life=18, life=14, decay=30),
+        bal=dict(speed=52, power=166, weight=9, cap=29, cost=21, run=54,
+                 model_life=18, life=14, decay=30),
+        purchase="{BLACK}Flxible, 1988-1989. 528 built.{}The 870 redrawn without the "
+                 "structural sins, in the chevron stripes the Comet IIs and Arrow "
+                 "IIIs were wearing at the same time. Detroit Diesel 6V-92TA.",
+    ),
+    dict(
+        nml="rts06", sprite="bus_rts06", name="Nova Bus RTS-06", feature="road",
+        role="NJ TRANSIT, 1999 · 580 built",
+        intro=(1999, 5, 1), length_ft=40, length=8,
+        run_base="RUNNING_COST_ROADVEH", te=0.30, drag=0.10,
+        effect="VISUAL_EFFECT_DIESEL", sound="SOUND_DEPARTURE_MODERN_BUS",
+        loading=10,
+        real=dict(speed=55, power=275, weight=13, cap=43, cost=30, run=74,
+                  model_life=15, life=15, decay=26),
+        bal=dict(speed=55, power=165, weight=10, cap=28, cost=22, run=53,
+                 model_life=15, life=15, decay=26),
+        purchase="{BLACK}Nova Bus, 1999-2000. 580 built.{}The Rapid Transit Series that "
+                 "GM drew in 1977 and three companies went on building: ribbed sides, "
+                 "rounded corners, and the last of NJ TRANSIT's high-floor city "
+                 "buses.",
+    ),
+    dict(
+        nml="nabi416", sprite="bus_nabi416", name="NABI 416.15", feature="road",
+        role="NJ TRANSIT 40-SFW, 2009 · 1,049 built",
+        intro=(2009, 4, 1), length_ft=40, length=8,
+        run_base="RUNNING_COST_ROADVEH", te=0.30, drag=0.10,
+        effect="VISUAL_EFFECT_DIESEL", sound="SOUND_DEPARTURE_MODERN_BUS",
+        loading=10,
+        real=dict(speed=55, power=330, weight=13, cap=44, cost=32, run=72,
+                  model_life=20, life=16, decay=24),
+        bal=dict(speed=58, power=198, weight=10, cap=29, cost=23, run=52,
+                 model_life=20, life=16, decay=24),
+        purchase="{BLACK}North American Bus Industries, 2009-2013. 1,049 built.{}"
+                 "The 40-SFW: forty feet, standard floor, wide body, Cummins ISL9. "
+                 "The single largest order in the fleet and the bus most NJ TRANSIT "
+                 "routes ran for a decade.",
+    ),
+    dict(
+        nml="d4500ct", sprite="bus_d4500ct", name="MCI D4500CT", feature="road",
+        role="Commuter coach, 2017",
+        intro=(2017, 1, 1), length_ft=45, length=8,
+        run_base="RUNNING_COST_ROADVEH", te=0.28, drag=0.07,
+        effect="VISUAL_EFFECT_DIESEL", sound="SOUND_DEPARTURE_MODERN_BUS",
+        loading=5,
+        real=dict(speed=65, power=425, weight=17, cap=57, cost=44, run=90,
+                  model_life=30, life=18, decay=20),
+        bal=dict(speed=65, power=255, weight=13, cap=37, cost=31, run=64,
+                 model_life=30, life=18, decay=20),
+        purchase="{BLACK}Motor Coach Industries, 2017-2022.{}Forty-five feet of "
+                 "commuter coach on the Lincoln Tunnel exclusive bus lane, which "
+                 "moves more people at rush hour than any single rail line in the "
+                 "set. Cummins X12, fifty-seven seats and no standees.",
+    ),
+
+    # New Flyer XD60 Xcelsior: the second articulated pair.
+    dict(
+        nml="xd60_b", sprite="bus_xd60_b", name="New Flyer XD60", feature="road",
+        hidden=True,
+        intro=(2020, 6, 1), length_ft=22, length=4,
+        run_base="RUNNING_COST_ROADVEH", te=0.28, drag=0.10,
+        effect=None, loading=12,
+        real=dict(speed=55, power=0, weight=7, cap=23, cost=0, run=0,
+                  model_life=30, life=16, decay=22),
+        bal=dict(speed=58, power=0, weight=5, cap=15, cost=0, run=0,
+                 model_life=30, life=16, decay=22),
+    ),
+    dict(
+        nml="xd60_a", sprite="bus_xd60_a", name="New Flyer XD60", feature="road",
+        role="Xcelsior articulated, 2020 · 110 built",
+        intro=(2020, 6, 1), length_ft=38, length=7, artic="xd60_b",
+        artic_with="xd60_b",
+        run_base="RUNNING_COST_ROADVEH", te=0.28, drag=0.10,
+        effect="VISUAL_EFFECT_DIESEL", sound="SOUND_DEPARTURE_MODERN_BUS",
+        loading=12,
+        real=dict(speed=55, power=280, weight=12, cap=32, cost=46, run=88,
+                  model_life=30, life=16, decay=22),
+        bal=dict(speed=58, power=168, weight=9, cap=21, cost=33, run=63,
+                 model_life=30, life=16, decay=22),
+        purchase="{BLACK}New Flyer, 2020. 110 built.{}Low-floor sixty-footers for the "
+                 "Newark and Hudson County trunk routes - the first articulated buses "
+                 "NJ TRANSIT had bought since the Volvos went in 2004. Cummins L9.{}"
+                 "{GOLD}Two sections, bought and sold as one vehicle.",
+    ),
+
+    dict(
+        nml="xe40", sprite="bus_xe40", name="New Flyer XE40 CHARGE", feature="road",
+        role="Battery-electric, 2022 · 8 built",
+        intro=(2022, 10, 24), length_ft=40, length=8,
+        run_base="RUNNING_COST_ROADVEH", te=0.32, drag=0.10,
+        effect="VISUAL_EFFECT_DISABLE", sound="SOUND_DEPARTURE_MODERN_BUS",
+        loading=12,
+        real=dict(speed=55, power=335, weight=15, cap=38, cost=50, run=46,
+                  model_life="VEHICLE_NEVER_EXPIRES", life=16, decay=18),
+        bal=dict(speed=60, power=201, weight=11, cap=25, cost=36, run=33,
+                 model_life="VEHICLE_NEVER_EXPIRES", life=16, decay=18),
+        purchase="{BLACK}New Flyer, 2022. 8 built.{}Xcelsior CHARGE NG: NJ TRANSIT's "
+                 "first battery-electric bus, into service on Camden route 452 on "
+                 "24 October 2022 and the start of a zero-emission fleet by 2040. "
+                 "Batteries on the roof, no exhaust.{}{GOLD}Cheapest running cost "
+                 "in the set.",
+    ),
+]
+
+
 # Where to see the real thing. The artifact page links these; it does not
 # reproduce anyone's photographs. Drop files into photos/<nml>.jpg to have
 # make_pages.py embed your own instead (see README).
@@ -583,14 +817,32 @@ PHOTOS = {
     'path_pa4_a': 'https://en.wikipedia.org/wiki/PATH_(rail_system)',
     'path_pa5_a': 'https://en.wikipedia.org/wiki/PATH_(rail_system)',
     'hblr_lrv': 'https://en.wikipedia.org/wiki/Hudson%E2%80%93Bergen_Light_Rail',
+    'asv': 'https://en.wikipedia.org/wiki/Dual-mode_bus',
+    'newlook': 'https://en.wikipedia.org/wiki/New_Look_bus',
+    'flx870': 'https://en.wikipedia.org/wiki/Grumman_870',
+    'mc9': 'https://en.wikipedia.org/wiki/MCI_MC-9',
+    'b10m_a': 'https://en.wikipedia.org/wiki/Volvo_B10M',
+    'metrob': 'https://en.wikipedia.org/wiki/Flxible_Metro',
+    'rts06': 'https://en.wikipedia.org/wiki/Rapid_Transit_Series',
+    'nabi416': 'https://en.wikipedia.org/wiki/North_American_Bus_Industries',
+    'd4500ct': 'https://en.wikipedia.org/wiki/MCI_D4500',
+    'xd60_a': 'https://en.wikipedia.org/wiki/New_Flyer_Xcelsior',
+    'xe40': 'https://en.wikipedia.org/wiki/New_Flyer_Xcelsior',
 }
 
-for _v in VEHICLES:
+# Trains are FEAT_TRAINS items, buses are FEAT_ROADVEHS items, and NML numbers
+# item IDs per feature - so the two lists stay separate everywhere the NML is
+# generated, and are only concatenated for the things that treat the set as one
+# fleet: sprites, the roster image and the published pages.
+ALL_VEHICLES = VEHICLES + ROAD_VEHICLES
+
+for _v in ALL_VEHICLES:
+    _v.setdefault("feature", "rail")
     _v["photo"] = PHOTOS.get(_v["nml"])
 
 
-BY_ID = {v["nml"]: v for v in VEHICLES}
-BUYABLE = [v for v in VEHICLES if not v.get("hidden")]
+BY_ID = {v["nml"]: v for v in ALL_VEHICLES}
+BUYABLE = [v for v in ALL_VEHICLES if not v.get("hidden")]
 
 # Order shown in the roster image and on the artifact pages, grouped by era.
 GROUPS = [
@@ -606,6 +858,10 @@ GROUPS = [
      ["path_pa1_a", "path_pa4_a", "path_pa5_a"]),
     ("Hudson-Bergen Light Rail",
      ["hblr_lrv"]),
+    ("Buses — Public Service and early NJ TRANSIT",
+     ["asv", "newlook", "flx870", "mc9", "b10m_a"]),
+    ("Buses — modern NJ TRANSIT",
+     ["metrob", "rts06", "nabi416", "d4500ct", "xd60_a", "xe40"]),
 ]
 
 ROSTER_ORDER = [k for _, keys in GROUPS for k in keys]
@@ -621,11 +877,20 @@ def figures(v, mode):
         out.append("{:,} hp diesel".format(d))
     elif s["power"]:
         out.append("{:,} hp{}".format(s["power"], " per pair" if v.get("pair") else ""))
-    out.append("{} t{}".format(s["weight"], " per car" if v.get("pair") else ""))
+    # A married pair carries identical halves, so its figures are quoted per
+    # car and doubled; an articulated bus has two unequal sections, so its
+    # weight and seats are summed off the hidden rear half instead.
+    rear = BY_ID.get(v.get("artic_with"))
+    weight = s["weight"] + (rear[mode]["weight"] if rear else 0)
+    cap = s["cap"] + (rear[mode]["cap"] if rear else 0)
+    out.append("{} t{}".format(weight, " per car" if v.get("pair") else ""))
     out.append("{} mph".format(s["speed"]))
-    if s["cap"]:
-        total = s["cap"] * (2 if v.get("pair") else 1)
+    if cap:
+        total = cap * (2 if v.get("pair") else 1)
         out.append("{} riders".format(total) if v.get("riders")
                    else "{} seats".format(total))
-    out.append("catenary only" if v["track"] == "ELRL" else "any track")
+    if v["feature"] == "road":
+        out.append("any road")
+    else:
+        out.append("catenary only" if v["track"] == "ELRL" else "any track")
     return out
