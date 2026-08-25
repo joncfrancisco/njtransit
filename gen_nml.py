@@ -38,7 +38,7 @@ grf {
     grfid:                  "NJT\\01";
     name:                   string(STR_GRF_NAME);
     desc:                   string(STR_GRF_DESC);
-    version:                4;
+    version:                5;
     min_compatible_version: 1;
     param {
         stats {
