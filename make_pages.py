@@ -312,7 +312,7 @@ def unit_row(v, mode):
     lis = ""
     for f in figs:
         cls = ""
-        if "track" in f or "catenary" in f:
+        if "track" in f or "catenary" in f or "road" in f:
             cls = ' class="cat"'
         elif "seat" in f or "rider" in f:
             cls = ' class="seats"'
@@ -346,6 +346,9 @@ def build_main(balanced_url):
     hero3 = hero_img([("njt_alp46", 7), ("njt_ml", 8), ("njt_ml", 8),
                       ("njt_ml_cab", 8)],
                      "An ALP-46 hauling three MultiLevel cars", direction=5)
+    hero4 = hero_img([("bus_nabi416", 8), ("bus_xd60_a", 7), ("bus_xd60_b", 4)],
+                     "A NABI 416.15 and a New Flyer XD60 articulated bus",
+                     direction=5)
 
     roster_html = ""
     for title, keys in GROUPS:
@@ -359,8 +362,12 @@ def build_main(balanced_url):
         if title.startswith("Modern"):
             roster_html += ('    <figure class="hero">%s<figcaption>ALP-46 with '
                             'MultiLevels</figcaption></figure>\n' % hero3)
+        if title.startswith("Buses — modern"):
+            roster_html += ('    <figure class="hero">%s<figcaption>A NABI 416.15 '
+                            'beside an XD60, whose rear section is a hidden '
+                            'articulated part</figcaption></figure>\n' % hero4)
 
-    body = """<title>NJ TRANSIT Trainset</title>
+    body = """<title>NJ TRANSIT Vehicle Set</title>
 %s
 <style>%s</style>
 
@@ -368,12 +375,14 @@ def build_main(balanced_url):
 
   <header>
     <p class="eyebrow">OpenTTD · NewGRF</p>
-    <h1>NJ TRANSIT Trainset</h1>
-    <p class="lede">Twenty-seven vehicles covering a century of New Jersey railroading:
+    <h1>NJ TRANSIT Vehicle Set</h1>
+    <p class="lede">Thirty-eight vehicles covering a century of New Jersey transit:
       a PRR K4s Pacific and Erie Lackawanna diesels, the GG1 through to its last run in
-      1983, NJ TRANSIT's modern fleet, three generations of PATH rapid transit and the
-      Hudson-Bergen light rail car — each in its own railroad's livery, with real
-      figures and a switch for people who would rather have balanced ones.</p>
+      1983, NJ TRANSIT's modern fleet, three generations of PATH rapid transit, the
+      Hudson-Bergen light rail car — and eleven buses, from a 1935 Public Service
+      All-Service Vehicle to a battery-electric Xcelsior. Each in its own operator's
+      livery, with real figures and a switch for people who would rather have balanced
+      ones.</p>
     <hr class="stripe">
     <figure class="hero">
       %s
@@ -456,6 +465,26 @@ def build_main(balanced_url):
           trucks, with a bellows at each joint and the floor dropped between them. It is
           the one vehicle in the set that is a complete train on its own — buy one, or
           couple two or three the way the real line does.</p>
+      </div>
+      <div class="note">
+        <h3>The buses are road vehicles, not trams</h3>
+        <p>All eleven run on ordinary road, so towns build their own network for them
+          and nothing needs electrifying. The Volvo B10M and the New Flyer XD60 are
+          sixty-footers built the same way the EMU married pairs are: a visible front
+          section that pulls a hidden rear section in behind it, bought and sold as one
+          vehicle. The 1935 All-Service Vehicle really did draw from trolley wire where
+          Public Service had strung it and run as a gas-electric where it had not —
+          the ALP-45DP's trick, fifty years earlier — but OpenTTD has nowhere to put
+          that, so it is simply a bus that goes anywhere.</p>
+      </div>
+      <div class="note">
+        <h3>Buses are drawn on their own scale</h3>
+        <p>A tile is a tile whichever vehicle is on it, but a 40 ft bus at the rail
+          scale would be about seven pixels long — too few for a windscreen, a door and
+          three window bays. OpenTTD's own artwork makes the same concession. So the
+          buses are calibrated against each other, with a 45 ft highway coach filling
+          the slot an 85 ft rail coach fills. Within the road fleet the lengths are
+          honest; against the trains they are generous.</p>
       </div>
       <div class="note">
         <h3>Cab cars turn around</h3>
@@ -579,6 +608,8 @@ def build_balanced(main_url):
                 tag = ' <span class="tag">PATH</span>'
             elif v["nml"].startswith("hblr_"):
                 tag = ' <span class="tag">LIGHT RAIL</span>'
+            elif v["feature"] == "road":
+                tag = ' <span class="tag">BUS</span>'
             table += ('        <tr><th scope="row">%s%s</th>%s</tr>\n'
                       % (v["name"], tag, metric_cells(v)))
 
@@ -660,10 +691,10 @@ def build_balanced(main_url):
 
   <section>
     <h2>The four rules</h2>
-    <p>Every balanced number comes from one of these, applied across the whole roster
-      rather than tuned vehicle by vehicle — so the fleet keeps its internal shape: an
-      Arrow III is still the poor relation of a MultiLevel, and a 1950 RS-3 still can't
-      touch a GG1.</p>
+    <p>Every balanced number on the rail side comes from one of these, applied across
+      the whole roster rather than tuned vehicle by vehicle — so the fleet keeps its
+      internal shape: an Arrow III is still the poor relation of a MultiLevel, and a
+      1950 RS-3 still can't touch a GG1.</p>
     <div class="rules">
 %s
     </div>
@@ -672,6 +703,14 @@ def build_balanced(main_url):
       and against the base game. Dates, lengths, tractive effort coefficients, air drag,
       reliability and every sprite are untouched: those are facts about the vehicle, not
       balance knobs.</p>
+    <p style="margin-top:20px">The buses barely move between the two settings, and the
+      reason is worth saying plainly: a real transit bus is already about the size of an
+      OpenTTD road vehicle. A 53-seat fishbowl against a vanilla bus's 31 is nothing
+      like a MultiLevel's 132 against a vanilla carriage's 40, so the road fleet gets
+      its own gentler rules — capacity &times;0.65, power &times;0.60, weight
+      &times;0.75, and a 30 → 65 mph ladder that puts city buses under highway
+      coaches. Cutting them by the rail figures would have left a forty-foot bus
+      carrying fewer people than the base set's.</p>
   </section>
 
   <section>

@@ -567,8 +567,26 @@ REFERENCE_LEN = 8       # ...against the longest NML `length`, 8/8. The 90 ft
                         # reference, so it draws capped at its slot.
 WORLD_UNITS_PER_FOOT = (REFERENCE_LEN - COUPLING_GAP) / REFERENCE_FT
 
+# Road vehicles are drawn on their own, larger scale, and have to be.
+#
+# A tile is a tile whether a bus or a train is standing on it, so in principle
+# one scale should serve both. In practice a 40 ft bus at the rail scale above
+# comes out 3.6 world units long, which projects to about seven pixels - too
+# few to carry a windscreen, a door and three window bays, and dwarfed by the
+# body height that those details need. OpenTTD's own artwork makes the same
+# concession: a vanilla bus is drawn very nearly as long as a vanilla wagon.
+#
+# So the buses are calibrated against each other rather than against the
+# trains: a 45 ft highway coach, the longest single-unit road vehicle here,
+# fills an 8/8 slot the way an 85 ft rail coach does. Within the road fleet
+# every length is honest - the 33 ft All-Service Vehicle really is three
+# quarters of an MCI - and a bus still reads as lower and narrower than a rail
+# car next to it. It just is not half its length, which at 52 px it cannot be.
+ROAD_REFERENCE_FT = 45.0
+ROAD_UNITS_PER_FOOT = (REFERENCE_LEN - COUPLING_GAP) / ROAD_REFERENCE_FT
 
-def scale_to_length(quads, length_ft, length):
+
+def scale_to_length(quads, length_ft, length, units_per_foot=None):
     """Scale a model to its prototype length, centred on the vehicle
     reference point and capped at the room `length` (the NML property, in
     world units) leaves for it.
@@ -577,10 +595,12 @@ def scale_to_length(quads, length_ft, length):
     pure x scale leaves all of them facing the right way and none of them need
     renormalising.
     """
+    if units_per_foot is None:
+        units_per_foot = WORLD_UNITS_PER_FOOT
     xs = [p[0] for q in quads for p in q.pts]
     raw = max(xs) - min(xs)
     mid = (min(xs) + max(xs)) / 2.0
-    drawn = min(length_ft * WORLD_UNITS_PER_FOOT, length - COUPLING_GAP)
+    drawn = min(length_ft * units_per_foot, length - COUPLING_GAP)
     scale = drawn / raw
     for q in quads:
         q.pts = [((p[0] - mid) * scale, p[1], p[2]) for p in q.pts]
@@ -727,19 +747,23 @@ def make_preview(names, scale=4):
 
 def main():
     os.makedirs(OUT_DIR, exist_ok=True)
-    from fleet import VEHICLES
-    from historic import models as historic_models   # late: it imports us back
+    from fleet import ALL_VEHICLES
+    from historic import models as historic_models   # late: they import us back
+    from buses import models as bus_models
     MODELS.update(historic_models())
-    specs = {v["sprite"]: (v["length_ft"], v["length"]) for v in VEHICLES}
+    MODELS.update(bus_models())
+    specs = {v["sprite"]: (v["length_ft"], v["length"],
+                           ROAD_UNITS_PER_FOOT if v["feature"] == "road"
+                           else WORLD_UNITS_PER_FOOT) for v in ALL_VEHICLES}
     names = []
     for name, builder in MODELS.items():
-        length_ft, length = specs[name]
+        length_ft, length, upf = specs[name]
         assert length > COUPLING_GAP, "{}: length {} too small for a " \
             "{} unit coupling gap".format(name, length, COUPLING_GAP)
-        quads, drawn = scale_to_length(builder(), length_ft, length)
+        quads, drawn = scale_to_length(builder(), length_ft, length, upf)
         render_vehicle(name, quads)
         names.append(name)
-        capped = " (capped)" if length_ft * WORLD_UNITS_PER_FOOT > drawn + 1e-6 else ""
+        capped = " (capped)" if length_ft * upf > drawn + 1e-6 else ""
         print("wrote {:<18} {:.2f} of {} world units, {:.0f} ft prototype ({:.0f}% "
               "of slot){}".format(name + ".png", drawn, length, length_ft,
                                   100 * drawn / length, capped))
