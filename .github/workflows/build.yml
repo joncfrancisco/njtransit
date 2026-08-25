@@ -2,8 +2,17 @@ name: Build NewGRF
 
 # Builds sprites -> njtransit.pnml -> njtransit.grf from source on every push
 # and pull request, so a broken build fails in CI instead of at release time.
-# Pushing a tag like v3 additionally attaches the compiled njtransit.grf to a
-# GitHub Release.
+#
+# Releases are automatic: gen_nml.py carries a single `version` integer (the
+# NML grf.version property), and every push to main that lands a new value
+# gets tagged v<version> and released with njtransit.grf attached, without a
+# separate manual `git tag` step. Pushing a tag by hand still works too - the
+# release job also fires on any refs/tags/v* push - but the normal path is
+# just: bump `version` in gen_nml.py, merge to main, CI does the rest.
+#
+# The GITHUB_TOKEN pushing the tag does not retrigger this workflow (Actions
+# suppresses that to avoid recursive runs), so tagging and releasing happen
+# in the same run rather than depending on a second, tag-triggered one.
 
 on:
   push:
@@ -15,6 +24,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
     steps:
       - uses: actions/checkout@v4
 
@@ -32,6 +43,13 @@ jobs:
       - name: Generate NML source
         run: python3 gen_nml.py
 
+      - name: Read GRF version
+        id: version
+        run: |
+          v=$(grep -oE 'version:[[:space:]]*[0-9]+;' njtransit.pnml | head -1 | grep -oE '[0-9]+')
+          echo "GRF version is $v"
+          echo "version=$v" >> "$GITHUB_OUTPUT"
+
       - name: Compile the NewGRF
         run: nmlc --grf njtransit.grf njtransit.pnml
 
@@ -40,9 +58,37 @@ jobs:
           name: njtransit.grf
           path: njtransit.grf
 
-  release:
+  tag:
     needs: build
-    if: startsWith(github.ref, 'refs/tags/v')
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    outputs:
+      tag: v${{ needs.build.outputs.version }}
+      created: ${{ steps.tag.outputs.created }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Tag this version if it hasn't been released yet
+        id: tag
+        env:
+          TAG: v${{ needs.build.outputs.version }}
+        run: |
+          if git ls-remote --exit-code --tags origin "refs/tags/$TAG" >/dev/null 2>&1; then
+            echo "$TAG already exists, nothing to do"
+            echo "created=false" >> "$GITHUB_OUTPUT"
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git tag "$TAG"
+            git push origin "$TAG"
+            echo "created=true" >> "$GITHUB_OUTPUT"
+          fi
+
+  release:
+    needs: [build, tag]
+    if: startsWith(github.ref, 'refs/tags/v') || needs.tag.outputs.created == 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -53,5 +99,6 @@ jobs:
 
       - uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ startsWith(github.ref, 'refs/tags/v') && github.ref_name || needs.tag.outputs.tag }}
           files: njtransit.grf
           generate_release_notes: true
